@@ -1,0 +1,112 @@
+body{
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+}
+
+/*SECTION Header*/
+header{
+    font-family:font85995;
+    background-color: #2A2B2E;
+    padding:20px 0px;
+    margin-bottom:20px;
+}
+
+header h1{
+    font-family:font85995;
+    font-size: 55px;
+    color:#fff;
+}
+
+header a{
+    padding: 10px;
+}
+
+.header-display{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/*SECTION Footer*/
+footer{
+    font-family:font85995;
+    background-color: #2A2B2E;
+    color: #fff;
+}
+
+.footer-content{
+    padding: 20px 0px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.formatacao-listaContatos{
+    color:#fff;
+    list-style-type: none;
+    display: flex;
+}
+
+.formatacao-listaContatos i{
+    color:#fff;
+    font-size: 35px;
+}
+
+.formatacao-formulario{
+    border:2px solid #dee3e4;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.formDetalhe{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.formatacao-formulario legend{
+    font-size:18px;
+    font-weight: 600;
+}
+
+.formatacao-formulario p{
+    margin-bottom: 0px;
+}
+
+.formatacao-formulario a:hover{
+    color: #0a0db1d2;
+    text-decoration: none;
+}
+
+.btn-interrogacion{
+    background: none;
+}
+
+
+textarea{
+    resize: none;
+}
+
+.logo img{
+    width: 150px;
+}
+
+.logo{
+   margin-left: 12%;
+}
+
+.table td{
+    vertical-align: middle;
+}
+
+.tagRevisao{
+    background: rgb(245, 228, 0);
+}
+
+.tagSolucionada{
+    background: rgb(21, 192, 30);
+}
+
+.tagCancelada{
+    background: rgb(255, 60, 46);
+}

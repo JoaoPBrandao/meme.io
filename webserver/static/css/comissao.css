@@ -1,0 +1,67 @@
+.formatacao-formulario img{
+    width: 250;
+    height: 230;
+    margin-bottom: 10px;
+}
+
+.btnfoto{
+margin-top: 20px;
+}
+
+.filtragem{
+    margin: 20px 0px;
+}
+
+.filtragem span{
+    font-size:20px;
+    font-weight: 700;
+}
+
+.filtragem legend{
+    font-size: 16px;
+}
+
+.filtragem button{
+    margin-top:30px;
+}
+
+.statusFormat{
+    width: 150px;
+}
+
+.nomeFormat{
+    width: 200px;
+}
+
+.tableMembroAutenticado button{
+    margin:15px;
+}
+
+.campo-statusMembro i{
+    color: rgb(233, 49, 49);
+ } 
+
+.campo-statusMembro{
+    display: flex;
+    justify-content: space-between;
+}
+
+.telaMembros{
+    display: flex;
+    justify-content: center;
+}
+
+.telaMembros span{
+    margin-bottom: 30px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.card{
+    width: 25%;
+    margin: 15px;;
+}
+
+.table td{
+    vertical-align: top;
+}

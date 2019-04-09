@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <% include components/projectDefaultHead/projectDefaultHead %>
+    </head>
+    <body>
+        <% include components/header/projectDefaultHeader %>
+        <main>
+            <div class="container espacamentoPadrao">
+                <div class="telaMembros row">
+          <span>
+              A comissão é formada pelos representantes de classe eleitos pelo BSI,
+              um aluno apontado por esses e por um representante do NAPE.
+          </span>
+
+                    <div for(membro in data.membrosComissao) class="card">
+                        <img src= "${membro.foto}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">${membro.nome}</h5>
+                            <p class="card-text"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <% include components/footer/projectDefaultFooter %>
+
+        <% include components/projectDefaultScripts/projectDefaultScripts %>
+    </body>
+</html>
