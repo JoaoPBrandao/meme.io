@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Usuario = require(process.cwd() + "/models/usuarioModel.js");
 
-// Rota Denúncias:
+// Rota usuários:
 router.get('/', (req, res) => {
     console.log(req.query);
     let auxJSON = [];
@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
 
 });
 router.post('/', (req, res) => {
-    console.log("Post recebido. Objeto: " + req.body.descricao);
+    console.log("Post recebido.);
     const usuarioNovo = new Usuario({
         nome: req.body.nome,
         email: req.body.email,
@@ -57,6 +57,28 @@ router.delete('/:idUsuario', (req, res) => {
     })
         .then(() => {
             res.status(200).send("Usuário deletado com sucesso.")
+        })
+        .catch(err => {
+            console.log(err)
+        });
+});
+
+router.put('/:idUsuario', (req, res) => {
+    console.log("Requisição put recebida");
+    const idUsuario = req.params.idUsuario;
+    Usuario.updateOne({
+        "_id": idUsuario
+    },{
+        nome: req.body.nome,
+        email: req.body.email,
+        senha: req.body.senha
+    }, err => {
+        if(err) {
+            console.log(err);
+        }
+    })
+        .then(() => {
+            res.status(200).send("Usuário atualizado com sucesso.")
         })
         .catch(err => {
             console.log(err)
