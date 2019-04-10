@@ -36,11 +36,11 @@ router.post('/', (req, res) => {
     usuarioNovo.save()
         .then(() => {
             usuarioNovo._id = "[redatado]";
-            res.status(200).send("Usuário salvo com sucesso" + usuarioNovo);
+            res.status(200).send("Usuário salvo com sucesso" + usuarioNovo.toString());
         })
         .catch((err) => {
             usuarioNovo._id = "[redatado]";
-            res.status(400).send("Problema salvando usuário" + usuarioNovo);
+            res.status(400).send("Problema salvando usuário" + usuarioNovo.toString());
             console.log(err);
         });
 });

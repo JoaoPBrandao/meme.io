@@ -4,125 +4,47 @@
         <% include components/projectDefaultHead/projectDefaultHead %>
     </head>
     <body>
-        <% include components/header/projectDefaultHeader %>
         <main>
-            <div class="modal fade" id="termosDeUso" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6" id="AnunciosCol">
+                        <div class="text-center">
+                            <h1>meme.io</h1>
+                            <h2>Vantagens de se cadastrar!</h2>
                         </div>
-                        <div class="modal-body">
-                            Termos de uso
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <img src="https://www.bauducco.com.br/wp/wordpress/wp-content/uploads/2017/09/default-placeholder-1-2.png">
+                            </div>
+                            <div class="col-sm-7">
+                                <p>Caros amigos, a competitividade nas transações comerciais nos obriga à análise das condições
+                                    financeiras e administrativas exigidas. O empenho em analisar a percepção das dificuldades
+                                    maximiza as possibilidades por conta das diretrizes de desenvolvimento para o futuro.
+                                    No entanto, não podemos esquecer que a hegemonia do ambiente político exige a precisão
+                                    e a definição de alternativas às soluções ortodoxas.
+                                </p>
+                            </div>
+
+
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                    </div>
+                    <div class="col-sm-3" id="CadastroCol">
+                        <div class="div">
+                            <h3  class="centerText">Cadastro</h3>
                         </div>
+                        <% include components/formCadastroUsuario/formCadastroUsuario.ejs %>
+                    </div>
+                    <div class="col-sm-3" id="LoginCol">
+                        <div class="div">
+                            <h3  class="centerText">Login</h3>
+                        </div>
+                        <% include components/formLoginUsuario/formLoginUsuario.ejs %>
                     </div>
                 </div>
-            </div>
 
-            <div class="container espacamentoPadrao conteudo-style">
-                <span>
-                  O Portal de Denúncias do BSI foi desenvolvido com o intuito de facilitar
-                  e transparecer o processo de submissão de denúncias e reclamações da
-                  comunidade acadêmica. Uma denúncia submetida é averiguada pela
-                  <a href="/comissao">comissão</a> e encaminhada ao público adequado, como o NAPE,
-                  a diretoria ou a decania.
-                </span>
-
-                <div>
-                    <form action="/" method="POST" id="formDenuncia">
-                        <div class="form-group formatacao-formulario">
-                            <h2>FAÇA SUA DENÚNCIA</h2>
-                            <div class="row">
-                                <div class="col-6">
-                                    <legend>Descrição da sua Denúncia:</legend>
-                                    <textarea class="form-control"  name="descricao" id="textDenuncia" rows="9"></textarea>
-                                </div>
-
-                                <div class="col-6 formDetalhe">
-                                    <div>
-                                        <legend>
-                                            Visibilidade da denúncia:
-                                            <a href="#" data-toggle="tooltip"
-                                               title="Ao optar por ‘Visível para o público,’  você permite que sua denúncia conste no
-                                                    relatório público de denúncias caso ela seja aprovada pela comissão para tal.">
-                                                <i class="fas fa-question-circle"></i>
-                                            </a>
-                                        </legend>
-
-                                        <p>
-                                            <input type="radio" name="visibilidade" id="publico" value="1"/>
-                                            <label for="publico">Visível para o público</label>
-
-                                        </p>
-                                        <p>
-                                            <input type="radio" name="visibilidade" id="privado"  value="0"/>
-                                            <label for="privado">Visível apenas para a comissão</label>
-                                        </p>
-                                    </div>
-
-                                    <div>
-                                        <legend>Email:</legend>
-                                        <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" />
-                                    </div>
-
-                                    <div>
-                                        <input type="checkbox" name="termos" id="termosObrigatorio" />
-                                        <label for="termosObrigatorio">Entendo a <a href="#" class="button-termos"
-                                                                                    data-toggle="modal"
-                                                                                    data-target="#termosDeUso">política de conduta</a></label> da comissão que receberá minha denúncia
-                                    </div>
-
-                                    <div>
-                                        <button type="submit" class="btn btn-outline-primary">
-                                            Submeter Formulário
-                                        </button>
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-                <table class="table table-bordered table-responsive table-striped">
-                    <thead>
-                    <tr>
-                        <th>Responsável</th>
-                        <th>Data</th>
-                        <th>Denúncia</th>
-                        <th>Status</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>João do Prédio</td>
-                        <td>26/10</td>
-                        <td class="tdDenuncia">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-                            lorem nulla, fringilla in faucibus nec, tempor id lorem. Quisque
-                            velit sapien, sollicitudin vitae massa ut, ultrices imperdiet
-                            augue. Curabitur id lobortis arcu. Cras quis libero lorem.
-                            Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-                            posuere cubilia Curae
-                        </td>
-                        <td>
-                            <span class="tagSolucionada" data-placement="bottom" data-toggle="popover" title="Solução" data-content="A denúncia foi aceita e o responsável foi punido">Solucionada</span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
             </div>
         </main>
-        <% include components/footer/projectDefaultFooter %>
-
         <% include components/projectDefaultScripts/projectDefaultScripts %>
     </body>
 </html>

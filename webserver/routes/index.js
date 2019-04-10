@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const axios = require("axios"); // Usamos Axios para fazer as requests à API
-const appConfig = require(process.cwd() + '/configs/appConfig.json');
+const app = require("../server.js");
 
 // GET routes:
 router.get('/', (req, res) => {
@@ -10,6 +10,10 @@ router.get('/', (req, res) => {
 
 router.get('/comissao', (req, res) => {
     res.render(process.cwd() + '/views/comissao.ejs', {});
+});
+
+router.get('/usuarios/dadospessoais', (req, res) => {
+    res.render(process.cwd() + '/views/dadospessoais.ejs')
 });
 
 // POST routes:
@@ -23,7 +27,7 @@ router.post('/', (req,res) => {
         res.render(process.cwd() + '/views/', {}); // TODO: RENDER error FLASH MESSAGE
         return;
     }
-    axios.post(appConfig.apiHost + ":" + appConfig.apiPort + "/", auxDenuncia) // Exemplo de formato do primeiro argumento: "http://localhost:3000/"
+    axios.post(app.apiHost + ":" + app.apiPort + "/", auxDenuncia) // Exemplo de formato do primeiro argumento: "http://localhost:3000/"
         .then((apiResponse) => {
             console.log("Resposta da API: " + apiResponse.status);
             res.render(process.cwd() + '/views/', {}); // TODO: RENDER success FLASH MESSAGE
