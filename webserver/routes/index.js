@@ -8,6 +8,9 @@ router.get('/', (req, res) => {
     res.render(process.cwd() + '/views/index.ejs', {});
 });
 
+router.get('/usuarios/dadospessoais', (req, res) => {
+    res.render(process.cwd() + '/views/dadospessoais.ejs')
+});
 // POST routes:
 router.post('/usuarios', (req,res) => {
     let auxUsuario = {};

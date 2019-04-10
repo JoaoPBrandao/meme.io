@@ -17,9 +17,11 @@ const express = require("express");
 class WebServer {
     // Precisamos da porta e o IP nos quais vamos servir. Por default, 80 e 0.0.0.0, como declarado no início da classe
     // e no construtor default:
-    constructor(serverPort, serverHost) {
+    constructor(serverPort, serverHost, apiPort, apiHost) {
         this.serverPort = serverPort;
         this.serverHost = serverHost;
+        this.apiPort = apiPort;
+        this.apiHost = apiHost;
         this.serverDependencies = {      // De um ponto de vista das linguagens full-OOP tradicionais, aqui temos mais
                                          // imports. A diferença visível é que acessamos os imports pela variável na qual
                                          // os armazenamos, e não pelo nome da package ou biblioteca. Por isso e pela
@@ -34,9 +36,9 @@ class WebServer {
         // Configura as dependências e o middleware do servidor:
         setupServer() {
             // Encurtando nossas chamadas e tornando o código mais legível para fluentes em Node/Express:
-            let app = this.serverInstance;
-            let path = this.serverDependencies.path;
-            let bodyParser = this.serverDependencies.bodyParser;
+            const app = this.serverInstance;
+            const path = this.serverDependencies.path;
+            const bodyParser = this.serverDependencies.bodyParser;
 
             // Servir arquivos estáticos (stylesheets, scripts, mídia, etc):
             app.use(express.static(path.join(__dirname, '/static')));
@@ -52,11 +54,14 @@ class WebServer {
         }
 
         static startServer() {
-            const app = new WebServer(8080, "localhost");
+            const app = new WebServer(8080, "localhost", 3000, "localhost");
             app.setupServer();
             app.serverInstance.listen(app.serverPort, app.serverHost, () => {
                 console.log("Server iniciado em " + app.serverHost + ":" + app.serverPort);
             });
+            // Abaixo, dizemos ao ambiente Node/Express que ele pode usar a class WebServer (podemos fazer require("WebServer").
+            // Isso é análogo à declaração "package ABCD" em Java-like:
+            module.exports = app;
         }
 
 }
@@ -64,7 +69,3 @@ class WebServer {
 // Abaixo, o análogo ao "main" Java-like, porém fora de uma estrutura como "func main()" devido à natureza scriptada
 // do Node/Express:
 WebServer.startServer();
-
-// Abaixo, dizemos ao ambiente Node/Express que ele pode usar a class WebServer (podemos fazer require("WebServer").
-// Isso é análogo à declaração "package ABCD" em Java-like:
-module.exports = WebServer;

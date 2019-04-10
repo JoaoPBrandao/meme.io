@@ -1,0 +1,26 @@
+body{
+    font-family: 'Arimo', sans-serif;
+}
+h1, h2, h3{
+    font-family: 'Josefin Sans', sans-serif;
+}
+.row{
+    margin-top: 5%;
+    align-items: center;
+}
+.centerText{
+    text-align: center;
+}
+#rowMargin, #senhaLogin{
+    margin-top: 1%;
+}
+img{
+    width: 200px;
+    height: 200px;
+}
+.col-sm-6 p{
+    font-size: 90%;
+}
+#LoginCol, #CadastroCol{
+    height: 300px;
+}
