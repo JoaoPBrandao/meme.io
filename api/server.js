@@ -83,6 +83,7 @@ class API {
     static startServer() {
         const api = new API(3000, "localhost", "mongodb+srv://memeIO:memeiopassword@memeio-fs7qy.mongodb.net/test?retryWrites=true");
         api.connectDB();
+        api.setupServer();
         api.serverInstance.listen(api.serverPort, () => {
             console.log("Server iniciado. Porta: " + api.serverPort);
         });

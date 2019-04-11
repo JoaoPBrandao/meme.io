@@ -13,21 +13,24 @@ router.get('/', (req, res) => {
                 auxJSON.push(usuario);
             });
         }
-        else {
-            auxJSON.push("Nenhum usuário encontrado.");
-        }
     })
     .then(() => {
-        res.send(auxJSON);
+        if(auxJSON) {
+            res.status(200).send(JSON.stringify(auxJSON));
+        }
+        else {
+            res.status(200).send();
+        }
         res.end();
     })
     .catch((err) => {
         console.log(err);
+        res.status(400).send("Erro no processamento.");
     });
 
 });
 router.post('/', (req, res) => {
-    console.log("Post recebido.);
+    console.log("Post recebido.");
     const usuarioNovo = new Usuario({
         nome: req.body.nome,
         email: req.body.email,
@@ -48,8 +51,10 @@ router.post('/', (req, res) => {
 router.delete('/:idUsuario', (req, res) => {
     console.log("Requisição delete recebida");
     const idUsuario = req.params.idUsuario;
-    Usuario.deleteOne({
+    Usuario.updateOne({
         "_id": idUsuario
+    }, {
+        status: 0
     }, err => {
         if(err) {
             console.log(err);
@@ -70,11 +75,10 @@ router.put('/:idUsuario', (req, res) => {
         "_id": idUsuario
     },{
         nome: req.body.nome,
-        email: req.body.email,
         senha: req.body.senha
     }, err => {
         if(err) {
-            console.log(err);
+            console.log("Erro: " + err);
         }
     })
         .then(() => {
