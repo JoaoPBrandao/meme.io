@@ -1,3 +1,15 @@
 body{
     background-color: #FFE599;
+    max-width: 1600px;
+}
+header{
+    background-color: #bb5342;
+}
+header .nav, h1{
+    display: inline-block;
+    color: #ffffff;
+}
+.btn-light{
+    background-color: #e6e6e6 !important;
+    border-color: #e6e6e6 !important;
 }
