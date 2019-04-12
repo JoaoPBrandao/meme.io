@@ -4,14 +4,14 @@
     </div>
     <div class="labelInputContainer">
         <label class="label-txt" for="emailUsuario">INSIRA SEU EMAIL</label>
-        <input type="text" class="input" id="emailUsuario" name="emailUsuario">
+        <input type="text" class="input" id="emailUsuario" name="emailUsuario" value="<%= typeof email != 'undefined' ? email: '' %>">
         <div class="line-box">
             <div class="line"></div>
         </div>
     </div>
     <div class="labelInputContainer">
         <label class="label-txt" for="nomeUsuario">INSIRA SEU NOME</label>
-        <input type="text" class="input" id="nomeUsuario" name="nomeUsuario">
+        <input type="text" class="input" id="nomeUsuario" name="nomeUsuario" value="<%= typeof nome != 'undefined' ? nome: '' %>">
         <div class="line-box">
             <div class="line"></div>
         </div>
@@ -21,7 +21,7 @@
                                                                                          Pelo menos um caractere minúsculo<br>
                                                                                          Pelo menos um algarismo</small>">
         <label class="label-txt" for="senhaUsuario">INSIRA SUA SENHA</label>
-        <input type="text" class="input" id="senhaUsuario" name="senhaUsuario">
+        <input type="password" class="input" id="senhaUsuario" name="senhaUsuario" value="<%= typeof senha != 'undefined' ? senha: '' %>">
         <div class="line-box">
             <div class="line"></div>
         </div>
