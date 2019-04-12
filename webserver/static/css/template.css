@@ -2,6 +2,9 @@ body{
     background-color: #FFE599;
     max-width: 1600px;
 }
+h1, h2, h3, h4, h5{
+    font-family: 'Josefin Sans', sans-serif;
+}
 header{
     background-color: #bb5342;
 }
@@ -12,4 +15,48 @@ header .nav, h1{
 .btn-light{
     background-color: #e6e6e6 !important;
     border-color: #e6e6e6 !important;
+}
+footer{
+    background-color: #bb5342;
+    width: 100%;
+    height: 170px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    padding: 20px 0px 40px 0px;
+}
+footer h4, h5, small{
+    color: #ffffff;
+}
+footer small{
+    font-family: 'Josefin Sans', sans-serif;
+    display: block;
+}
+#footerAbout{
+    width: 30%;
+    display: inline-block;
+    height: 110px;
+    text-align: justify;
+}
+#footerContatos{
+    width: 30%;
+    display: inline-block;
+    height: 110px;
+    text-align: center;
+}
+#footerTecnologias{
+    width: 30%;
+    display: inline-block;
+    height: 110px;
+    text-align: center;
+}
+footer .row{
+    margin: 0;
+}
+footer #footerTecnologias small{
+    display: inline-block;
+}
+footer img{
+    width: auto;
+    height: auto;
 }
