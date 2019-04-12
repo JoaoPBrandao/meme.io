@@ -13,8 +13,12 @@
 // desenvolvida é um sistema completamente independente e pode ser acoplada a diferentes BDs com esforço mínimo.
 
 
-// A declaração abaixo é análoga ao import do Java:
+// As declarações abaixo são análogas ao import do Java:
 const express = require("express");
+const path = require("path");
+const bodyParser = require("body-parser");
+const session = require("express-session");
+const flash = require("connect-flash");
 
 class WebServer {
     // Precisamos da porta e o IP nos quais vamos servir. Por default, 80 e 0.0.0.0, como declarado no início da classe
@@ -24,23 +28,19 @@ class WebServer {
         this.serverHost = serverHost;
         this.apiPort = apiPort;
         this.apiHost = apiHost;
-        this.serverDependencies = {      // De um ponto de vista das linguagens full-OOP tradicionais, aqui temos mais
-                                         // imports. A diferença visível é que acessamos os imports pela variável na qual
-                                         // os armazenamos, e não pelo nome da package ou biblioteca. Por isso e pela
-                                         // possibilidade de declararmos mais de uma classe em um documento .js, optamos
-                                         // por atrelar esses imports à classe, inclusive com semântica.
-            path: require("path"),
-            bodyParser: require("body-parser")
+        this.serverDependencies = {
+            path: path,
+            bodyParser: bodyParser
         };
         this.serverInstance = express();
+        this.setupServer();
     }
 
         // Configura as dependências e o middleware do servidor:
         setupServer() {
             // Encurtando nossas chamadas e tornando o código mais legível para fluentes em Node/Express:
             const app = this.serverInstance;
-            const path = this.serverDependencies.path;
-            const bodyParser = this.serverDependencies.bodyParser;
+            const {path, bodyParser} = this.serverDependencies;
 
             // Servir arquivos estáticos (stylesheets, scripts, mídia, etc):
             app.use(express.static(path.join(__dirname, '/static')));
@@ -51,23 +51,23 @@ class WebServer {
             }));
             app.use(bodyParser.json());
 
-            // Rotas:
-            app.use('/', require(process.cwd() + '/routes/index.js'));
+            // Gestor de sessões do express:
+            app.use(session({
+                secret: 'alpha',
+                resave: true,
+                saveUninitialized: true,
+            }));
+
+            // Mensagens flash:
+            app.use(flash());
         }
 
-        static startServer() {
-            const app = new WebServer(8080, "localhost", 3000, "localhost");
-            app.setupServer();
-            app.serverInstance.listen(app.serverPort, app.serverHost, () => {
-                console.log("Server iniciado em " + app.serverHost + ":" + app.serverPort);
+        startServer() {
+            this.serverInstance.listen(this.serverPort, this.serverHost, () => {
+                console.log("Server iniciado em " + this.serverHost + ":" + this.serverPort);
             });
-            // Abaixo, dizemos ao ambiente Node/Express que ele pode usar a class WebServer (podemos fazer require("WebServer").
-            // Isso é análogo à declaração "package ABCD" em Java-like:
-            module.exports = app;
         }
 
 }
 
-// Abaixo, o análogo ao "main" Java-like, porém fora de uma estrutura como "func main()" devido à natureza scriptada
-// do Node/Express:
-WebServer.startServer();
+module.exports = WebServer;

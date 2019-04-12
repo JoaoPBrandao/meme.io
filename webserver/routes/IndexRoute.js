@@ -1,3 +1,25 @@
+const Route = require("./Route.js");
+
+class IndexRoute extends Route {
+    constructor(basePath) {
+        super('/');
+
+        this.router.get('/', (req, res) => {
+            res.render('landingpage.ejs', {});
+        });
+
+        this.router.get('/login', (req, res) => {
+            res.render('login.ejs', {});
+        })
+    }
+}
+
+module.exports = IndexRoute;
+
+
+
+/*
+
 const express = require('express');
 const router = express.Router();
 const axios = require("axios"); // Usamos Axios para fazer as requests à API
@@ -141,3 +163,5 @@ async function buscarUsuarioRetornaId(email){
 }
 
 module.exports = router;
+
+*/
