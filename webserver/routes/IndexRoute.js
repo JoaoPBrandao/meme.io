@@ -11,6 +11,10 @@ class IndexRoute extends Route {
         this.router.get('/login', (req, res) => {
             res.render('login.ejs', {});
         })
+
+        this.router.get('/emconstrucao', (req, res) => {
+            res.render('emconstrucao.ejs', {});
+        })
     }
 }
 

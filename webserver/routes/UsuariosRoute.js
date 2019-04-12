@@ -14,6 +14,21 @@ class UsuariosRoute extends Route {
             res.render('cadastro.ejs');
         });
 
+        this.router.get('/perfilUsuario', (req, res) => {
+            res.render('perfil.ejs');
+        });
+
+        this.router.get('/buscarUsuarios', async (req, res) => {
+            let query = req.query.emailUsuario;
+            let usuarios = [];
+            // TODO: Fazer endpoint na API que busca só por usuários ativos e usá-lo aqui.
+            await axios.get("http://localhost" + ":" + "3000" + "/usuarios?email=" + query)
+                .then(apiResponse => {
+                    usuarios = apiResponse.data;
+                });
+            res.render('buscaDeUsuarios.ejs', {usuarios});
+        });
+
         this.router.post('/novoUsuario', async (req,res) => {
             let auxUsuario = {};
             let erros = [];
@@ -77,9 +92,11 @@ class UsuariosRoute extends Route {
             }
             auxUsuario = await UsuariosController.buscarUsuarioAtivo(auxUsuario.emailUsuario).catch(err => {
                 res.status(500).send("Usuário não encontrado ou não ativo." + err)
+                return;
             });
             if(!auxUsuario) {
                 res.status(500).send("Usuário não encontrado ou não ativo.");
+                return;
             }
             auxUsuario = JSON.parse(auxUsuario);
             axios.delete("http://localhost" + ":" + "3000" + "/usuarios/" + auxUsuario._id)

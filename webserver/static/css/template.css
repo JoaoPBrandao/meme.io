@@ -1,7 +1,7 @@
 body{
     background-color: #FFE599;
-    max-width: 1600px;
     min-height: 100vh;
+    margin: auto;
 }
 h1, h2, h3, h4, h5{
     font-family: 'Josefin Sans', sans-serif;

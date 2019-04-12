@@ -5,11 +5,10 @@
     </head>
     <body>
     <% include components/header/projectDefaultHeader.ejs %>
-        <main>
-            <div class="container">
-                <div class="text-center" style="height: 60vh;">
-                    <h1 style="color: #000000;">Página Inicial ainda em construção!</h1>
-                </div>
+        <main class="d-md-flex flex-md-row justify-content-md-center flex-sm-column justify-content-sm-start">
+            <div class="container d-flex">
+                <% include components/formCadastroUsuario/formCadastroUsuario.ejs%>
+                <% include components/formLoginUsuario/formLoginUsuario.ejs%>
             </div>
         </main>
         <% include components/footer/projectDefaultFooter.ejs %>

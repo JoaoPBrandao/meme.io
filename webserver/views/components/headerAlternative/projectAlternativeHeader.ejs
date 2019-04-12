@@ -5,8 +5,8 @@
                 <a class="btn btn-light" href="/">Inicio</a>
                 <a class="btn btn-light" href="/memes">Repositório de Memes</a>
             </nav>
-            <form class="input-group md-form form-sm form-2 pl-0" style="width: 40%;">
-                <input class="form-control my-0 py-1 amber-border" type="text" placeholder="Pesquisar" aria-label="Pesquisar">
+            <form class="input-group md-form form-sm form-2 pl-0" style="width: 40%;" action="/usuarios/buscarUsuarios" method="get">
+                <input class="form-control my-0 py-1 amber-border" type="text" placeholder="Pesquisar" aria-label="Pesquisar" name="emailUsuario">
                 <div class="input-group-append">
                     <button class="btn rounded" type="submit" style="cursor:pointer;">
                             <i class="fas fa-search text-grey" aria-hidden="true"></i>

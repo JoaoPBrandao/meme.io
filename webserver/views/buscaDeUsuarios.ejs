@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+    <% include components/projectDefaultHead/projectDefaultHead.ejs %>
+    <title>Perfil</title>
+</head>
+<body>
+<% include components/headerAlternative/projectAlternativeHeader.ejs %>
+
+<% if(usuarios) { %>
+    <div class="container d-flex justify-content-around flex-wrap" style="margin: 10px auto;">
+        <% usuarios.forEach((usuario) => { %>
+            <div class="card" style="width: 18rem; margin: 10px">
+                <img class="card-img-top" src="../media/profile-placeholder.png" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title"><%= usuario.nome %></h5>
+                    <a href="/emconstrucao" class="btn btn-primary">Visitar Perfil</a>
+                </div>
+            </div>
+        <% });%>
+    </div>
+<% }%>
+
+<% include components/footer/projectDefaultFooter.ejs %>
+<% include components/projectDefaultScripts/projectDefaultScripts.ejs %>
+</body>
+</html>
