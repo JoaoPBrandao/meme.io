@@ -1,20 +1,30 @@
-<form action="/usuarios" method="post">
-    <div class="form-group">
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="E-mail" name="email">
+<form class="formCadastroUsuario" method="post" action="/usuarios/novoUsuario">
+    <div class="formBanner">
+        Fazer Cadastro
     </div>
-    <div class="form-row">
-        <div class="col">
-            <input type="text" class="form-control" id="exampleInputName1" aria-describedby="nameHelp" placeholder="Nome" name="nome">
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Senha" name="senha">
-            </div>
+    <div class="labelInputContainer">
+        <label class="label-txt" for="emailUsuario">INSIRA SEU EMAIL</label>
+        <input type="text" class="input" id="emailUsuario" name="emailUsuario">
+        <div class="line-box">
+            <div class="line"></div>
         </div>
     </div>
-    <div class="form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Aceito os <a target="_blank" rel="noopener noreferrer" href="http://www.google.com">Termos de Uso</a>.</label>
+    <div class="labelInputContainer">
+        <label class="label-txt" for="nomeUsuario">INSIRA SEU NOME</label>
+        <input type="text" class="input" id="nomeUsuario" name="nomeUsuario">
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary">Cadastrar</button>
+    <div class="labelInputContainer" data-toggle="tooltip" data-html="true" data-placement="right" title="<small>8 ou mais caracteres<br>
+                                                                                         Pelo menos um caractere maiúsculo<br>
+                                                                                         Pelo menos um caractere minúsculo<br>
+                                                                                         Pelo menos um algarismo</small>">
+        <label class="label-txt" for="senhaUsuario">INSIRA SUA SENHA</label>
+        <input type="text" class="input" id="senhaUsuario" name="senhaUsuario">
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
+    </div>
+    <button type="submit">Cadastrar</button>
 </form>

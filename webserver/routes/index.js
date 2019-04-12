@@ -5,7 +5,7 @@ const app = require("../server.js");
 
 // GET routes:
 router.get('/', (req, res) => {
-    res.render(process.cwd() + '/views/landingpage.ejs', {});
+    res.render(process.cwd() + '/views/cadastro.ejs', {});
 });
 
 router.get('/usuarios/dadospessoais', (req, res) => {

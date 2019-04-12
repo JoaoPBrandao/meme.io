@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <% include components/projectDefaultHead/projectDefaultHead %>
+        <% include components/projectDefaultHead/projectDefaultHead.ejs %>
     </head>
     <body>
+    <% include components/header/projectDefaultHeader.ejs %>
         <main>
             <div class="container">
                 <div class="row">
@@ -24,27 +25,12 @@
                                     e a definição de alternativas às soluções ortodoxas.
                                 </p>
                             </div>
-
-
                         </div>
-
-                    </div>
-                    <div class="col-sm-3" id="CadastroCol">
-                        <div class="div">
-                            <h3  class="centerText">Cadastro</h3>
-                        </div>
-                        <% include components/formCadastroUsuario/formCadastroUsuario.ejs %>
-                    </div>
-                    <div class="col-sm-3" id="LoginCol">
-                        <div class="div">
-                            <h3  class="centerText">Login</h3>
-                        </div>
-                        <% include components/formLoginUsuario/formLoginUsuario.ejs %>
                     </div>
                 </div>
-
             </div>
         </main>
-        <% include components/projectDefaultScripts/projectDefaultScripts %>
+        <% include components/footer/projectDefaultFooter.ejs %>
+        <% include components/projectDefaultScripts/projectDefaultScripts.ejs %>
     </body>
 </html>
