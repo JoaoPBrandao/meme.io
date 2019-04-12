@@ -4,24 +4,10 @@ const mongoose = require("mongoose");
 const Usuario = require(process.cwd() + "/models/usuarioModel.js");
 
 // Rota usuários:
-router.get('/', (req, res) => {
-    console.log(req.query);
-    let auxJSON = [];
+router.get('/', async (req, res) => {
     Usuario.find(req.query, (err, usuarios) => {
-        if(usuarios) { // previnindo "cannot read undefined"
-            usuarios.forEach((usuario) => {
-                auxJSON.push(usuario);
-            });
-        }
-    })
-    .then(() => {
-        if(auxJSON) {
-            res.status(200).send(JSON.stringify(auxJSON));
-        }
-        else {
-            res.status(200).send();
-        }
-        res.end();
+        let auxJSON = JSON.stringify(usuarios);
+        res.status(200).send(auxJSON);
     })
     .catch((err) => {
         console.log(err);
@@ -52,40 +38,44 @@ router.delete('/:idUsuario', (req, res) => {
     console.log("Requisição delete recebida");
     const idUsuario = req.params.idUsuario;
     Usuario.updateOne({
-        "_id": idUsuario
+        "_id": idUsuario,
+        "status": 1
     }, {
         status: 0
     }, err => {
         if(err) {
-            console.log(err);
+            //console.log(err);
         }
     })
         .then(() => {
             res.status(200).send("Usuário deletado com sucesso.")
         })
         .catch(err => {
-            console.log(err)
+            //console.log(err)
+            res.status(500).send(err);
         });
 });
 
 router.put('/:idUsuario', (req, res) => {
     console.log("Requisição put recebida");
     const idUsuario = req.params.idUsuario;
+    console.log("Prestes a chamar updateOne: " + idUsuario + req.body.email);
     Usuario.updateOne({
         "_id": idUsuario
     },{
-        nome: req.body.nome,
-        senha: req.body.senha
+        nome: req.body.novoNome,
+        senha: req.body.novaSenha,
+        email: req.body.novoEmail
     }, err => {
         if(err) {
-            console.log("Erro: " + err);
+            console.log("Erro: " + err.message);
         }
     })
         .then(() => {
             res.status(200).send("Usuário atualizado com sucesso.")
         })
         .catch(err => {
-            console.log(err)
+            console.log(err.message)
         });
 });
 

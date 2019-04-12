@@ -1,10 +1,10 @@
 const axios = require("axios");
 
-// TESTING .post(/denuncias):
-axios.put('http://localhost:8080/usuarios', {
-    nome: "Rodrigo",
-    email: "fodido@gmail.com",
-    senha: "Leonardo579"
+axios.put('http://localhost:8080/usuarios/atualizarUsuario', {
+    novoNomeUsuario: 'Leonardo de Lanna Ferraz',
+    novaSenhaUsuario: 'Leonardo1528',
+    novoEmailUsuario: 'ldlferraz@gmail.com',
+    emailUsuario: 'joaopedro@gmail.com'
 })
 .then((res) => {
     console.log("Post enviado com sucesso. Resposta: " + res.status);

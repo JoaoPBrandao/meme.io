@@ -1,0 +1,53 @@
+<form class="formCadastroUsuario" method="post" action="/usuarios/atualizarUsuario">
+    <div class="formBanner">
+        Atualizar Cadastro
+    </div>
+    <div class="labelInputContainer">
+        <label class="label-txt" for="emailUsuario">INSIRA SEU EMAIL ATUAL</label>
+        <input type="text" class="input" id="emailUsuario" name="emailUsuario">
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
+    </div>
+    <div class="labelInputContainer">
+        <label class="label-txt" for="novoEmailUsuario">INSIRA SEU NOVO EMAIL</label>
+        <input type="text" class="input" id="novoEmailUsuario" name="novoEmailUsuario">
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
+    </div>
+    <div class="labelInputContainer">
+        <label class="label-txt" for="novoNomeUsuario">INSIRA SEU NOVO NOME</label>
+        <input type="text" class="input" id="novoNomeUsuario" name="novoNomeUsuario">
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
+    </div>
+    <div class="labelInputContainer" data-toggle="tooltip" data-html="true" data-placement="right" title="<small>8 ou mais caracteres<br>
+                                                                                         Pelo menos um caractere maiúsculo<br>
+                                                                                         Pelo menos um caractere minúsculo<br>
+                                                                                         Pelo menos um algarismo</small>">
+        <label class="label-txt" for="novaSenhaUsuario">INSIRA SUA NOVA SENHA</label>
+        <input type="text" class="input" id="novaSenhaUsuario" name="novaSenhaUsuario">
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
+    </div>
+    <button type="submit" id="submitBtn">Salvar</button>
+    <button type="button" class="btn btn-warning" style="margin-top:10px" onclick="deactivateUser()">Desativar Conta</button>
+</form>
+
+<script>
+    function deactivateUser() {
+        let form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "../usuarios/desativarUsuario");
+        let hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "emailUsuario");
+        hiddenField.setAttribute("value", document.getElementById("emailUsuario").value);
+        form.appendChild(hiddenField);
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>

@@ -130,7 +130,7 @@ form.formCadastroUsuario .input:hover + .line-box .line {
     width: 100%;
 }
 
-form.formCadastroUsuario button {
+form.formCadastroUsuario button#submitBtn {
     display: inline-block;
     padding: 12px 24px;
     background: rgb(220,220,220);
@@ -143,7 +143,7 @@ form.formCadastroUsuario button {
     transition: ease .3s;
 }
 
-form.formCadastroUsuario button:hover {
+form.formCadastroUsuario button:hover#submitBtn {
     background: #bb5342;
     color: #e6e6e6;
 }
