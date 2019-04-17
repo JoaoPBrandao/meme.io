@@ -5,7 +5,7 @@ class MemesRoute extends Route {
         super('/memes');
 
         this.router.get('/', (req, res) => {
-            res.render('emconstrucao.ejs', {});
+            res.render('repositorio.ejs', {});
         });
     }
 }

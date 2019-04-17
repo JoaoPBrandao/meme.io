@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+    <% include components/projectDefaultHead/projectDefaultHead.ejs %>
+    <title>Repositório</title>
+</head>
+<body>
+<% include components/header/projectDefaultHeader.ejs %>
+<% const memes = [{categorias: ["bobEsponja", "shade", "desenho"]}, {categorias: ["kardashians"]}, {categorias: ["beyoncé"]}] %>
+<div class="container cardWrapper">
+    <% if(memes) { %>
+        <div class="container d-flex justify-content-around flex-wrap" style="margin: 10px auto;">
+            <% memes.forEach((meme) => { %>
+                <div class="card memeCard" style="width: 18rem; margin: 10px">
+                    <img class="card-img-top" src="http://via.placeholder.com/286x180" alt="Imagem do meme">
+                    <div class="card-body">
+                        <h5 class="card-title">Categorias</h5>
+                        <p class="card-text">
+                            <% meme.categorias.forEach((categoria) => { %>
+                                <span class="categoria">#<%= categoria %></span>
+                            <% });%>
+                        </p>
+                        <a href="/emconstrucao" class="btn btn-primary">Perfil do meme</a>
+                    </div>
+                </div>
+            <% });%>
+        </div>
+    <% }%>
+</div>
+
+<% include components/footer/projectDefaultFooter.ejs %>
+<% include components/projectDefaultScripts/projectDefaultScripts.ejs %>
+</body>
+</html>

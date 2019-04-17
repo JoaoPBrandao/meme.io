@@ -2,6 +2,8 @@ body{
     background-color: #FFE599;
     min-height: 100vh;
     margin: auto;
+    padding-bottom: 270px;
+    position: relative;
 }
 h1, h2, h3, h4, h5{
     font-family: 'Josefin Sans', sans-serif;
@@ -25,6 +27,8 @@ header .btn-light{
 CSS PARA O FOOTER
  */
 footer{
+    position: absolute;
+    bottom: 0;
     background-color: #bb5342;
     width: 100%;
     height: auto;
@@ -194,4 +198,32 @@ CSS PARA A PÁGINA DE PERFIL
     height: 150px;
     border: 1px solid black;
     margin-right: 20px;
+}
+
+/*
+CSS PARA A PÁGINA DE REPOSITÓRIO DE MEMES
+ */
+
+.memeCard{
+    display: inline-block;
+    margin: 20px;
+}
+
+.memeCard .btn-primary{
+    background-color: #bb5342;
+    border-color: #bb5342;
+}
+.memeCard .categoria{
+    background-color: #8be0ff91;
+    border-radius: 3px;
+    padding: 2px;
+}
+
+.memeCard .card-text{
+    cursor: default;
+}
+
+.memeCard .categoria:hover{
+    cursor: default;
+    background-color: #42b3ff9c;
 }
