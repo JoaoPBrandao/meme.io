@@ -1,3 +1,6 @@
+/*
+CSS GERAL
+ */
 body{
     background-color: #FFE599;
     min-height: 100vh;
@@ -7,6 +10,23 @@ body{
 }
 h1, h2, h3, h4, h5{
     font-family: 'Josefin Sans', sans-serif;
+}
+
+.btn-memeIO{
+    color: #E6E6E6;
+    background-color: #bb5342;
+    border-color: #bb5342;
+}
+
+.btn-memeIO:hover{
+    color: #E6E6E6;
+    background-color: #a44135;
+    border-color: #a44135;
+}
+
+.btn:focus{
+    outline: transparent;
+    box-shadow: transparent;
 }
 /*
 CSS PARA O HEADER
@@ -19,7 +39,7 @@ header .nav, h1{
     color: #ffffff;
 }
 header .btn-light{
-    background-color: transparent !important;
+    background-color: transparent;
     border: none !important;
     color: #e6e6e6;
 }
@@ -145,24 +165,6 @@ form.formCadastroUsuario .input:hover + .line-box .line {
     width: 100%;
 }
 
-form.formCadastroUsuario button#submitBtn {
-    display: inline-block;
-    padding: 12px 24px;
-    background: rgb(220,220,220);
-    font-weight: bold;
-    color: rgb(120,120,120);
-    border: none;
-    outline: none;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: ease .3s;
-}
-
-form.formCadastroUsuario button:hover#submitBtn {
-    background: #bb5342;
-    color: #e6e6e6;
-}
-
 form.formCadastroUsuario .formBanner {
     width: 100%;
     padding: 10px 10px;
@@ -209,10 +211,6 @@ CSS PARA A PÁGINA DE REPOSITÓRIO DE MEMES
     margin: 20px;
 }
 
-.memeCard .btn-primary{
-    background-color: #bb5342;
-    border-color: #bb5342;
-}
 .memeCard .categoria{
     background-color: #8be0ff91;
     border-radius: 3px;
