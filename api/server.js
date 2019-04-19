@@ -78,6 +78,7 @@ class API {
         api.use(bodyParser.json());
 
         api.use('/usuarios', require(process.cwd() + '/routes/usuarios.js'));
+        api.use('/memes', require(process.cwd() + '/routes/memes.js'));
     }
 
     static startServer() {

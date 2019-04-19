@@ -6,10 +6,13 @@
 </head>
 <body>
 <% include components/header/projectDefaultHeader.ejs %>
-<% const memes = [{categorias: ["bobEsponja", "shade", "desenho"]}, {categorias: ["kardashians"]}, {categorias: ["beyoncé"]}] %>
 <div class="container cardWrapper">
+    <div class="container d-flex justify-content-around flex-wrap containerMemes">
+        <input id="memeSearch" type="text" placeholder="Insira uma categoria" aria-label="Insira uma categoria">
+        <button class="btn btn-memeIO" data-toggle="modal" data-target="#sugerirMeme">Sugerir Meme</button>
+    </div>
     <% if(memes) { %>
-        <div class="container d-flex justify-content-around flex-wrap" style="margin: 10px auto;">
+        <div class="container d-flex justify-content-between flex-wrap containerMemes">
             <% memes.forEach((meme) => { %>
                 <div class="card memeCard" style="width: 18rem; margin: 10px">
                     <img class="card-img-top" src="http://via.placeholder.com/286x180" alt="Imagem do meme">
@@ -21,12 +24,60 @@
                             <% });%>
                         </p>
                         <a href="/emconstrucao" class="btn btn-memeIO">Perfil do meme</a>
+                        <form method="post" action="/memes/deletarMeme" style="display: inline-block;">
+                            <!-- Input invisível que vai armazenar o ID do meme para fazer a exclusão -->
+                            <input name="memeID" type="hidden" value="<%= meme._id %>">
+                            <button type="submit" class="btn btn-memeIO"><i class="fas fa-trash-alt"></i></button>
+                        </form>
+                        <button data-toggle="collapse" data-target="#<%= meme._id %>" type="button" class="btn btn-memeIO">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <div id="<%= meme._id %>" class="row collapse" style="margin: 5px 0px; border-top: 1px solid #dadada; padding: 5px 0px;">
+                            <form class="" method="post" action="/memes/atualizarMeme" style="display: block;">
+                                <!-- Input invisível que vai armazenar o ID do meme para fazer a exclusão -->
+                                <input name="memeID" type="hidden" value="<%= meme._id %>">
+                                <input name="novasCategorias" type="text" class="memeCategory" placeholder="Novas categorias" style="width: 179px" required>
+                                <button type="submit" class="btn btn-memeIO">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             <% });%>
         </div>
     <% }%>
 </div>
+
+
+<!-- MODAL PARA O FORMULÁRIO DE SUGESTÃO/CRIAÇÃO DE MEME -->
+<div class="modal fade" id="sugerirMeme" tabindex="-1" role="dialog" aria-labelledby="modalSugerirMeme" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sugerir Meme</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="/memes/novoMeme">
+                <div class="modal-body">
+                    <input name="arquivoEnviado" onchange="document.getElementById('fileSelected').textContent = this.files[0].name;"
+                           type="file" id="fileUpload" style="display: none;" accept="image/png, image/jpeg, image/jpg, image/gif" required>
+                    <label class="btn btn-memeIO" for="fileUpload" >Escolher arquivo</label>
+                    <span id="fileSelected">Nenhum arquivo selecionado</span>
+                    <p>Categorias:</p>
+                    <input name="categorias" type="text" placeholder="categoria1; categoria2..." required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-memeIO" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-memeIO">Enviar sugestão</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 <% include components/footer/projectDefaultFooter.ejs %>
 <% include components/projectDefaultScripts/projectDefaultScripts.ejs %>
