@@ -31,6 +31,7 @@ class MemesRoute extends Route {
                 axios.post("http://localhost" + ":" + "3000" + "/memes", meme)
                     .then((apiResponse) => {
                         console.log("Resposta da API: " + apiResponse.status);
+                        res.redirect('/memes/');
                     })
                     .catch((err) => {
                         console.log(err);
