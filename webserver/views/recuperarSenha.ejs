@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+    <% include components/projectDefaultHead/projectDefaultHead %>
+    <title>meme.io - Recuperar Senha</title>
+</head>
+<body>
+<% include components/header/projectDefaultHeader.ejs%>
+
+<div class="container d-flex flex-column justify-content-center align-items-center" style="margin: 30px auto;">
+    <form class="formCadastroUsuario" method="post" action="">
+        <div class="formBanner">
+            Recuperar Senha
+        </div>
+        <div class="labelInputContainer">
+            <label class="label-txt" for="emailUsuario">INSIRA SEU EMAIL</label>
+            <input type="text" class="input" id="emailUsuario" name="emailUsuario" value="<%= typeof email != 'undefined' ? email: '' %>">
+            <div class="line-box">
+                <div class="line"></div>
+            </div>
+        </div>
+        <button class="btn btn-memeIO" type="submit">Enviar</button>
+    </form>
+</div>
+
+<% include components/footer/projectDefaultFooter.ejs %>
+<% include components/projectDefaultScripts/projectDefaultScripts.ejs %>
+</body>
+</html>

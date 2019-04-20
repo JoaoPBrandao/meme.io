@@ -6,9 +6,8 @@
 </head>
 <body>
 <% include components/headerAlternative/projectAlternativeHeader.ejs %>
-
-<% if(usuarios) { %>
-    <div class="container d-flex justify-content-around flex-wrap" style="margin: 10px auto;">
+<div class="container d-flex justify-content-around flex-wrap containerMemes" style="margin: 10px auto;">
+    <% if(usuarios.length > 0) { %>
         <% usuarios.forEach((usuario) => { %>
             <div class="card" style="width: 18rem; margin: 10px">
                 <img class="card-img-top" src="../media/profile-placeholder.png" alt="Card image cap">
@@ -18,8 +17,10 @@
                 </div>
             </div>
         <% });%>
-    </div>
-<% }%>
+    <% } else { %>
+        <h4 style="margin: auto;"">Nenhum usuário encontrado!</h4>
+    <% } %>
+</div>
 
 <% include components/footer/projectDefaultFooter.ejs %>
 <% include components/projectDefaultScripts/projectDefaultScripts.ejs %>

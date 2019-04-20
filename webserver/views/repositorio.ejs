@@ -2,7 +2,7 @@
 <html>
 <head>
     <% include components/projectDefaultHead/projectDefaultHead.ejs %>
-    <title>Repositório</title>
+    <title>meme.io - Repositório</title>
 </head>
 <body>
 <% include components/header/projectDefaultHeader.ejs %>
@@ -11,8 +11,8 @@
         <input id="memeSearch" type="text" placeholder="Insira uma categoria" aria-label="Insira uma categoria">
         <button class="btn btn-memeIO" data-toggle="modal" data-target="#sugerirMeme">Sugerir Meme</button>
     </div>
-    <% if(memes) { %>
-        <div class="container d-flex justify-content-between flex-wrap containerMemes">
+    <div class="container d-flex justify-content-between flex-wrap containerMemes">
+    <% if(memes.length > 0) { %>
             <% memes.forEach((meme) => { %>
                 <div class="card memeCard" style="width: 18rem; margin: 10px">
                     <img class="card-img-top" src="http://via.placeholder.com/286x180" alt="Imagem do meme">
@@ -45,8 +45,10 @@
                     </div>
                 </div>
             <% });%>
-        </div>
-    <% }%>
+    <% } else { %>
+        <h4 style="margin: auto;">Ué, pra onde foram todos os memes??? <i style="color: #BB5342;" class="fas fa-heart-broken"></i></h4>
+        <% } %>
+    </div>
 </div>
 
 
