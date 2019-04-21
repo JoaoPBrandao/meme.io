@@ -23,7 +23,10 @@
                                 <span class="categoria">#<%= categoria %></span>
                             <% });%>
                         </p>
-                        <a href="/emconstrucao" class="btn btn-memeIO">Perfil do meme</a>
+                        <form method="post" action="/memes/acessarPerfilMeme" style="display: inline-block;">
+                            <input name="memeID" type="hidden" value="<%= meme._id %>">
+                            <button type="submit" class="btn btn-memeIO">Perfil do meme</button>
+                        </form>
                         <form method="post" action="/memes/deletarMeme" style="display: inline-block;">
                             <!-- Input invisível que vai armazenar o ID do meme para fazer a exclusão -->
                             <input name="memeID" type="hidden" value="<%= meme._id %>">
@@ -34,7 +37,7 @@
                         </button>
                         <div id="<%= meme._id %>" class="row collapse" style="margin: 5px 0px; border-top: 1px solid #dadada; padding: 5px 0px;">
                             <form class="" method="post" action="/memes/atualizarMeme" style="display: block;">
-                                <!-- Input invisível que vai armazenar o ID do meme para fazer a exclusão -->
+                                <!-- Input invisível que vai armazenar o ID do meme para fazer as alterações -->
                                 <input name="memeID" type="hidden" value="<%= meme._id %>">
                                 <input name="novasCategorias" type="text" class="memeCategory" placeholder="Novas categorias" style="width: 179px" required>
                                 <button type="submit" class="btn btn-memeIO">

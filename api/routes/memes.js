@@ -21,14 +21,24 @@ router.post('/', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    Meme.find({}, (err, memes) => {
-        res.status(200).send(memes);
+        Meme.find({}, (err, memes) => {
+            res.status(200).send(memes);
+        })
+            .catch(err => {
+                console.log("Erro ao buscar os memes do BD:" + err);
+                res.status(400).send("Erro ao buscar os memes do BD!");
+            });
+});
+
+router.get('/:memeID', (req, res) => {
+    Meme.findById(req.params.memeID, (err, meme) => {
+        res.status(200).send(meme);
     })
         .catch(err => {
-            console.log("Erro ao buscar os memes do BD:" + err);
-            res.status(400).send("Erro ao buscar os memes do BD!");
-        });
-});
+            console.log("Erro ao buscar meme com o ID requerido.");
+            res.status(400).send("Erro ao buscar meme com o ID requerido.");
+        })
+})
 
 router.delete('/:idMeme', (req, res) => {
     console.log("Requisição de delete do meme recebida.");

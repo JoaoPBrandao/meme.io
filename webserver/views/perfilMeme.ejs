@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+    <% include components/projectDefaultHead/projectDefaultHead %>
+    <title>meme.io - Perfil do Meme></title>
+</head>
+<body>
+<% include components/header/projectDefaultHeader.ejs%>
+
+<main>
+    <div class="container">
+        <div id="memeCard" class="border-memeProfile rounded">
+            <div class="row">
+                <div class="col-sm-2">
+                    <img src="https://www.flynz.co.nz/wp-content/uploads/profile-placeholder.png">
+                </div>
+            <div class="col-sm-10">
+                <div class="row">
+                    <h1>ID do meme: <%= meme._id %></h1>
+                </div>
+                <div class="row">
+                    <h3>Categorias:
+                        <% meme.categorias.forEach(categoria => { %>
+                            <%= categoria %>
+                        <% }) %>
+                </h3>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div id="memePosts" class="border-memeProfile rounded">
+            <h2 style="margin: auto;">Publicações associadas ao meme ainda em construção!!</h2>
+        </div>
+    </div>
+</main>
+
+<% include components/footer/projectDefaultFooter.ejs %>
+<% include components/projectDefaultScripts/projectDefaultScripts.ejs %>
+</body>
+</html>

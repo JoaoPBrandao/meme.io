@@ -50,6 +50,17 @@ class MemesRoute extends Route {
                 });
         });
 
+        this.router.post('/acessarPerfilMeme', async (req, res) => {
+            let meme = {};
+            await axios.get("http://localhost" + ":" + "3000" + "/memes/" + req.body.memeID)
+                .then(apiResponse => {
+                    meme = apiResponse.data;
+                }).catch(err => {
+                    console.log("Erro ao buscar meme: " + err);
+                });
+            res.render('perfilMeme.ejs', {meme});
+        })
+
         this.router.post('/atualizarMeme', (req, res) => {
             let novoCategorias = req.body.novasCategorias;
             //Tratamento mínimo das categorias
