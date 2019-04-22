@@ -7,8 +7,10 @@ const Meme = require(process.cwd() + "/models/memeModel.js");
 router.post('/', (req, res) => {
     console.log("Post recebido.");
     const novoMeme = new Meme({
-        foto: req.body.foto,
-        categorias: req.body.categorias
+        urlImgur: req.body.urlImgur,
+        categorias: req.body.categorias,
+        data: req.body.data,
+        idImgur: req.body.idImgur
     });
     novoMeme.save()
         .then(() => {

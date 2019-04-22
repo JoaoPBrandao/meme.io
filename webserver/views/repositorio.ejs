@@ -15,7 +15,7 @@
     <% if(memes.length > 0) { %>
             <% memes.forEach((meme) => { %>
                 <div class="card memeCard" style="width: 18rem; margin: 10px">
-                    <img class="card-img-top" src="http://via.placeholder.com/286x180" alt="Imagem do meme">
+                    <img class="card-img-top" src=<%= meme.urlImgur%> alt="Imagem do meme">
                     <div class="card-body">
                         <h5 class="card-title">Categorias</h5>
                         <p class="card-text">

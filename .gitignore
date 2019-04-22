@@ -1,5 +1,6 @@
 .idea/
 webserver/node_modules/
+webserver/static/media/memes/
 api/node_modules/
 changelog.txt
 .idea/workspace.xml

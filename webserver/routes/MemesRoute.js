@@ -3,8 +3,10 @@ const Route = require("./Route.js");
 const multer  = require('multer');
 const fs = require('fs');
 const imgurClientID = "dfa60a0c4c22fd3";
-const accessToken = "8c63fa962c03b656a74b8cada27e931526a6a35a"
+const accessToken = "1aa1d4cc8db34a63ac9280116a8b6c740fbf63a9"
 const imgurClientSecret = "c0f89136de0a5ba20b5f655ee7445f6be2b35dcc";
+const date = require('date-and-time');
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'static/media/memes')
@@ -29,7 +31,6 @@ class MemesRoute extends Route {
         });
 
         this.router.post('/novoMeme', upload.single('arquivoEnviado'), (req, res) => {
-            console.log(req.file);
             let meme = {};
             let categorias = req.body.categorias;
             //Tratamento mínimo das categorias
@@ -42,43 +43,41 @@ class MemesRoute extends Route {
                 //Converter a string com as categorias em um array
                 categorias = categorias.split(";");
                 meme.categorias = categorias;
-                meme.foto = req.file.filename;
-                axios.post("http://localhost" + ":" + "3000" + "/memes", meme)
-                    .then((apiResponse) => {
-                        console.log("Resposta da nossa API: " + apiResponse.status);
-                        res.redirect('/memes/');
-                    })
-                    .catch((err) => {
-                        console.log("erro do catch do post pra nossa api: " + err);
-                    });
-                // axios.post('https://api.imgur.com/3/upload', {formData:
-                //         { image: fs.readFileSync(req.file.path, 'base64'),
-                //             album: 'XUKKNbX',
-                //             type: 'base64',
-                //             name: req.file.filename } }, {headers:
-                //         { 'cache-control': 'no-cache',
-                //             'Authorization':`Client-ID ${imgurClientID}`,
-                //             'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' }})
-                //     .then(apiResponse => {
-                //         if (apiResponse.success == true) {
-                //             meme.foto = apiResponse.data.link;
-                //             console.log("Resposta da API do Imgur: " + apiResponse.status);
-                //             axios.post("http://localhost" + ":" + "3000" + "/memes", meme)
-                //                 .then((apiResponse) => {
-                //                     console.log("Resposta da nossa API: " + apiResponse.status);
-                //                     res.redirect('/memes/');
-                //                 })
-                //                 .catch((err) => {
-                //                     console.log("erro do catch do post pra nossa api: " + err);
-                //                 });
-                //
-                //         }
-                //
-                //     })
-                //     .catch(err => {
-                //         console.log("erro do catch do post pra api do imgur" + err);
-                //     });
+                axios.post('https://api.imgur.com/3/upload',
+                        { image: fs.readFileSync(req.file.path, 'base64'),
+                            album: 'XUKKNbX',
+                            type: 'base64',
+                            name: req.file.filename }, {headers:
+                        {'Authorization':`Bearer ${accessToken}`}})
+                    .then(apiResponse => {
+                        fs.unlink(req.file.path, err => {
+                            console.log("Erro ao excluir a imagem")
+                        });
+                        if (apiResponse.data.success == true) {
+                            let now = new Date();
+                            now = date.format(now, 'DD/MM/YYYY');
+                            meme.urlImgur = apiResponse.data.data.link;
+                            meme.idImgur = apiResponse.data.data.id;
+                            meme.data = now;
+                            console.log("Resposta da API do Imgur: " + apiResponse.status);
+                            axios.post("http://localhost" + ":" + "3000" + "/memes", meme)
+                                .then(apiResponse => {
+                                    console.log("Resposta da nossa API: " + apiResponse.status);
+                                    res.redirect('/memes/');
+                                })
+                                .catch((err) => {
+                                    console.log("erro do catch do post pra nossa api: " + err);
+                                });
 
+                        }
+
+                    })
+                    .catch(err => {
+                        fs.unlink(req.file.path, err => {
+                            console.log("Erro ao excluir a imagem")
+                        });
+                        console.log("erro do catch do post pra api do imgur" + err);
+                    });
             }
         });
 
