@@ -65,7 +65,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="post" action="/memes/novoMeme">
+            <form method="post" action="/memes/novoMeme" enctype="multipart/form-data">
                 <div class="modal-body">
                     <input name="arquivoEnviado" onchange="document.getElementById('fileSelected').textContent = this.files[0].name;"
                            type="file" id="fileUpload" style="display: none;" accept="image/png, image/jpeg, image/jpg, image/gif" required>

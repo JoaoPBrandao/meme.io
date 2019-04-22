@@ -1,5 +1,19 @@
 const axios = require("axios"); // Usamos Axios para fazer as requests à API
 const Route = require("./Route.js");
+const multer  = require('multer');
+const fs = require('fs');
+const imgurClientID = "dfa60a0c4c22fd3";
+const accessToken = "8c63fa962c03b656a74b8cada27e931526a6a35a"
+const imgurClientSecret = "c0f89136de0a5ba20b5f655ee7445f6be2b35dcc";
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'static/media/memes')
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    }
+})
+const upload = multer({storage: storage})
 
 class MemesRoute extends Route {
     constructor(basePath) {
@@ -14,7 +28,8 @@ class MemesRoute extends Route {
             res.render('repositorio.ejs', {memes});
         });
 
-        this.router.post('/novoMeme', (req, res) => {
+        this.router.post('/novoMeme', upload.single('arquivoEnviado'), (req, res) => {
+            console.log(req.file);
             let meme = {};
             let categorias = req.body.categorias;
             //Tratamento mínimo das categorias
@@ -27,15 +42,43 @@ class MemesRoute extends Route {
                 //Converter a string com as categorias em um array
                 categorias = categorias.split(";");
                 meme.categorias = categorias;
-                meme.foto = req.body.arquivoEnviado;
+                meme.foto = req.file.filename;
                 axios.post("http://localhost" + ":" + "3000" + "/memes", meme)
                     .then((apiResponse) => {
-                        console.log("Resposta da API: " + apiResponse.status);
+                        console.log("Resposta da nossa API: " + apiResponse.status);
                         res.redirect('/memes/');
                     })
                     .catch((err) => {
-                        console.log(err);
+                        console.log("erro do catch do post pra nossa api: " + err);
                     });
+                // axios.post('https://api.imgur.com/3/upload', {formData:
+                //         { image: fs.readFileSync(req.file.path, 'base64'),
+                //             album: 'XUKKNbX',
+                //             type: 'base64',
+                //             name: req.file.filename } }, {headers:
+                //         { 'cache-control': 'no-cache',
+                //             'Authorization':`Client-ID ${imgurClientID}`,
+                //             'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' }})
+                //     .then(apiResponse => {
+                //         if (apiResponse.success == true) {
+                //             meme.foto = apiResponse.data.link;
+                //             console.log("Resposta da API do Imgur: " + apiResponse.status);
+                //             axios.post("http://localhost" + ":" + "3000" + "/memes", meme)
+                //                 .then((apiResponse) => {
+                //                     console.log("Resposta da nossa API: " + apiResponse.status);
+                //                     res.redirect('/memes/');
+                //                 })
+                //                 .catch((err) => {
+                //                     console.log("erro do catch do post pra nossa api: " + err);
+                //                 });
+                //
+                //         }
+                //
+                //     })
+                //     .catch(err => {
+                //         console.log("erro do catch do post pra api do imgur" + err);
+                //     });
+
             }
         });
 
