@@ -12,11 +12,11 @@
         <div id="memeCard" class="border-memeProfile rounded">
             <div class="row">
                 <div class="col-sm-2">
-                    <img src="https://www.flynz.co.nz/wp-content/uploads/profile-placeholder.png">
+                    <img src="<%= meme.urlImgur%>">
                 </div>
             <div class="col-sm-10">
                 <div class="row">
-                    <h1>ID do meme: <%= meme._id %></h1>
+                    <h1><a href="<%= meme.urlImgur%>">Link do Imgur</a></h1>
                 </div>
                 <div class="row">
                     <h3>Categorias:
@@ -25,8 +25,13 @@
                         <% }) %>
                 </h3>
                 </div>
+                <div class="row">
+                    <h3>Adicionado em:
+                        <%= meme.data %>
+                    </h3>
+                </div>
             </div>
-            </div>
+        </div>
         </div>
         <div id="memePosts" class="border-memeProfile rounded">
             <h2 style="margin: auto;">Publicações associadas ao meme ainda em construção!!</h2>

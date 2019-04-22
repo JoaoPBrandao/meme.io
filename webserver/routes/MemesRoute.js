@@ -3,7 +3,7 @@ const Route = require("./Route.js");
 const multer  = require('multer');
 const fs = require('fs');
 const imgurClientID = "dfa60a0c4c22fd3";
-const accessToken = "1aa1d4cc8db34a63ac9280116a8b6c740fbf63a9"
+const accessToken = "1aa1d4cc8db34a63ac9280116a8b6c740fbf63a9";
 const imgurClientSecret = "c0f89136de0a5ba20b5f655ee7445f6be2b35dcc";
 const date = require('date-and-time');
 
@@ -59,7 +59,7 @@ class MemesRoute extends Route {
                             meme.urlImgur = apiResponse.data.data.link;
                             meme.idImgur = apiResponse.data.data.id;
                             meme.data = now;
-                            console.log("Resposta da API do Imgur: " + apiResponse.status);
+                            console.log("Resposta da API do Imgur: " + apiResponse.data.status);
                             axios.post("http://localhost" + ":" + "3000" + "/memes", meme)
                                 .then(apiResponse => {
                                     console.log("Resposta da nossa API: " + apiResponse.status);
@@ -85,9 +85,18 @@ class MemesRoute extends Route {
             axios.delete("http://localhost" + ":" + "3000" + "/memes/" + req.body.memeID)
                 .then((apiResponse) => {
                     console.log("Resposta da API: " + apiResponse.status);
+                    axios.delete('https://api.imgur.com/3/image/' + apiResponse.body,{}, {headers:
+                            {'Authorization':`Bearer ${accessToken}`}})
+                        .then(respostaAPI => {
+                            console.log(respostaAPI.data.status);
+                        })
+                        .catch(err => {
+                            console.log("Erro ao excluir a imagem do imgur: " + err);
+                        });
                     res.redirect('/memes/'); // TODO: RENDER success FLASH MESSAGE
                 })
                 .catch((err) => {
+                    console.log(err);
                     console.log("Erro ao deletar meme: " + err.data);
                 });
         });

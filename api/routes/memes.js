@@ -40,10 +40,15 @@ router.get('/:memeID', (req, res) => {
             console.log("Erro ao buscar meme com o ID requerido.");
             res.status(400).send("Erro ao buscar meme com o ID requerido.");
         })
-})
+});
 
 router.delete('/:idMeme', (req, res) => {
     console.log("Requisição de delete do meme recebida.");
+    Meme.findById(req.params.idMeme, (err, res) =>{
+        meme = res;
+    }).catch(err => {
+        console.log("Erro ao buscar meme com o ID requerido.");
+    });
     Meme.deleteOne({
         "_id": req.params.idMeme
     }, err => {
@@ -51,7 +56,7 @@ router.delete('/:idMeme', (req, res) => {
             console.log("Erro ao realizar o delete do meme (API): "+ err);
             res.status(400).send("Problema ao deletar meme");
         }else{
-            res.status(200).send("Meme deletado com sucesso!");
+            res.status(200).send(meme.idImgur);
         }
     })
 });
