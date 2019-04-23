@@ -32,7 +32,7 @@ router.get('/', (req, res) => {
             });
 });
 
-router.get('/:memeID', (req, res) => {
+router.get('/id=:memeID', (req, res) => {
     Meme.findById(req.params.memeID, (err, meme) => {
         res.status(200).send(meme);
     })
@@ -42,9 +42,10 @@ router.get('/:memeID', (req, res) => {
         })
 });
 
-router.delete('/:idMeme', (req, res) => {
+router.delete('/:idMeme', async (req, res) => {
     console.log("Requisição de delete do meme recebida.");
-    Meme.findById(req.params.idMeme, (err, res) =>{
+    let meme= {};
+    await Meme.findById(req.params.idMeme, (err, res) =>{
         meme = res;
     }).catch(err => {
         console.log("Erro ao buscar meme com o ID requerido.");
@@ -56,7 +57,7 @@ router.delete('/:idMeme', (req, res) => {
             console.log("Erro ao realizar o delete do meme (API): "+ err);
             res.status(400).send("Problema ao deletar meme");
         }else{
-            res.status(200).send(meme.idImgur);
+            res.status(200).send(meme);
         }
     })
 });
@@ -76,6 +77,24 @@ router.put('/:idMeme', (req, res) => {
         console.log("Erro ao atualizar meme: " + err);
         res.status(400).send("Erro ao atualizar meme: " + err);
     })
+});
+
+router.get('/buscarMemes', (req, res) => {
+    console.log(req.query.queryRecebida);
+    Meme.find({categorias: req.query.queryRecebida}, (err, memes) => {
+        if (memes){
+            console.log("Memes encontrados pela API.");
+            console.log(memes);
+            res.status(200).send(memes);
+        }else{
+            memes = {};
+            console.log("A API não encontrou nenhum meme com essas categorias.");
+            res.status(200).send(memes);
+        }
+    }).catch(err => {
+        console.log("Erro ao buscar memes no mongo.");
+        console.log(err);
+    });
 })
 
 module.exports = router;

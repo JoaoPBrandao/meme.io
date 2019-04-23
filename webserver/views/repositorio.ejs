@@ -8,7 +8,10 @@
 <% include components/header/projectDefaultHeader.ejs %>
 <div class="container cardWrapper">
     <div class="container d-flex justify-content-around flex-wrap containerMemes">
-        <input id="memeSearch" type="text" placeholder="Insira uma categoria" aria-label="Insira uma categoria">
+        <form style="display: inline-flex; width: 80%;" method="post" action="/memes/buscarMeme">
+            <input id="memeSearch" name="searchQuery" type="text" placeholder="Insira uma categoria" aria-label="Insira uma categoria">
+            <button class="btn btn-memeIO" type="submit" style="margin-left: 5px;">Pesquisar</button>
+        </form>
         <button class="btn btn-memeIO" data-toggle="modal" data-target="#sugerirMeme">Sugerir Meme</button>
     </div>
     <div class="container d-flex justify-content-between flex-wrap containerMemes">

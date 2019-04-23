@@ -51,7 +51,9 @@ class MemesRoute extends Route {
                         {'Authorization':`Bearer ${accessToken}`}})
                     .then(apiResponse => {
                         fs.unlink(req.file.path, err => {
-                            console.log("Erro ao excluir a imagem")
+                            if (err) {
+                                console.log("Erro ao excluir a imagem");
+                            }
                         });
                         if (apiResponse.data.success == true) {
                             let now = new Date();
@@ -85,10 +87,10 @@ class MemesRoute extends Route {
             axios.delete("http://localhost" + ":" + "3000" + "/memes/" + req.body.memeID)
                 .then((apiResponse) => {
                     console.log("Resposta da API: " + apiResponse.status);
-                    axios.delete('https://api.imgur.com/3/image/' + apiResponse.body,{}, {headers:
+                    axios.delete('https://api.imgur.com/3/image/' + apiResponse.data.idImgur, {headers:
                             {'Authorization':`Bearer ${accessToken}`}})
                         .then(respostaAPI => {
-                            console.log(respostaAPI.data.status);
+                            console.log("Resposta da API do Imgur ao deletar: " + respostaAPI.data.status);
                         })
                         .catch(err => {
                             console.log("Erro ao excluir a imagem do imgur: " + err);
@@ -103,7 +105,7 @@ class MemesRoute extends Route {
 
         this.router.post('/acessarPerfilMeme', async (req, res) => {
             let meme = {};
-            await axios.get("http://localhost" + ":" + "3000" + "/memes/" + req.body.memeID)
+            await axios.get("http://localhost" + ":" + "3000" + "/memes/id=" + req.body.memeID)
                 .then(apiResponse => {
                     meme = apiResponse.data;
                 }).catch(err => {
@@ -131,6 +133,33 @@ class MemesRoute extends Route {
                 });
             }
         });
+
+        this.router.post('/buscarMeme', (req, res) => {
+            let searchQuery = req.body.searchQuery;
+            //Tratamento mínimo das categorias
+            searchQuery = searchQuery.replace(/ /g, '');
+            searchQuery = searchQuery.replace(/#/g, '');
+            if (searchQuery.length == 0) {
+                //TODO TRATAR ERRO
+            } else {
+                //searchQuery = searchQuery.split(';');
+                //const newQuery = searchQuery.map(query => {
+                //    JSON.parse(`{"categorias": "/${query}/"}`);
+                //});
+                console.log(searchQuery);
+                axios.get("http://localhost" + ":" + "3000" + "/memes/buscarMemes", {params: {queryRecebida: searchQuery}})
+                    .then(apiResponse => {
+                        console.log("Resposta da API: " + apiResponse.status);
+                        console.log(apiResponse.data);
+                        const memes = apiResponse.data;
+                        res.render('repositorio.ejs', {memes});
+                    })
+                    .catch(err => {
+                        console.log("Erro ao buscar memes na api.");
+                        console.log(err);
+                    })
+            }
+        })
 
     }
 }
