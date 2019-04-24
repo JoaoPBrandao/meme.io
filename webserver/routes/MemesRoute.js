@@ -152,16 +152,10 @@ class MemesRoute extends Route {
             if (searchQuery.length == 0) {
                 //TODO TRATAR ERRO
             } else {
-                //searchQuery = searchQuery.split(';');
-                //const newQuery = searchQuery.map(query => {
-                //    JSON.parse(`{"categorias": "/${query}/"}`);
-                //});
-                console.log(searchQuery);
                 //Enviar a requisição com os parâmetros da busca para a API para que seja feita a busca no BD
                 axios.get("http://localhost" + ":" + "3000" + "/memes/buscarMemes", {params: {queryRecebida: searchQuery}})
                     .then(apiResponse => {
                         console.log("Resposta da API: " + apiResponse.status);
-                        console.log(apiResponse.data);
                         const memes = apiResponse.data;
                         //Renderizar a página do repositório apenas com os memes retornados pela busca
                         res.render('repositorio.ejs', {memes});

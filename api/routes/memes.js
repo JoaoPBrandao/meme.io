@@ -80,11 +80,16 @@ router.put('/:idMeme', (req, res) => {
 });
 
 router.get('/buscarMemes', (req, res) => {
-    console.log(req.query.queryRecebida);
-    Meme.find({categorias: req.query.queryRecebida}, (err, memes) => {
+    //Transformar a string com múltiplas categorias em um vetor com objetos do tipo {categorias: /categoria/i}
+    let newQuery = req.query.queryRecebida.split(';');
+    newQuery = newQuery.map(query => {
+        let queryObject = {};
+        queryObject.categorias = new RegExp(query, 'i');
+        return queryObject;
+    });
+    Meme.find({ $and: newQuery}, (err, memes) => {
         if (memes){
             console.log("Memes encontrados pela API.");
-            console.log(memes);
             res.status(200).send(memes);
         }else{
             memes = {};
