@@ -57,45 +57,105 @@ router.post('/', (req, res) => {
         });
 });
 
-router.delete('/:idUsuario', (req, res) => {
-    console.log("Requisição delete recebida");
+router.put('/desativarUsuario:idUsuario', (req, res) => {
+    console.log("Requisição put recebida");
     const idUsuario = req.params.idUsuario;
     Usuario.updateOne({
         "_id": idUsuario,
-        "status": 1
+        "status": 2
     }, {
-        status: 0
+        status: 1
     }, err => {
         if(err) {
-            //console.log(err);
+            console.log("Erro ao desativar usuário: " + err.message);
         }
     })
         .then(() => {
-            res.status(200).send("Usuário deletado com sucesso.")
+            res.status(200).send("Usuário desativado com sucesso.")
         })
         .catch(err => {
-            //console.log(err)
+            console.log(err.message);
             res.status(500).send(err);
         });
 });
 
-router.put('/:idUsuario', (req, res) => {
+router.put('/atualizarNome:idUsuario', (req, res) => {
     console.log("Requisição put recebida");
     const idUsuario = req.params.idUsuario;
-    console.log("Prestes a chamar updateOne: " + idUsuario + req.body.email);
+    const nome = req.body.novoNome;
     Usuario.updateOne({
         "_id": idUsuario
     },{
-        nome: req.body.novoNome,
-        senha: req.body.novaSenha,
-        email: req.body.novoEmail
+        nome: nome
     }, err => {
         if(err) {
             console.log("Erro: " + err.message);
         }
     })
         .then(() => {
-            res.status(200).send("Usuário atualizado com sucesso.")
+            res.status(200).send("Nome atualizado com sucesso.")
+        })
+        .catch(err => {
+            console.log(err.message)
+        });
+});
+
+router.put('/atualizarEmail:idUsuario', (req, res) => {
+    console.log("Requisição put recebida");
+    const idUsuario = req.params.idUsuario;
+    const email = req.body.novoEmail;
+    Usuario.updateOne({
+        "_id": idUsuario
+    },{
+        email: email
+    }, err => {
+        if(err) {
+            console.log("Erro: " + err.message);
+        }
+    })
+        .then(() => {
+            res.status(200).send("E-mail atualizado com sucesso.")
+        })
+        .catch(err => {
+            console.log(err.message)
+        });
+});
+
+router.put('/atualizarSenha:idUsuario', (req, res) => {
+    console.log("Requisição put recebida");
+    const idUsuario = req.params.idUsuario;
+    const senha = req.body.novaSenha;
+    Usuario.updateOne({
+        "_id": idUsuario
+    },{
+        senha: senha
+    }, err => {
+        if(err) {
+            console.log("Erro: " + err.message);
+        }
+    })
+        .then(() => {
+            res.status(200).send("Senha atualizada com sucesso.")
+        })
+        .catch(err => {
+            console.log(err.message)
+        });
+});
+
+router.put('/reativarUsuario:idUsuario', (req, res) => {
+    const idUsuario = req.params.idUsuario;
+    console.log("Requisição put recebida");
+    Usuario.updateOne({
+        "_id": idUsuario
+    }, {
+        status: 2
+    }, err => {
+        if (err) {
+            console.log("Erro: " + err.message);
+        }
+    })
+        .then(() => {
+            res.status(200).send("Usuario reativado com sucesso.")
         })
         .catch(err => {
             console.log(err.message)

@@ -56,7 +56,6 @@ class UsuariosController {
                 console.log("Erro buscar usuário: " + err);
                 return false;
             });
-        console.log("buscarUsuario retornando: " + resultado);
         return resultado;
     }
 

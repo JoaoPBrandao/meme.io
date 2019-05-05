@@ -1,15 +1,24 @@
 const Route = require("./Route.js");
+const SessionController = require("../controllers/SessionController.js");
 
 class IndexRoute extends Route {
     constructor(basePath) {
         super('/');
 
         this.router.get('/', (req, res) => {
-            res.render('landingpage.ejs', {});
+            if (req.user){
+                res.redirect('/usuarios/dadospessoais');
+            }else{
+                res.render('landingpage.ejs', {});
+            }
         });
 
         this.router.get('/login', (req, res) => {
-            res.render('login.ejs', {});
+            if (req.user){
+                res.redirect('/usuarios/dadospessoais');
+            }else{
+                res.render('login.ejs', {});
+            }
         })
 
         this.router.get('/emconstrucao', (req, res) => {
@@ -17,7 +26,11 @@ class IndexRoute extends Route {
         })
 
         this.router.get('/recuperarsenha', (req, res) => {
-            res.render('recuperarSenha.ejs', {});
+            if (req.user){
+                res.redirect('/usuarios/dadospessoais');
+            }else {
+                res.render('recuperarSenha.ejs', {});
+            }
         })
     }
 }

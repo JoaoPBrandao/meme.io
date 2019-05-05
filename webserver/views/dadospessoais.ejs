@@ -8,7 +8,109 @@
 <body>
 <% include components/headerAlternative/projectAlternativeHeader.ejs %>
 
-<% include components/formAtualizacaoCadastroUsuario/formAtualizacaoCadastroUsuario.ejs %>
+<main>
+    <div class="container" id="containerDadosPessoais">
+        <div class="row" style="height: 100%; margin: 0px;">
+            <div class="col-sm-2" style="height: 100%; border-right: 1px solid #b5b5b5; padding: 0px">
+                <div id="profilePhoto">
+                    <img style="border-radius: 60px; height: 100%; width: 100%; min-width: 50px;" src=<%= usuario.foto %>>
+                </div>
+                <div class="list-group" id="list-tab" role="tablist">
+                    <a class="list-group-item list-group-item-action sidebarDiv active" id="sidebarDivPrimeiro" data-toggle="list"
+                       href="#list-conta" role="tab" aria-controls="home">Conta</a>
+                    <% if (usuario.adm == 1) { %>
+                    <a class="list-group-item list-group-item-action sidebarDiv" data-toggle="list"
+                       href="#list-sugestoes" role="tab" aria-controls="profile">Sugestões</a>
+                    <a class="list-group-item list-group-item-action sidebarDiv" data-toggle="list"
+                       href="#list-denuncias" role="tab" aria-controls="messages">Denúncias</a>
+                    <a class="list-group-item list-group-item-action sidebarDiv" data-toggle="list"
+                       href="#list-usuarios" role="tab" aria-controls="settings">Usuários</a>
+                    <a class="list-group-item list-group-item-action sidebarDiv" data-toggle="list"
+                       href="#list-memes" role="tab" aria-controls="settings">Memes</a>
+                    <% } %>
+                </div>
+            </div>
+            <div class="col-sm-10" style="height: 100%;">
+                <div class="tab-content" id="nav-tabContent" style="padding: 30px;">
+                    <div class="tab-pane fade show active" id="list-conta" role="tabpanel" aria-labelledby="list-conta-list">
+                        <h4>Dados Pessoais</h4>
+                        <div style="padding: 5px 10px;">
+                            <div style="width: 300px; display: inline-block">
+                                <span id="usuarioNome">Nome: <%= usuario.nome %></span>
+                            </div>
+                            <button data-toggle="collapse" data-target="#nomeUsuario" type="button" class="btn btn-memeIO">
+                                <i class="fas fa-edit fa-sm"></i>
+                            </button>
+                        </div>
+                        <div id="nomeUsuario" class="row collapse" style="margin: 5px 0px; padding: 5px 10px;">
+                            <form class="" method="post" action="/usuarios/atualizarNome" style="display: block;">
+                                <input name="novoNome" type="text" class="updateAccount" placeholder="Novo nome" style="width: 300px" required>
+                                <button type="submit" class="btn btn-memeIO">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <div style="padding: 5px 10px;">
+                            <div style="width: 300px; display: inline-block">
+                                <span id="usuarioEmail">E-mail: <%= usuario.email %></span>
+                            </div>
+                            <button data-toggle="collapse" data-target="#emailUsuario" type="button" class="btn btn-memeIO">
+                                <i class="fas fa-edit fa-sm"></i>
+                            </button>
+                        </div>
+                        <div id="emailUsuario" class="row collapse" style="margin: 5px 0px; padding: 5px 10px;">
+                            <form class="" method="post" action="/usuarios/atualizarEmail" style="display: block;">
+                                <input name="novoEmail" type="text" class="updateAccount" placeholder="Novo E-mail" style="width: 300px" required>
+                                <button type="submit" class="btn btn-memeIO">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <h4>Alterar Senha</h4>
+                        <div id="alterarSenhaDiv" style="padding: 5px 10px;">
+                            <form id="formAlterarSenha"  method="post" action="/usuarios/atualizarSenha">
+                                    <label class="label-txt" for="novaSenhaUsuario">Senha atual:</label>
+                                    <input type="password" class="atualizarSenha" id="senhaAtualUsuario" name="senhaAtualUsuario" required>
+                                    <div class="labelInputContainer" data-toggle="tooltip" data-html="true" data-placement="right"
+                                         title="<small>8 ou mais caracteres<br>
+                                         Pelo menos um caractere maiúsculo<br>
+                                         Pelo menos um caractere minúsculo<br>
+                                         Pelo menos um algarismo</small>" style="width: fit-content;">
+                                        <label class="label-txt" for="novaSenhaUsuario">Nova senha:</label>
+                                        <input type="password" class="atualizarSenha" id="novaSenhaUsuario" name="novaSenhaUsuario" required>
+                                        <div class="line-box">
+                                            <div class="line"></div>
+                                        </div>
+                                    </div>
+                                <button class="btn btn-memeIO" type="submit">Alterar senha</button>
+                            </form>
+                        </div>
+                        <h4>Desativar Conta</h4>
+                        <div id="desativarContaDiv" style="padding: 5px 10px;">
+                            <form id="desativarContaForm" method="post" action="/usuarios/desativarUsuario">
+                                <label class="label-txt" for="novaSenhaUsuario">Senha atual:</label>
+                                <input type="password" class="atualizarSenha" id="senhaAtualDesativar" name="senhaAtualUsuario" required>
+                                <button style="display: block;" type="submit" class="btn btn-warning">Desativar Conta</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="list-sugestoes" role="tabpanel" aria-labelledby="list-sugestoes-list">
+                        div das sugestões
+                    </div>
+                    <div class="tab-pane fade" id="list-denuncias" role="tabpanel" aria-labelledby="list-denuncias-list">
+                        div das denúncias
+                    </div>
+                    <div class="tab-pane fade" id="list-usuarios" role="tabpanel" aria-labelledby="list-usuarios-list">
+                        div dos usuários
+                    </div>
+                    <div class="tab-pane fade" id="list-memes" role="tabpanel" aria-labelledby="list-memes-list">
+                        div dos memes
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 
 <% include components/footer/projectDefaultFooter.ejs %>
 <% include components/projectDefaultScripts/projectDefaultScripts %>

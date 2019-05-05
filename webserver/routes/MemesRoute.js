@@ -30,7 +30,7 @@ class MemesRoute extends Route {
                 .then(apiResponse => {
                     memes = apiResponse.data;
                 });
-            res.render('repositorio.ejs', {memes, usuario});
+            res.render('repositorio.ejs', {memes: memes, usuario: usuario});
         });
 
         this.router.post('/novoMeme', SessionController.authenticationMiddleware(),upload.single('arquivoEnviado'), (req, res) => {

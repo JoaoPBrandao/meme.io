@@ -10,14 +10,15 @@ const usuarioSchema = new mongoose.Schema(
             "type": String,
             "required": true
         },
-        "status": { // Usuário ativo ou inativo, feito com tipo = Number para ser escalável. 0 = inativo, 1 = ativo.
+        "status": { // Usuário ativo, inativo ou banido, feito com tipo = Number para ser escalável. 0 = banido, 1 = inativo e 2 = ativo.
             "type": Number,
-            "default": 1,
+            "default": 2,
             "required": true
         },
         "foto": {
             "type": String,
-            "required": false
+            "required": true,
+            "default": 'https://imgur.com/xqCh1RC.jpg'
         },
         "senha": {
             "type": String,

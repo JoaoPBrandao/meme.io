@@ -40,19 +40,14 @@ class UsuariosRoute extends Route {
             auxUsuario.email = req.body.emailUsuario;
             auxUsuario.senha = req.body.senhaUsuario;
             let validacaoEmail = UsuariosController.validarEmail(auxUsuario.email);
-            console.log("val Email -> " + validacaoEmail);
             let validacaoEmailUnico = await UsuariosController.verificarEmailUnico(auxUsuario.email);
-            console.log("val EmailUnico -> " + validacaoEmailUnico);
             let validacaoSenha = UsuariosController.validarSenha(auxUsuario.senha, auxUsuario.nome);
-            console.log("val Senha -> " + validacaoSenha);
             let validacaoNome = UsuariosController.validarNome(auxUsuario.nome);
-            console.log("val Nome -> " + validacaoNome);
             if (!validacaoEmail){
                 erros.push('Email inválido');
             }
             if(!validacaoEmailUnico){
                 erros.push('Email já cadastrado');
-                console.log(erros.length);
             }
             if(!validacaoSenha){
                 erros.push('Senha inválida');
@@ -60,10 +55,7 @@ class UsuariosRoute extends Route {
             if(!validacaoNome){
                 erros.push('Nome inválido');
             }
-            console.log("erros length: " + erros.length);
-            console.log(erros);
             if(erros.length == 0) {
-                console.log("enviando Post para /usuarios");
                 // Encryptando senha:
                 let salt = bcrypt.genSaltSync(10);
                 let hash = bcrypt.hashSync(auxUsuario.senha, salt);
@@ -86,73 +78,98 @@ class UsuariosRoute extends Route {
         });
 
         this.router.post('/desativarUsuario',SessionController.authenticationMiddleware(), async (req,res) => {
-            let auxUsuario = {};
-            auxUsuario.emailUsuario = req.body.emailUsuario;
-            console.log(req.body);
-            if(!auxUsuario.emailUsuario) {
-                console.log("Email não recebido.");
-                res.status(300).render(process.cwd() + '/views/dadospessoais.ejs', {}); // TODO: RENDER error FLASH MESSAGE
-                return;
-            }
-            auxUsuario = await UsuariosController.buscarUsuarioAtivo(auxUsuario.emailUsuario).catch(err => {
-                res.status(500).send("Usuário não encontrado ou não ativo." + err)
-                return;
-            });
-            if(!auxUsuario) {
-                res.status(500).send("Usuário não encontrado ou não ativo.");
-                return;
-            }
-            auxUsuario = JSON.parse(auxUsuario);
-            axios.delete("http://localhost" + ":" + "3000" + "/usuarios/" + auxUsuario._id)
-                .then((apiResponse) => {
-                    console.log("Resposta da API: " + apiResponse.status);
-                    res.render(process.cwd() + '/views/login.ejs', {}); // TODO: RENDER success FLASH MESSAGE
-                })
-                .catch((err) => {
-                    console.log(err.data);
-                });
-        });
-
-        this.router.post('/atualizarUsuario',SessionController.authenticationMiddleware(), async (req,res) => {
-            let auxUsuario = {};
-            // Abaixo as informações "novas" enviadas pelo client.
-            auxUsuario.novoNome = req.body.novoNomeUsuario;
-            auxUsuario.novaSenha = req.body.novaSenhaUsuario;
-            auxUsuario.novoEmail = req.body.novoEmailUsuario;
-            auxUsuario.email = req.body.emailUsuario;
-            auxUsuario.original = await UsuariosController.buscarUsuario(auxUsuario.email);
-            auxUsuario.original = JSON.parse(auxUsuario.original);
-            if(auxUsuario.original._id) {
-                let erros = [];
-                if (!UsuariosController.validarSenha(auxUsuario.novaSenha, auxUsuario.novoNome)) {
-                    console.log("Erro Validar senha");
-                    erros.push('Senha inválida');
-                }
-                if (!UsuariosController.validarNome(auxUsuario.novoNome)) {
-                    console.log("Erro Validar nome");
-                    erros.push('Nome inválido');
-                }
-                if (erros.length == 0) {
-                    axios.put("http://localhost" + ":" + "3000" + "/usuarios/" + auxUsuario.original._id, auxUsuario)
-                        .then((apiResponse) => {
-                            console.log("Resposta da API: " + apiResponse.status);
-                            res.render(process.cwd() + '/views/dadospessoais.ejs', {}); // TODO: RENDER success FLASH MESSAGE
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                }
-            }
-            else {
-                res.status(500).send("Usuário não encontrado.");
+            const senhaAtual = req.body.senhaAtualUsuario;
+            const match = await bcrypt.compare(senhaAtual, req.user.senha);
+            if (match){
+                axios.put("http://localhost" + ":" + "3000" + "/usuarios/desativarUsuario" + req.user._id)
+                    .then(apiResponse => {
+                        console.log("Resposta da API: " + apiResponse.data);
+                        res.redirect('logout');
+                    })
+                    .catch(err => {
+                        console.log("Erro ao desativar o usuário");
+                        res.redirect('dadospessoais');
+                    })
+            }else{
+                console.log("Senha inserida não coincide com a senha salva.");
+                //TODO: RENDER ERROR FLASH MESSAGE
+                res.redirect('dadospessoais');
             }
         });
 
-        this.router.post('/logarUsuario',
-            passport.authenticate('local', {
-                successRedirect: 'http://localhost:8080/usuarios/perfilUsuario',
-                failureRedirect: 'http://localhost:8080/login' })
-        );
+        this.router.post('/atualizarNome', SessionController.authenticationMiddleware(), async (req,res) => {
+            const nome = req.body.novoNome;
+            if (UsuariosController.validarNome(nome)){
+                axios.put("http://localhost" + ":" + "3000" + "/usuarios" + "/atualizarNome" + req.user._id, {novoNome: nome})
+                    .then((apiResponse) => {
+                        console.log("Resposta da API: " + apiResponse.status);
+                        res.redirect('dadospessoais');
+                    })
+                    .catch(err => {
+                        console.log("Erro ao atualizar nome: " + err.message);
+                        res.status(400).send("Erro ao atualizar nome.");
+                    })
+            }else{
+                res.redirect('dadospessoais');
+                //TODO: DISPLAY ERROR FLASH MESSAGE
+            }
+        });
+
+        this.router.post('/atualizarEmail', SessionController.authenticationMiddleware(), async (req,res) => {
+            const email = req.body.novoEmail;
+            if (UsuariosController.verificarEmailUnico(email) && UsuariosController.validarEmail(email)){
+                axios.put("http://localhost" + ":" + "3000" + "/usuarios" + "/atualizarEmail" + req.user._id, {novoEmail: email})
+                    .then((apiResponse) => {
+                        console.log("Resposta da API: " + apiResponse.status);
+                        res.redirect('dadospessoais');
+                    })
+                    .catch(err => {
+                        console.log("Erro ao atualizar E-mail: " + err.message);
+                        res.status(400).send("Erro ao atualizar E-mail.");
+                    })
+            }else{
+                res.redirect('dadospessoais');
+                //TODO: DISPLAY ERROR FLASH MESSAGE
+            }
+        });
+
+        this.router.post('/atualizarSenha', SessionController.authenticationMiddleware(), async (req,res) => {
+            const senhaAtual = req.body.senhaAtualUsuario;
+            let novaSenha = req.body.novaSenhaUsuario;
+            const match = await bcrypt.compare(senhaAtual, req.user.senha);
+            if (UsuariosController.validarSenha(novaSenha) && match){
+                let salt = bcrypt.genSaltSync(10);
+                let hash = bcrypt.hashSync(novaSenha, salt);
+                novaSenha = hash;
+                axios.put("http://localhost" + ":" + "3000" + "/usuarios" + "/atualizarSenha" + req.user._id, {novaSenha: novaSenha})
+                    .then((apiResponse) => {
+                        console.log("Resposta da API: " + apiResponse.status);
+                        res.redirect('dadospessoais');
+                    })
+                    .catch(err => {
+                        console.log("Erro ao atualizar senha: " + err.message);
+                        res.status(400).send("Erro ao atualizar E-mail.");
+                    })
+            }else{
+                res.redirect('dadospessoais');
+                //TODO: DISPLAY ERROR FLASH MESSAGE
+            }
+        });
+
+        this.router.post('/logarUsuario', passport.authenticate('local'), (req, res) =>{
+            console.log(req.user);
+            if (req.user.status == 1){
+                console.log("entrou no if");
+                axios.put("http://localhost" + ":" + "3000" + "/usuarios" + "/reativarUsuario" + req.user._id)
+                    .then(apiResponse => {
+                        console.log("Resposta da API: " + apiResponse.data);
+                    })
+                    .catch(err=>{
+                        console.log("Erro: " + err.message);
+                    })
+            }
+            res.redirect('perfilUsuario');
+        })
 
         this.router.get('/logout', (req, res) =>{
             req.logout();

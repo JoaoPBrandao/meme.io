@@ -28,12 +28,20 @@ module.exports = (passport) => {
                     if(!apiResponse.data){
                         return done(null, false);
                     }
-                    if(password == apiResponse.data.senha){
-                        return done(null, apiResponse.data);
-                    }else{
+                    if(apiResponse.data.status == 0){
                         return done(null, false);
                     }
-                    });
+
+                    bcrypt.compare(password, apiResponse.data.senha, (err, isValid) => {
+                        if (err) {
+                            return done(err)
+                        }
+                        if (!isValid) {
+                            return done(null, false)
+                        }
+                        return done(null, apiResponse.data)
+                    })
+                });
         }
     ));
 };
