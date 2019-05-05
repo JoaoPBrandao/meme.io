@@ -3,6 +3,7 @@ const Route = require("./Route.js");
 const multer  = require('multer'); //Usamos o Multer para parsear formuláros do tipo multipart/form-data
 const fs = require('fs'); // FileSystem padrão do Node
 const apiKeys = require('../configs/apiKeys'); //Arquivo com as chaves das APIs utilizadas
+const SessionController = require("../controllers/SessionController.js");
 const date = require('date-and-time'); //Utilizado para criar objetos do tipo Data com formatos específicos
 
 //Configurar aspectos específicos do Multer
@@ -23,15 +24,16 @@ class MemesRoute extends Route {
         super('/memes');
 
         this.router.get('/', async (req, res) => {
+            let usuario = req.user;
             let memes = [];
             await axios.get("http://localhost" + ":" + "3000" + "/memes")
                 .then(apiResponse => {
                     memes = apiResponse.data;
-                })
-            res.render('repositorio.ejs', {memes});
+                });
+            res.render('repositorio.ejs', {memes, usuario});
         });
 
-        this.router.post('/novoMeme', upload.single('arquivoEnviado'), (req, res) => {
+        this.router.post('/novoMeme', SessionController.authenticationMiddleware(),upload.single('arquivoEnviado'), (req, res) => {
             let meme = {};
             let categorias = req.body.categorias;
             //Tratamento mínimo das categorias
@@ -88,7 +90,7 @@ class MemesRoute extends Route {
             }
         });
 
-        this.router.post('/deletarMeme', (req, res) => {
+        this.router.post('/deletarMeme', SessionController.authenticationMiddleware(),(req, res) => {
             //Enviar a requisição de delete do meme para a API para que seja deletado do BD
             axios.delete("http://localhost" + ":" + "3000" + "/memes/" + req.body.memeID)
                 .then((apiResponse) => {

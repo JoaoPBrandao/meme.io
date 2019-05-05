@@ -2,23 +2,27 @@ const Route = require("./Route.js");
 const axios = require("axios"); // Usamos Axios para fazer as requests à API
 const bcrypt = require("bcrypt");
 const UsuariosController = require("../controllers/UsuariosController.js");
+const SessionController = require("../controllers/SessionController.js");
+const passport = require('passport');
 
 class UsuariosRoute extends Route {
     constructor(basePath) {
         super('/usuarios');
-        this.router.get('/dadospessoais', (req, res) => {
-            res.render('dadospessoais.ejs');
+        this.router.get('/dadospessoais',SessionController.authenticationMiddleware(), (req, res) => {
+            let usuario = req.user;
+            res.render('dadospessoais.ejs', usuario);
         });
 
         this.router.get('/cadastro', (req, res) => {
             res.render('cadastro.ejs');
         });
 
-        this.router.get('/perfilUsuario', (req, res) => {
-            res.render('perfil.ejs');
+        this.router.get('/perfilUsuario',SessionController.authenticationMiddleware(), (req, res) => {
+            let usuario = req.user;
+            res.render('perfil.ejs', usuario);
         });
 
-        this.router.get('/buscarUsuarios', async (req, res) => {
+        this.router.get('/buscarUsuarios',SessionController.authenticationMiddleware(), async (req, res) => {
             let query = req.query.emailUsuario;
             let usuarios = [];
             // TODO: Fazer endpoint na API que busca só por usuários ativos e usá-lo aqui.
@@ -81,7 +85,7 @@ class UsuariosRoute extends Route {
             }
         });
 
-        this.router.post('/desativarUsuario', async (req,res) => {
+        this.router.post('/desativarUsuario',SessionController.authenticationMiddleware(), async (req,res) => {
             let auxUsuario = {};
             auxUsuario.emailUsuario = req.body.emailUsuario;
             console.log(req.body);
@@ -109,7 +113,7 @@ class UsuariosRoute extends Route {
                 });
         });
 
-        this.router.post('/atualizarUsuario', async (req,res) => {
+        this.router.post('/atualizarUsuario',SessionController.authenticationMiddleware(), async (req,res) => {
             let auxUsuario = {};
             // Abaixo as informações "novas" enviadas pelo client.
             auxUsuario.novoNome = req.body.novoNomeUsuario;
@@ -143,7 +147,19 @@ class UsuariosRoute extends Route {
                 res.status(500).send("Usuário não encontrado.");
             }
         });
+
+        this.router.post('/logarUsuario',
+            passport.authenticate('local', {
+                successRedirect: 'http://localhost:8080/usuarios/perfilUsuario',
+                failureRedirect: 'http://localhost:8080/login' })
+        );
+
+        this.router.get('/logout', (req, res) =>{
+            req.logout();
+            res.redirect('/');
+        });
     }
+
 }
 
 module.exports = UsuariosRoute;

@@ -18,6 +18,7 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const session = require("express-session");
+const passport = require('passport');
 const flash = require("connect-flash");
 
 class WebServer {
@@ -52,11 +53,14 @@ class WebServer {
             app.use(bodyParser.json());
 
             // Gestor de sessões do express:
+            require(path.join(__dirname,'/configs/auth.js'))(passport);
             app.use(session({
                 secret: 'alpha',
                 resave: true,
                 saveUninitialized: true,
             }));
+            app.use(passport.initialize());
+            app.use(passport.session());
 
             // Mensagens flash:
             app.use(flash());

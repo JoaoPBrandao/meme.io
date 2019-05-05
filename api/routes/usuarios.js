@@ -15,6 +15,29 @@ router.get('/', async (req, res) => {
     });
 
 });
+
+router.get('/id', async (req, res) => {
+    Usuario.findById(req.query._id, (err, usuario) => {
+        res.status(200).send(usuario);
+    })
+        .catch((err) => {
+            console.log(err);
+            res.status(400).send("Erro no processamento.");
+        });
+
+});
+
+router.get('/email', async (req, res) => {
+    Usuario.find({email : req.query.email}, (err, usuario) => {
+        res.status(200).send(usuario[0]);
+    })
+        .catch((err) => {
+            console.log(err);
+            res.status(400).send("Erro no processamento.");
+        });
+
+});
+
 router.post('/', (req, res) => {
     console.log("Post recebido.");
     const usuarioNovo = new Usuario({
