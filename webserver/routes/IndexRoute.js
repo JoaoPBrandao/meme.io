@@ -52,7 +52,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/usuarios/dadospessoais', (req, res) => {
-    res.render(process.cwd() + '/views/dadospessoais.ejs')
+    res.render(process.cwd() + '/views/configuracoes.ejs')
 });
 // POST routes:
 router.post('/usuarios', (req,res) => {
@@ -94,7 +94,7 @@ router.delete('/usuarios', (req,res) => {
     auxUsuario.email = req.body.email;
     if(!email) {
         console.log("Email não recebido.");
-        res.render(process.cwd() + '/views/dadospessoais.ejs', {}); // TODO: RENDER error FLASH MESSAGE
+        res.render(process.cwd() + '/views/configuracoes.ejs', {}); // TODO: RENDER error FLASH MESSAGE
         return;
     }
     auxUsuario.id = buscarUsuarioRetornaId(auxUsuario.email);
@@ -128,7 +128,7 @@ router.put('/usuarios', async (req,res) => {
         axios.put("http://localhost" + ":" + "3000" + "/usuarios/" + auxUsuario.id, auxUsuario) // Exemplo de formato do primeiro argumento: "http://localhost:3000/"
             .then((apiResponse) => {
                 console.log("Resposta da API: " + apiResponse.status);
-                res.render(process.cwd() + '/views/dadospessoais.ejs', {}); // TODO: RENDER success FLASH MESSAGE
+                res.render(process.cwd() + '/views/configuracoes.ejs', {}); // TODO: RENDER success FLASH MESSAGE
             })
             .catch((err) => {
                 console.log(err);

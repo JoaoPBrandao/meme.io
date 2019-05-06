@@ -9145,7 +9145,7 @@ heading:
   search:
     terms:
       - format
-      - header
+      - headerVisitante
       - text
       - title
   styles:

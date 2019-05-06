@@ -8,9 +8,16 @@ const passport = require('passport');
 class UsuariosRoute extends Route {
     constructor(basePath) {
         super('/usuarios');
-        this.router.get('/dadospessoais',SessionController.authenticationMiddleware(), (req, res) => {
+        this.router.get('/configuracoes',SessionController.authenticationMiddleware(), async (req, res) => {
             let usuario = req.user;
-            res.render('dadospessoais.ejs', usuario);
+            //Enviar os memes para serem exibidos nas partes do administrador
+            let memes;
+            await axios.get("http://localhost" + ":" + "3000" + "/memes")
+                .then(apiResponse => {
+                    memes = apiResponse.data;
+                })
+                .catch(err => console.log("Erro ao buscar memes na API."));
+            res.render('configuracoes.ejs', {usuario: usuario, memes: memes});
         });
 
         this.router.get('/cadastro', (req, res) => {
@@ -88,12 +95,12 @@ class UsuariosRoute extends Route {
                     })
                     .catch(err => {
                         console.log("Erro ao desativar o usuário");
-                        res.redirect('dadospessoais');
+                        res.redirect('configuracoes');
                     })
             }else{
                 console.log("Senha inserida não coincide com a senha salva.");
                 //TODO: RENDER ERROR FLASH MESSAGE
-                res.redirect('dadospessoais');
+                res.redirect('configuracoes');
             }
         });
 
@@ -103,14 +110,14 @@ class UsuariosRoute extends Route {
                 axios.put("http://localhost" + ":" + "3000" + "/usuarios" + "/atualizarNome" + req.user._id, {novoNome: nome})
                     .then((apiResponse) => {
                         console.log("Resposta da API: " + apiResponse.status);
-                        res.redirect('dadospessoais');
+                        res.redirect('configuracoes');
                     })
                     .catch(err => {
                         console.log("Erro ao atualizar nome: " + err.message);
                         res.status(400).send("Erro ao atualizar nome.");
                     })
             }else{
-                res.redirect('dadospessoais');
+                res.redirect('configuracoes');
                 //TODO: DISPLAY ERROR FLASH MESSAGE
             }
         });
@@ -121,14 +128,14 @@ class UsuariosRoute extends Route {
                 axios.put("http://localhost" + ":" + "3000" + "/usuarios" + "/atualizarEmail" + req.user._id, {novoEmail: email})
                     .then((apiResponse) => {
                         console.log("Resposta da API: " + apiResponse.status);
-                        res.redirect('dadospessoais');
+                        res.redirect('configuracoes');
                     })
                     .catch(err => {
                         console.log("Erro ao atualizar E-mail: " + err.message);
                         res.status(400).send("Erro ao atualizar E-mail.");
                     })
             }else{
-                res.redirect('dadospessoais');
+                res.redirect('configuracoes');
                 //TODO: DISPLAY ERROR FLASH MESSAGE
             }
         });
@@ -144,14 +151,14 @@ class UsuariosRoute extends Route {
                 axios.put("http://localhost" + ":" + "3000" + "/usuarios" + "/atualizarSenha" + req.user._id, {novaSenha: novaSenha})
                     .then((apiResponse) => {
                         console.log("Resposta da API: " + apiResponse.status);
-                        res.redirect('dadospessoais');
+                        res.redirect('configuracoes');
                     })
                     .catch(err => {
                         console.log("Erro ao atualizar senha: " + err.message);
                         res.status(400).send("Erro ao atualizar E-mail.");
                     })
             }else{
-                res.redirect('dadospessoais');
+                res.redirect('configuracoes');
                 //TODO: DISPLAY ERROR FLASH MESSAGE
             }
         });

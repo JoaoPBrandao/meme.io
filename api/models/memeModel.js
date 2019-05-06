@@ -17,6 +17,11 @@ const memeSchema = new mongoose.Schema(
         "idImgur": {
             "type": String,
             "required": true
+        },
+        "status": {
+            "type": Number,
+            "required": true,
+            "default": 0
         }
     }
 );

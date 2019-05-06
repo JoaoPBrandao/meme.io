@@ -30,7 +30,14 @@ class MemesRoute extends Route {
                 .then(apiResponse => {
                     memes = apiResponse.data;
                 });
-            res.render('repositorio.ejs', {memes: memes, usuario: usuario});
+            //Enviar para o repositório apenas os memes ativos
+            let memesAtivos = [];
+            memes.forEach(meme => {
+                if (meme.status == 1){
+                    memesAtivos.push(meme);
+                };
+            });
+            res.render('repositorio.ejs', {memes: memesAtivos, usuario: usuario});
         });
 
         this.router.post('/novoMeme', SessionController.authenticationMiddleware(),upload.single('arquivoEnviado'), (req, res) => {
@@ -104,7 +111,8 @@ class MemesRoute extends Route {
                         .catch(err => {
                             console.log("Erro ao excluir a imagem do imgur: " + err);
                         });
-                    res.redirect('/memes/'); // TODO: RENDER success FLASH MESSAGE
+                    //Redirecionar o usuário para a página que ele estava
+                    res.redirect(req.body.paginaEnviada); // TODO: RENDER success FLASH MESSAGE
                 })
                 .catch((err) => {
                     console.log(err);
@@ -136,7 +144,7 @@ class MemesRoute extends Route {
             } else {
                 novoCategorias = novoCategorias.split(";");
                 //Enviar para a API para que o meme seja atualizado no BD
-                axios.put("http://localhost" + ":" + "3000" + "/memes/" + req.body.memeID, novoCategorias)
+                axios.put("http://localhost" + ":" + "3000" + "/memes/alterarMeme" + req.body.memeID, novoCategorias)
                     .then(apiResponse => {
                         res.redirect('/memes/'); // TODO: RENDER success FLASH MESSAGE
                     }).catch(err => {
@@ -160,13 +168,25 @@ class MemesRoute extends Route {
                         console.log("Resposta da API: " + apiResponse.status);
                         const memes = apiResponse.data;
                         //Renderizar a página do repositório apenas com os memes retornados pela busca
-                        res.render('repositorio.ejs', {memes});
+                        res.render('repositorio.ejs', {memes: memes, usuario: req.user});
                     })
                     .catch(err => {
                         console.log("Erro ao buscar memes na api.");
                         console.log(err);
                     })
             }
+        });
+
+        this.router.post('/aprovarMeme', (req, res) => {
+            axios.put("http://localhost" + ":" + "3000" + "/memes/aprovarMeme" + req.body.memeID)
+                .then(apiResponse => {
+                    console.log("Meme aprovado com sucesso!");
+                    res.redirect('../usuarios/configuracoes');
+                })
+                .catch(err => {
+                    console.log("Erro ao aprovar meme");
+                    res.redirect('../usuarios/configuracoes');
+                })
         })
 
     }

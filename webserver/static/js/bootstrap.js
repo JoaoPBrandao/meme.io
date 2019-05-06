@@ -3125,7 +3125,7 @@ var Popover = function ($$$1) {
     placement: 'right',
     trigger: 'click',
     content: '',
-    template: '<div class="popover" role="tooltip">' + '<div class="arrow"></div>' + '<h3 class="popover-header"></h3>' + '<div class="popover-body"></div></div>'
+    template: '<div class="popover" role="tooltip">' + '<div class="arrow"></div>' + '<h3 class="popover-headerVisitante"></h3>' + '<div class="popover-body"></div></div>'
   });
   var DefaultType = _extends({}, Tooltip.DefaultType, {
     content: '(string|element|function)'
@@ -3135,7 +3135,7 @@ var Popover = function ($$$1) {
     SHOW: 'show'
   };
   var Selector = {
-    TITLE: '.popover-header',
+    TITLE: '.popover-headerVisitante',
     CONTENT: '.popover-body'
   };
   var Event = {

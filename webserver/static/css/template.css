@@ -9,6 +9,10 @@ body{
     position: relative;
 }
 
+.card-body{
+    background-color: #FFFFFF;
+}
+
 @media (max-width: 800px){
     body{
         padding-bottom: 344px;
@@ -252,6 +256,7 @@ CSS PARA A PÁGINA DE REPOSITÓRIO DE MEMES
     background-color: #FFFFFF;
     border-radius: 10px;
     border: 1px solid #bb5342;
+    justify-content: space-evenly;
 }
 
 #memeSearch{
@@ -301,7 +306,7 @@ CSS PARA A PÁGINA DE CONFIGURAÇÕES
     background-color: white;
     border-radius: 10px;
     border: 1px solid #bb5342;
-    height: 500px;
+    height: 595px;
     margin-top: 50px;
     margin-bottom: 50px;
     padding: 0px;
@@ -320,7 +325,6 @@ CSS PARA A PÁGINA DE CONFIGURAÇÕES
 
 #containerDadosPessoais .col-sm-2 .active{
     background-color: #c7c7c7;
-    border-style: 1px;
     border-color: #b5b5b5;
     border: 0px 0px 1px 0px;
     color: black;
@@ -391,4 +395,17 @@ CSS PARA A PÁGINA DE CONFIGURAÇÕES
     background-color: inherit;
     border: none;
 
+}
+
+#nav-tabContent2{
+    height: 400px;
+    overflow: auto;
+}
+
+#list-memesPendentes{
+    justify-content: space-evenly;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 100%;
 }

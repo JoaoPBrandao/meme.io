@@ -62,7 +62,7 @@ router.delete('/:idMeme', async (req, res) => {
     })
 });
 
-router.put('/:idMeme', (req, res) => {
+router.put('/alterarMeme:idMeme', (req, res) => {
     console.log("Requisição para alterar meme recebida.");
     Meme.updateOne({
         "_id": req.params.idMeme
@@ -100,6 +100,22 @@ router.get('/buscarMemes', (req, res) => {
         console.log("Erro ao buscar memes no mongo.");
         console.log(err);
     });
+});
+
+router.put('/aprovarMeme:idMeme', (req, res)=>{
+    Meme.updateOne({
+        "_id": req.params.idMeme
+    },{
+        status: 1
+    })
+        .then(() => {
+            console.log("Meme aprovado com sucesso!");
+            res.status(200).send("Meme aprovado com sucesso!");
+        })
+        .catch(err => {
+            console.log("Erro ao aprovar meme: " + err.message);
+            res.status(400).send("Erro ao aprovar meme!");
+        })
 })
 
 module.exports = router;

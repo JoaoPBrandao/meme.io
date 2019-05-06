@@ -6,9 +6,9 @@
 </head>
 <body>
 <% if (usuario) { %>
-    <% include components/headerAlternative/headerUsuario.ejs %>
+    <% include components/headerUsuario %>
 <% }else{ %>
-    <% include components/header/headerVisitante.ejs %>
+    <% include components/headerVisitante %>
 <% } %>
 <div class="container cardWrapper">
     <div class="container d-flex justify-content-around flex-wrap containerMemes">
@@ -20,7 +20,7 @@
             <button class="btn btn-memeIO" data-toggle="modal" data-target="#sugerirMeme">Sugerir Meme</button>
         <% } %>
     </div>
-    <div class="container d-flex justify-content-between flex-wrap containerMemes">
+    <div class="container d-flex flex-wrap containerMemes">
     <% if(memes.length > 0) { %>
             <% memes.forEach((meme) => { %>
                 <div class="card memeCard" style="width: 18rem; margin: 10px">
@@ -41,6 +41,8 @@
                                 <form method="post" action="/memes/deletarMeme" style="display: inline-block;">
                                     <!-- Input invisível que vai armazenar o ID do meme para fazer a exclusão -->
                                     <input name="memeID" type="hidden" value="<%= meme._id %>">
+                                    <!-- Input invisível que vai armazenar a página de onde a requisição foi feita -->
+                                    <input name="paginaEnviada" type="hidden" value="/memes">
                                     <button type="submit" class="btn btn-memeIO"><i class="fas fa-trash-alt"></i></button>
                                 </form>
                             <% } %>

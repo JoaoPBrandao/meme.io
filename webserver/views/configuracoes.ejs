@@ -6,7 +6,7 @@
 </head>
 
 <body>
-<% include components/headerAlternative/headerUsuario.ejs %>
+<% include components/headerUsuario %>
 
 <main>
     <div class="container" id="containerDadosPessoais">
@@ -110,7 +110,37 @@
                             </div>
                             <div class="tab-content" id="nav-tabContent2">
                                 <div class="tab-pane fade show active" id="list-memesPendentes" role="tabpanel" aria-labelledby="list-memesPendentes-list">
-                                    div dos memes pendentes
+                                    <% let memesPendentes = [] %>
+                                    <% memes.forEach(meme => {if (meme.status == 0) { memesPendentes.push(meme); } }) %>
+                                    <% if(memesPendentes.length > 0) { %>
+                                        <% memesPendentes.forEach((meme) => { %>
+                                            <div class="card memeCard" style="width: 18rem; margin: 10px">
+                                                <img class="card-img-top" src=<%= meme.urlImgur%> alt="Imagem do meme">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Categorias</h5>
+                                                    <p class="card-text">
+                                                        <% meme.categorias.forEach((categoria) => { %>
+                                                            <span class="categoria">#<%= categoria %></span>
+                                                        <% });%>
+                                                    </p>
+                                                    <form method="post" action="/memes/aprovarMeme" style="display: inline-block;">
+                                                        <input name="memeID" type="hidden" value="<%= meme._id %>">
+                                                        <button type="submit" class="btn btn-memeIO">
+                                                            <i class="fas fa-check"></i>
+                                                        </button>
+                                                    </form>
+                                                    <form method="post" action="/memes/deletarMeme" style="display: inline-block;">
+                                                        <!-- Input invisível que vai armazenar o ID do meme para fazer a exclusão -->
+                                                        <input name="memeID" type="hidden" value="<%= meme._id %>">
+                                                        <input name="paginaEnviada" type="hidden" value="/usuarios/configuracoes">
+                                                        <button type="submit" class="btn btn-memeIO"><i class="fas fa-trash-alt"></i></button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        <% });%>
+                                    <% }else {%>
+                                        <h4 style="margin: auto;">Nenhum meme pendente!</h4>
+                                    <% } %>
                                 </div>
                                 <div class="tab-pane fade" id="list-sugestoesAlteracoes" role="tabpanel">
                                     div das sugestoes de alteracoes
