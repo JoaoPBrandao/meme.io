@@ -6,7 +6,7 @@
 </head>
 
 <body>
-<% include components/headerAlternative/projectAlternativeHeader.ejs %>
+<% include components/headerAlternative/headerUsuario.ejs %>
 
 <main>
     <div class="container" id="containerDadosPessoais">
@@ -31,9 +31,10 @@
                 </div>
             </div>
             <div class="col-sm-10" style="height: 100%;">
-                <div class="tab-content" id="nav-tabContent" style="padding: 30px;">
-                    <div class="tab-pane fade show active" id="list-conta" role="tabpanel" aria-labelledby="list-conta-list">
-                        <h4>Dados Pessoais</h4>
+                <div class="tab-content" id="nav-tabContent">
+                    <!-- DIV DA CONTA -->
+                    <div class="tab-pane fade show active" style="margin: 30px" id="list-conta" role="tabpanel" aria-labelledby="list-conta-list">
+                        <h3>Dados Pessoais</h3>
                         <div style="padding: 5px 10px;">
                             <div style="width: 300px; display: inline-block">
                                 <span id="usuarioNome">Nome: <%= usuario.nome %></span>
@@ -66,7 +67,7 @@
                                 </button>
                             </form>
                         </div>
-                        <h4>Alterar Senha</h4>
+                        <h3>Alterar Senha</h3>
                         <div id="alterarSenhaDiv" style="padding: 5px 10px;">
                             <form id="formAlterarSenha"  method="post" action="/usuarios/atualizarSenha">
                                     <label class="label-txt" for="novaSenhaUsuario">Senha atual:</label>
@@ -85,7 +86,7 @@
                                 <button class="btn btn-memeIO" type="submit">Alterar senha</button>
                             </form>
                         </div>
-                        <h4>Desativar Conta</h4>
+                        <h3>Desativar Conta</h3>
                         <div id="desativarContaDiv" style="padding: 5px 10px;">
                             <form id="desativarContaForm" method="post" action="/usuarios/desativarUsuario">
                                 <label class="label-txt" for="novaSenhaUsuario">Senha atual:</label>
@@ -94,16 +95,39 @@
                             </form>
                         </div>
                     </div>
+                    <!-- DIV DAS SUGESTÕES -->
                     <div class="tab-pane fade" id="list-sugestoes" role="tabpanel" aria-labelledby="list-sugestoes-list">
-                        div das sugestões
+                        <div class="sugestoescontainer">
+                            <div class="list-group" id="sugestoesToggleWrap" style="margin: 0px; padding: 0px; border-bottom: 1px solid #b5b5b5;display: flex; justify-content: center; width: 100%;">
+                                <a id="memesPendentes" class="sugestoesToggle list-group-item list-group-item-action active"
+                                   style="border-right: 1px solid #b5b5b5;" data-toggle="list" href="#list-memesPendentes" role="tab">
+                                    <h5>Memes Pendentes</h5>
+                                </a>
+                                <a id="sugestoesAlteracao" class="sugestoesToggle list-group-item list-group-item-action"
+                                   data-toggle="list" href="#list-sugestoesAlteracoes" role="tab">
+                                    <h5>Sugestões de Alteração</h5>
+                                </a>
+                            </div>
+                            <div class="tab-content" id="nav-tabContent2">
+                                <div class="tab-pane fade show active" id="list-memesPendentes" role="tabpanel" aria-labelledby="list-memesPendentes-list">
+                                    div dos memes pendentes
+                                </div>
+                                <div class="tab-pane fade" id="list-sugestoesAlteracoes" role="tabpanel">
+                                    div das sugestoes de alteracoes
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="tab-pane fade" id="list-denuncias" role="tabpanel" aria-labelledby="list-denuncias-list">
+                    <!-- DIV DAS DENÚNCIAS -->
+                    <div class="tab-pane fade" style="margin: 30px" id="list-denuncias" role="tabpanel" aria-labelledby="list-denuncias-list">
                         div das denúncias
                     </div>
-                    <div class="tab-pane fade" id="list-usuarios" role="tabpanel" aria-labelledby="list-usuarios-list">
+                    <!-- DIV DOS USUÁRIOS -->
+                    <div class="tab-pane fade" style="margin: 30px" id="list-usuarios" role="tabpanel" aria-labelledby="list-usuarios-list">
                         div dos usuários
                     </div>
-                    <div class="tab-pane fade" id="list-memes" role="tabpanel" aria-labelledby="list-memes-list">
+                    <!-- DIV DOS MEMES -->
+                    <div class="tab-pane fade" style="margin: 30px" id="list-memes" role="tabpanel" aria-labelledby="list-memes-list">
                         div dos memes
                     </div>
                 </div>

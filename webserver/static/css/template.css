@@ -8,6 +8,13 @@ body{
     padding-bottom: 270px;
     position: relative;
 }
+
+@media (max-width: 800px){
+    body{
+        padding-bottom: 344px;
+    }
+}
+
 h1, h2, h3, h4, h5{
     font-family: 'Josefin Sans', sans-serif;
 }
@@ -244,6 +251,7 @@ CSS PARA A PÁGINA DE REPOSITÓRIO DE MEMES
     padding: 15px;
     background-color: #FFFFFF;
     border-radius: 10px;
+    border: 1px solid #bb5342;
 }
 
 #memeSearch{
@@ -286,15 +294,16 @@ CSS PARA A PÁGINA DE REPOSITÓRIO DE MEMES
 }
 
 /*
-CSS PARA A PÁGINA DE DADOS PESSOAIS
+CSS PARA A PÁGINA DE CONFIGURAÇÕES
  */
 
 #containerDadosPessoais {
     background-color: white;
     border-radius: 10px;
-    border: 1px solid #b5b5b5;
+    border: 1px solid #bb5342;
     height: 500px;
     margin-top: 50px;
+    margin-bottom: 50px;
     padding: 0px;
 }
 
@@ -329,4 +338,57 @@ CSS PARA A PÁGINA DE DADOS PESSOAIS
     border: 1px solid #bb5342;
     border-radius: .25rem;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.sugestoescontainer{
+    background-color: #ededed;
+    padding: 0px;
+    margin: 30px;
+    border: 1px solid #b5b5b5;
+    border-radius: 10px;
+}
+
+.sugestoesToggle{
+    display: inline-block;
+    padding: 0px;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+.sugestoesToggle:hover{
+    cursor: pointer;
+    background-color: #c7c7c7 !important;
+}
+
+#sugestoesToggleWrap .active{
+    background-color: #c7c7c7 !important;
+    color: #000;
+}
+
+#memesPendentes:hover{
+    border-radius: 10px 0px 0px 0px;
+}
+
+#sugestoesAlteracao:hover{
+    border-radius: 0px 10px 0px 0px;
+}
+
+.sugestaoHeader{
+    margin: 0px;
+}
+
+.sugestoesToggle h5{
+    margin: 0px;
+    padding: 5px;
+}
+
+.sugestoescontainer .list-group{
+    flex-direction: row;
+}
+
+.sugestoescontainer .list-group-item{
+    background-color: inherit;
+    border: none;
+
 }

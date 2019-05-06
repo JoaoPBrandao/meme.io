@@ -157,7 +157,6 @@ class UsuariosRoute extends Route {
         });
 
         this.router.post('/logarUsuario', passport.authenticate('local'), (req, res) =>{
-            console.log(req.user);
             if (req.user.status == 1){
                 console.log("entrou no if");
                 axios.put("http://localhost" + ":" + "3000" + "/usuarios" + "/reativarUsuario" + req.user._id)
