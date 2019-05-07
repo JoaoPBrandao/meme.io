@@ -3,18 +3,20 @@
   <component name="ChangeListManager">
     <list default="true" id="3d335319-965f-4ff0-a142-e9c35bf603ab" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/models/memeModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/models/memeModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/routes/memes.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/routes/memes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/routes/usuarios.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/routes/usuarios.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/webserver/routes/IndexRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/webserver/routes/IndexRoute.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webserver/routes/MemesRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/webserver/routes/MemesRoute.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/webserver/routes/UsuariosRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/webserver/routes/UsuariosRoute.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/webserver/static/css/template.css" beforeDir="false" afterPath="$PROJECT_DIR$/webserver/static/css/template.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webserver/static/media/memes/clown.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webserver/static/media/memes/delete this.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webserver/static/media/memes/gay silence.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webserver/static/media/memes/gretchen rindo.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webserver/views/components/headerAlternative/headerUsuario.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/webserver/views/components/headerAlternative/headerUsuario.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webserver/views/dadospessoais.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/webserver/views/configuracoes.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webserver/views/buscaDeUsuarios.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/webserver/views/buscaDeUsuarios.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webserver/views/cadastro.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/webserver/views/cadastro.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webserver/views/components/headerUsuario/headerUsuario.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/webserver/views/components/headerUsuario/headerUsuario.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webserver/views/configuracoes.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/webserver/views/configuracoes.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webserver/views/emconstrucao.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/webserver/views/emconstrucao.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webserver/views/landingpage.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/webserver/views/landingpage.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webserver/views/login.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/webserver/views/login.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webserver/views/perfil.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/webserver/views/perfil.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webserver/views/perfilMeme.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/webserver/views/perfilMeme.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webserver/views/recuperarSenha.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/webserver/views/recuperarSenha.ejs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/webserver/views/repositorio.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/webserver/views/repositorio.ejs" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -32,8 +34,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/webserver/views/repositorio.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1156">
-              <caret line="68" column="135" selection-start-line="68" selection-start-column="8" selection-end-line="68" selection-end-column="135" />
+            <state relative-caret-position="136">
+              <caret line="8" column="57" selection-start-line="8" selection-start-column="57" selection-end-line="8" selection-end-column="57" />
             </state>
           </provider>
         </entry>
@@ -41,17 +43,14 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/webserver/views/configuracoes.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2397">
-              <caret line="141" column="87" selection-start-line="141" selection-start-column="87" selection-end-line="141" selection-end-column="87" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webserver/routes/MemesRoute.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3179">
-              <caret line="187" column="45" selection-start-line="187" selection-start-column="45" selection-end-line="187" selection-end-column="45" />
+            <state relative-caret-position="203">
+              <caret line="179" column="79" selection-start-line="179" selection-start-column="79" selection-end-line="179" selection-end-column="79" />
+              <folding>
+                <element signature="n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#main#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#main#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#3;n#div#0;n#div#1;n#div#0;n#div#0;n#main#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#input#0;n#div#3;n#div#0;n#div#1;n#div#0;n#div#0;n#main#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -59,26 +58,35 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/webserver/routes/UsuariosRoute.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" selection-start-line="19" selection-end-line="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/api/routes/memes.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1105">
-              <caret line="65" column="58" lean-forward="true" selection-start-line="65" selection-start-column="58" selection-end-line="65" selection-end-column="58" />
+            <state relative-caret-position="-2850">
+              <caret line="41" column="85" lean-forward="true" selection-start-line="41" selection-start-column="85" selection-end-line="41" selection-end-column="85" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/api/routes/usuarios.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="69" column="49" selection-start-line="69" selection-start-column="49" selection-end-line="69" selection-end-column="49" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/webserver/views/perfil.ejs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="139">
+              <caret line="24" column="73" lean-forward="true" selection-start-line="24" selection-start-column="73" selection-end-line="24" selection-end-column="73" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/webserver/static/css/template.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="409" column="16" selection-start-line="409" selection-start-column="16" selection-end-line="409" selection-end-column="16" />
+            <state relative-caret-position="189">
+              <caret line="426" column="30" lean-forward="true" selection-start-line="426" selection-start-column="30" selection-end-line="426" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -112,13 +120,15 @@
       <find>dadospessoa</find>
       <find>dadospessoi</find>
       <find>buscar</find>
-      <find>update</find>
       <find>requisição para</find>
       <find>req.body.mem</find>
       <find>requisição para a</find>
       <find>console.log(memes</find>
       <find>console.log(mem</find>
       <find>ué</find>
+      <find>update</find>
+      <find>usuarios</find>
+      <find>perfil</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -135,18 +145,11 @@
         <option value="$PROJECT_DIR$/webserver/views/components/navs/navDefault.ejs" />
         <option value="$PROJECT_DIR$/webserver/views/index.ejs" />
         <option value="$PROJECT_DIR$/webserver/views/components/footer/projectDefaultFooter.ejs" />
-        <option value="$PROJECT_DIR$/webserver/views/cadastro.ejs" />
-        <option value="$PROJECT_DIR$/webserver/views/login.ejs" />
-        <option value="$PROJECT_DIR$/webserver/views/landingpage.ejs" />
         <option value="$PROJECT_DIR$/webserver/routes/index.js" />
         <option value="$PROJECT_DIR$/webserver/views/components/header/projectDefaultHeader.ejs" />
         <option value="$PROJECT_DIR$/webserver/views/components/headerAlternative/projectAlternativeHeader.ejs" />
         <option value="$PROJECT_DIR$/api/server.js" />
-        <option value="$PROJECT_DIR$/webserver/views/emconstrucao.ejs" />
-        <option value="$PROJECT_DIR$/webserver/views/recuperarSenha.ejs" />
-        <option value="$PROJECT_DIR$/webserver/views/buscaDeUsuarios.ejs" />
         <option value="$PROJECT_DIR$/webserver/requester.js" />
-        <option value="$PROJECT_DIR$/webserver/views/perfilMeme.ejs" />
         <option value="$PROJECT_DIR$/webserver/configs/chavesAPI.js" />
         <option value="$PROJECT_DIR$/webserver/configs/apiKeys.js" />
         <option value="$PROJECT_DIR$/webserver/views/components/projectDefaultHead/projectDefaultHead.ejs" />
@@ -155,23 +158,31 @@
         <option value="$PROJECT_DIR$/webserver/WebServer.js" />
         <option value="$PROJECT_DIR$/webserver/views/components/formLoginUsuario/formLoginUsuario.ejs" />
         <option value="$PROJECT_DIR$/webserver/controllers/SessionController.js" />
-        <option value="$PROJECT_DIR$/webserver/routes/IndexRoute.js" />
-        <option value="$PROJECT_DIR$/webserver/views/perfil.ejs" />
         <option value="$PROJECT_DIR$/webserver/views/components/formAtualizacaoCadastroUsuario/formAtualizacaoCadastroUsuario.ejs" />
         <option value="$PROJECT_DIR$/webserver/controllers/UsuariosController.js" />
         <option value="$PROJECT_DIR$/webserver/configs/auth.js" />
         <option value="$PROJECT_DIR$/api/models/usuarioModel.js" />
-        <option value="$PROJECT_DIR$/api/routes/usuarios.js" />
         <option value="$PROJECT_DIR$/webserver/controllers/MemesController.js" />
         <option value="$PROJECT_DIR$/api/models/memeModel.js" />
         <option value="$PROJECT_DIR$/webserver/views/dadospessoais.ejs" />
         <option value="$PROJECT_DIR$/webserver/views/components/headerAlternative/headerUsuario.ejs" />
-        <option value="$PROJECT_DIR$/webserver/views/repositorio.ejs" />
         <option value="$PROJECT_DIR$/api/routes/memes.js" />
-        <option value="$PROJECT_DIR$/webserver/routes/UsuariosRoute.js" />
         <option value="$PROJECT_DIR$/webserver/routes/MemesRoute.js" />
-        <option value="$PROJECT_DIR$/webserver/views/configuracoes.ejs" />
+        <option value="$PROJECT_DIR$/webserver/views/landingpage.ejs" />
+        <option value="$PROJECT_DIR$/webserver/views/cadastro.ejs" />
+        <option value="$PROJECT_DIR$/webserver/views/emconstrucao.ejs" />
+        <option value="$PROJECT_DIR$/webserver/views/login.ejs" />
+        <option value="$PROJECT_DIR$/webserver/views/perfilMeme.ejs" />
+        <option value="$PROJECT_DIR$/webserver/views/recuperarSenha.ejs" />
+        <option value="$PROJECT_DIR$/webserver/views/repositorio.ejs" />
+        <option value="$PROJECT_DIR$/webserver/routes/IndexRoute.js" />
         <option value="$PROJECT_DIR$/webserver/static/css/template.css" />
+        <option value="$PROJECT_DIR$/webserver/views/configuracoes.ejs" />
+        <option value="$PROJECT_DIR$/webserver/views/components/headerUsuario/headerUsuario.ejs" />
+        <option value="$PROJECT_DIR$/webserver/views/buscaDeUsuarios.ejs" />
+        <option value="$PROJECT_DIR$/webserver/views/perfil.ejs" />
+        <option value="$PROJECT_DIR$/webserver/routes/UsuariosRoute.js" />
+        <option value="$PROJECT_DIR$/api/routes/usuarios.js" />
       </list>
     </option>
   </component>
@@ -189,7 +200,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -269,7 +279,7 @@
               <item name="webserver" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="header" type="462c0819:PsiDirectoryNode" />
+              <item name="headerUsuario" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="memeIO" type="b2602c69:ProjectViewProjectNode" />
@@ -277,7 +287,7 @@
               <item name="webserver" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="headerAlternative" type="462c0819:PsiDirectoryNode" />
+              <item name="headerVisitante" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="memeIO" type="b2602c69:ProjectViewProjectNode" />
@@ -291,6 +301,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -346,12 +357,13 @@
       <workItem from="1557099237931" duration="5009000" />
       <workItem from="1557109464128" duration="1944000" />
       <workItem from="1557162064609" duration="7317000" />
-      <workItem from="1557169839547" duration="436000" />
+      <workItem from="1557169839547" duration="624000" />
+      <workItem from="1557240223900" duration="7668000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="160882000" />
+    <option name="totallyTimeSpent" value="168738000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -378,7 +390,7 @@
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="TypeScript" order="9" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.34369886" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.33224222" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -429,49 +441,14 @@
     <entry file="file://$PROJECT_DIR$/webserver/static/js/bootstrap.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/webserver/views/cadastro.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="13" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webserver/routes/index.js" />
     <entry file="file://$PROJECT_DIR$/webserver/static/css/landingpage.css">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webserver/views/landingpage.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="77" lean-forward="true" selection-start-line="10" selection-start-column="77" selection-end-line="10" selection-end-column="77" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webserver/views/components/footer/projectDefaultFooter.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="9" column="60" lean-forward="true" selection-start-line="9" selection-start-column="60" selection-end-line="9" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webserver/views/recuperarSenha.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="62">
-          <caret line="9" column="111" lean-forward="true" selection-start-line="9" selection-start-column="111" selection-end-line="9" selection-end-column="111" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webserver/views/buscaDeUsuarios.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="3" column="70" lean-forward="true" selection-start-line="3" selection-start-column="70" selection-end-line="3" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webserver/views/emconstrucao.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="18" selection-end-column="7" />
         </state>
       </provider>
     </entry>
@@ -514,13 +491,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webserver/views/login.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="60" selection-start-line="11" selection-start-column="60" selection-end-line="11" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webserver/WebServer.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
@@ -528,13 +498,6 @@
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webserver/views/perfilMeme.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="46" selection-start-line="14" selection-start-column="46" selection-end-line="14" selection-end-column="46" />
         </state>
       </provider>
     </entry>
@@ -552,22 +515,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webserver/routes/IndexRoute.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webserver/views/components/projectDefaultScripts/projectDefaultScripts.ejs">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webserver/views/perfil.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="14" column="49" lean-forward="true" selection-start-line="14" selection-start-column="49" selection-end-line="14" selection-end-column="49" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webserver/views/components/formAtualizacaoCadastroUsuario/formAtualizacaoCadastroUsuario.ejs">
       <provider selected="true" editor-type-id="text-editor">
@@ -593,13 +542,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/routes/usuarios.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2516">
-          <caret line="148" column="24" selection-start-line="148" selection-start-column="24" selection-end-line="148" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webserver/configs/auth.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="510">
@@ -622,24 +564,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webserver/views/components/header/headerVisitante.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="40" selection-start-line="4" selection-start-column="40" selection-end-line="4" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webserver/views/components/projectDefaultHead/projectDefaultHead.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webserver/views/components/headerAlternative/headerUsuario.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="71" selection-start-line="17" selection-start-column="71" selection-end-line="17" selection-end-column="71" />
         </state>
       </provider>
     </entry>
@@ -652,20 +580,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webserver/views/repositorio.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1156">
-          <caret line="68" column="135" selection-start-line="68" selection-start-column="8" selection-end-line="68" selection-end-column="135" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webserver/views/configuracoes.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2397">
-          <caret line="141" column="87" selection-start-line="141" selection-start-column="87" selection-end-line="141" selection-end-column="87" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webserver/routes/MemesRoute.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3179">
@@ -673,24 +587,131 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webserver/routes/UsuariosRoute.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" selection-start-line="19" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/api/routes/memes.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1105">
-          <caret line="65" column="58" lean-forward="true" selection-start-line="65" selection-start-column="58" selection-end-line="65" selection-end-column="58" />
+          <caret line="65" column="58" selection-start-line="65" selection-start-column="58" selection-end-line="65" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webserver/views/cadastro.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="61" selection-start-line="7" selection-start-column="61" selection-end-line="7" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webserver/views/emconstrucao.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="57" selection-start-line="7" selection-start-column="57" selection-end-line="7" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webserver/views/landingpage.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="61" selection-start-line="6" selection-start-column="61" selection-end-line="6" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webserver/views/login.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="61" selection-start-line="7" selection-start-column="61" selection-end-line="7" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webserver/views/perfilMeme.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="57" selection-start-line="7" selection-start-column="57" selection-end-line="7" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webserver/views/recuperarSenha.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="57" selection-start-line="7" selection-start-column="57" selection-end-line="7" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webserver/views/repositorio.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="57" selection-start-line="8" selection-start-column="57" selection-end-line="8" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webserver/views/components/headerVisitante/headerVisitante.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="40" selection-start-line="4" selection-start-column="40" selection-end-line="4" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webserver/routes/IndexRoute.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="53" selection-start-line="9" selection-start-column="53" selection-end-line="9" selection-end-column="53" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webserver/static/css/template.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="409" column="16" selection-start-line="409" selection-start-column="16" selection-end-line="409" selection-end-column="16" />
+        <state relative-caret-position="189">
+          <caret line="426" column="30" lean-forward="true" selection-start-line="426" selection-start-column="30" selection-end-line="426" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webserver/views/components/headerUsuario/headerUsuario.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="8" column="144" selection-start-line="8" selection-start-column="132" selection-end-line="8" selection-end-column="144" />
+          <folding>
+            <element signature="n#style#0;n#form#0;n#nav#1;n#div#0;n#div#0;n#header#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webserver/views/buscaDeUsuarios.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="254">
+          <caret line="15" column="72" selection-start-line="15" selection-start-column="72" selection-end-line="15" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webserver/views/configuracoes.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="179" column="79" selection-start-line="179" selection-start-column="79" selection-end-line="179" selection-end-column="79" />
+          <folding>
+            <element signature="n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#main#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#main#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#3;n#div#0;n#div#1;n#div#0;n#div#0;n#main#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#div#3;n#div#0;n#div#1;n#div#0;n#div#0;n#main#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webserver/views/perfil.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="139">
+          <caret line="24" column="73" lean-forward="true" selection-start-line="24" selection-start-column="73" selection-end-line="24" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webserver/routes/UsuariosRoute.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2850">
+          <caret line="41" column="85" lean-forward="true" selection-start-line="41" selection-start-column="85" selection-end-line="41" selection-end-column="85" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/routes/usuarios.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="69" column="49" selection-start-line="69" selection-start-column="49" selection-end-line="69" selection-end-column="49" />
         </state>
       </provider>
     </entry>

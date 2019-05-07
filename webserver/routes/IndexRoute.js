@@ -7,7 +7,7 @@ class IndexRoute extends Route {
 
         this.router.get('/', (req, res) => {
             if (req.user){
-                res.redirect('/usuarios/dadospessoais');
+                res.redirect('/usuarios/configuracoes');
             }else{
                 res.render('landingpage.ejs', {});
             }

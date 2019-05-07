@@ -6,7 +6,7 @@
 </head>
 
 <body>
-<% include components/headerUsuario %>
+<% include components/headerUsuario/headerUsuario.ejs %>
 
 <main>
     <div class="container" id="containerDadosPessoais">
@@ -24,7 +24,7 @@
                     <a class="list-group-item list-group-item-action sidebarDiv" data-toggle="list"
                        href="#list-denuncias" role="tab" aria-controls="messages">Denúncias</a>
                     <a class="list-group-item list-group-item-action sidebarDiv" data-toggle="list"
-                       href="#list-usuarios" role="tab" aria-controls="settings">Usuários</a>
+                       href="#list-administracao" role="tab" aria-controls="settings">Administradores</a>
                     <a class="list-group-item list-group-item-action sidebarDiv" data-toggle="list"
                        href="#list-memes" role="tab" aria-controls="settings">Memes</a>
                     <% } %>
@@ -152,9 +152,43 @@
                     <div class="tab-pane fade" style="margin: 30px" id="list-denuncias" role="tabpanel" aria-labelledby="list-denuncias-list">
                         div das denúncias
                     </div>
-                    <!-- DIV DOS USUÁRIOS -->
-                    <div class="tab-pane fade" style="margin: 30px" id="list-usuarios" role="tabpanel" aria-labelledby="list-usuarios-list">
-                        div dos usuários
+                    <!-- DIV DA ADMINISTRAÇÃO -->
+                    <div class="tab-pane fade" style="margin: 30px" id="list-administracao" role="tabpanel" aria-labelledby="list-administracao-list">
+                        <h3>Administradores do sistema</h3>
+                        <div id="divAdministradores" class="container">
+                            <div class="row" style="background-color: #dadada">
+                                <div class="col-sm-4">
+                                    Nome do usuário
+                                </div>
+                                <div class="col-sm-4">
+                                    E-mail do usuário
+                                </div>
+                                <div class="col-sm-4">
+                                    Revogar privilégios
+                                </div>
+                            </div>
+                            <% administradores.forEach(adm => { %>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <%= adm.nome %>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <%= adm.email %>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <form method="post" action="/usuarios/revogarPrivilegios">
+                                            <input type="hidden" name="emailAdm" value="<%= adm.email %>">
+                                            <button type="submit" class="btn btn-memeIO">Revogar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            <% })%>
+                        </div>
+                        <h3>Conceder privilégios de administrador</h3>
+                        <form method="post" action="/usuarios/concederPrivilegios">
+                            <input name="emailUsuario" id="concederPrivilegios" style="width: 40%;" placeholder="E-mail do usuário" required>
+                            <button type="submit" class="btn btn-memeIO">Conceder</button>
+                        </form>
                     </div>
                     <!-- DIV DOS MEMES -->
                     <div class="tab-pane fade" style="margin: 30px" id="list-memes" role="tabpanel" aria-labelledby="list-memes-list">

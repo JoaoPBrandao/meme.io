@@ -4,16 +4,71 @@ const mongoose = require("mongoose");
 const Usuario = require(process.cwd() + "/models/usuarioModel.js");
 
 // Rota usuários:
-router.get('/', async (req, res) => {
-    Usuario.find(req.query, (err, usuarios) => {
-        let auxJSON = JSON.stringify(usuarios);
-        res.status(200).send(auxJSON);
-    })
-    .catch((err) => {
-        console.log(err);
-        res.status(400).send("Erro no processamento.");
+router.get('/buscarUsuario:emailUsuario', async (req, res) => {
+    Usuario.findOne({
+        "email": req.params.emailUsuario
+    }, (err, usuario) => {
+        if (err) {
+            console.log("Erro ao buscar usuário.");
+            res.status(400).send("Erro ao buscar usuário.");
+        }else{
+            res.status(200).send(usuario);
+        }
     });
+});
 
+router.get('/administradores', async (req, res) => {
+    Usuario.find({
+        "adm": 1
+    }, (err, adms) => {
+        if (err){
+            console.log("Erro ao buscar administradores.");
+            res.status(400).send("Erro ao buscar administradores.");
+        }else{
+            console.log("Administradores encontrados com sucesso.");
+            res.status(200).send(adms);
+        }
+    })
+});
+
+router.put('/concederPrivilegios:emailUsuario', (req, res) => {
+    Usuario.updateOne({
+        "email": req.params.emailUsuario
+    }, {
+        adm: 1
+    }, err => {
+        if (err) {
+            console.log("Erro ao conceder privilégios de administrador.");
+            console.log(err.message);
+        }
+    }).then(() => {
+        console.log("Privilégios concedidos com sucesso");
+        res.status(200).send("Privilégios concedidos com sucesso!");
+    })
+    .catch(err => {
+        console.log("Erro ao conceder privilégios.");
+        res.status(400).send("Erro ao conceder privilégios");
+    });
+});
+
+router.put('/revogarPrivilegios:emailUsuario', (req, res) => {
+    Usuario.updateOne({
+        "email": req.params.emailUsuario
+    }, {
+        adm: 0
+    }, err => {
+        if (err) {
+            console.log("Erro ao revogar privilégios de administrador.");
+            console.log(err.message);
+        }
+    }).then(() => {
+        console.log("Privilégios revogados com sucesso");
+        res.status(200).send("Privilégios revogados com sucesso!");
+    })
+        .catch(err => {
+            console.log("Erro ao revogar privilégios.");
+            res.status(400).send("Erro ao revogar privilégios");
+        });
 });
 
 router.get('/id', async (req, res) => {

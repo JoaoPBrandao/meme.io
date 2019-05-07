@@ -8,8 +8,19 @@ const passport = require('passport');
 class UsuariosRoute extends Route {
     constructor(basePath) {
         super('/usuarios');
+        //ROTA QUE LEVA PARA A PÁGINA DE CONFIGURAÇÕES
         this.router.get('/configuracoes',SessionController.authenticationMiddleware(), async (req, res) => {
             let usuario = req.user;
+            //Enviar os administradores para serem exibidos nas partes do administrador
+            let administradores = [];
+            await axios.get("http://localhost" + ":" + "3000" + "/usuarios/administradores")
+                .then(apiResponse => {
+                    administradores = apiResponse.data;
+                    console.log("Administradores encontrados.");
+                })
+                .catch(err => {
+                    console.log("Erro ao buscar administradores na API.");
+                });
             //Enviar os memes para serem exibidos nas partes do administrador
             let memes;
             await axios.get("http://localhost" + ":" + "3000" + "/memes")
@@ -17,29 +28,48 @@ class UsuariosRoute extends Route {
                     memes = apiResponse.data;
                 })
                 .catch(err => console.log("Erro ao buscar memes na API."));
-            res.render('configuracoes.ejs', {usuario: usuario, memes: memes});
+            res.render('configuracoes.ejs', {usuario: usuario, memes: memes, administradores: administradores});
         });
-
+        //ROTA QUE LEVA PARA A PÁGINA DE CADASTRO DO USUÁRIO
         this.router.get('/cadastro', (req, res) => {
             res.render('cadastro.ejs');
         });
-
-        this.router.get('/perfilUsuario',SessionController.authenticationMiddleware(), (req, res) => {
-            let usuario = req.user;
-            res.render('perfil.ejs', usuario);
+        //ROTA QUE LEVA PARA A PÁGINA DE PERFIL DO USUÁRIO
+        this.router.get('/perfilUsuario',SessionController.authenticationMiddleware(), async (req, res) => {
+            let usuario;
+            if (req.query.usuario == "meuPerfil"){
+                usuario = req.user;
+                res.render('perfil.ejs', {usuario: usuario, usuarioSessao: usuario});
+            }else{
+                await axios.get("http://localhost" + ":" + "3000" + "/usuarios/buscarUsuario" + req.query.usuario)
+                    .then(apiResponse => {
+                        console.log("Usuário encontrado com sucesso.");
+                        usuario = apiResponse.data;
+                        res.render('perfil.ejs', {usuario: usuario, usuarioSessao: req.user});
+                    })
+                    .catch(err => {
+                        console.log("Erro ao buscar usuário.");
+                        res.redirect('configuracoes');
+                    });
+            }
         });
-
+        //ROTA QUE REALIZA A BUSCA DOS USUÁRIOS DO SISTEMA
         this.router.get('/buscarUsuarios',SessionController.authenticationMiddleware(), async (req, res) => {
-            let query = req.query.emailUsuario;
-            let usuarios = [];
+            let emailUsuario = req.query.emailUsuario;
+            let usuarioBuscado;
             // TODO: Fazer endpoint na API que busca só por usuários ativos e usá-lo aqui.
-            await axios.get("http://localhost" + ":" + "3000" + "/usuarios?email=" + query)
+            await axios.get("http://localhost" + ":" + "3000" + "/usuarios/buscarUsuario" + emailUsuario)
                 .then(apiResponse => {
-                    usuarios = apiResponse.data;
+                    usuarioBuscado = apiResponse.data;
+                    res.render('buscaDeUsuarios.ejs', {usuarioBuscado: usuarioBuscado});
+                })
+                .catch(err => {
+                    //TODO: RENDER ERROR FLASH MESSAGE
+                    console.log("Erro ao buscar usuário.");
+                    res.render(process.cwd() + '/views/perfil.ejs', {usuario: req.user});
                 });
-            res.render('buscaDeUsuarios.ejs', {usuarios});
         });
-
+        //ROTA QUE CRIA UM NOVO USUÁRIO
         this.router.post('/novoUsuario', async (req,res) => {
             let auxUsuario = {};
             let erros = [];
@@ -83,7 +113,7 @@ class UsuariosRoute extends Route {
                     email: auxUsuario.email});
             }
         });
-
+        //ROTA QUE DESATIVA USUÁRIOS
         this.router.post('/desativarUsuario',SessionController.authenticationMiddleware(), async (req,res) => {
             const senhaAtual = req.body.senhaAtualUsuario;
             const match = await bcrypt.compare(senhaAtual, req.user.senha);
@@ -103,7 +133,7 @@ class UsuariosRoute extends Route {
                 res.redirect('configuracoes');
             }
         });
-
+        //ROTA QUE ATUALIZA O NOME DE UM USUÁRIO
         this.router.post('/atualizarNome', SessionController.authenticationMiddleware(), async (req,res) => {
             const nome = req.body.novoNome;
             if (UsuariosController.validarNome(nome)){
@@ -121,7 +151,7 @@ class UsuariosRoute extends Route {
                 //TODO: DISPLAY ERROR FLASH MESSAGE
             }
         });
-
+        //ROTA QUE ATUALIZA O E-MAIL DE UM USUÁRIO
         this.router.post('/atualizarEmail', SessionController.authenticationMiddleware(), async (req,res) => {
             const email = req.body.novoEmail;
             if (UsuariosController.verificarEmailUnico(email) && UsuariosController.validarEmail(email)){
@@ -139,7 +169,7 @@ class UsuariosRoute extends Route {
                 //TODO: DISPLAY ERROR FLASH MESSAGE
             }
         });
-
+        //ROTA QUE ATUALIZA A SENHA DE UM USUÁRIO
         this.router.post('/atualizarSenha', SessionController.authenticationMiddleware(), async (req,res) => {
             const senhaAtual = req.body.senhaAtualUsuario;
             let novaSenha = req.body.novaSenhaUsuario;
@@ -162,7 +192,36 @@ class UsuariosRoute extends Route {
                 //TODO: DISPLAY ERROR FLASH MESSAGE
             }
         });
+        //ROTA QUE CONCEDE PRIVILÉGIOS DE ADMINISTRADOR A UM USUÁRIO
+        this.router.post('/concederPrivilegios', async (req, res) => {
+                await axios.put("http://localhost" + ":" + "3000" + "/usuarios" + "/concederPrivilegios" + req.body.emailUsuario)
+                    .then(apiResponse => {
+                        //TODO: RENDER SUCCESS FLASH MESSAGE
+                        console.log("Privilégios concedidos com sucesso!");
+                        res.redirect('configuracoes');
+                    })
+                    .catch(err => {
+                        //TODO: RENDER ERROR FLASH MESSAGE
+                        console.log("Erro ao conceder privilégios!");
+                        console.log(err.message);
+                        res.redirect('configuracoes');
+                    })
+        });
 
+        //ROTA QUE REVOGA PRIVILÉGIOS DE ADMINISTRADOR DE UM USUÁRIO
+        this.router.post('/revogarPrivilegios', async (req, res) => {
+            await axios.put("http://localhost" + ":" + "3000" + "/usuarios" + "/revogarPrivilegios" + req.body.emailAdm)
+                .then(apiResponse => {
+                    console.log("Privilégios revogados com sucesso.");
+                    res.redirect('configuracoes');
+                })
+                .catch(err => {
+                    console.log("Erro ao revogar privilégios.");
+                    console.log(err.message);
+                    res.redirect('configuracoes');
+                });
+        })
+        //ROTA QUE REALIZA O LOGIN DE UM USUÁRIO
         this.router.post('/logarUsuario', passport.authenticate('local'), (req, res) =>{
             if (req.user.status == 1){
                 console.log("entrou no if");
@@ -175,8 +234,8 @@ class UsuariosRoute extends Route {
                     })
             }
             res.redirect('perfilUsuario');
-        })
-
+        });
+        //ROTA QUE REALIZA O LOGOUT DE UM USUÁRIO
         this.router.get('/logout', (req, res) =>{
             req.logout();
             res.redirect('/');

@@ -14,7 +14,10 @@
                 </div>
             </form>
             <nav id="nav2" class="nav">
-                <a class="btn btn-memeIO" href="/usuarios/perfilUsuario">Perfil</a>
+                <form  style="display:inline-block;" method="get" action="/usuarios/perfilUsuario">
+                    <input type="hidden" value="meuPerfil" name="usuario">
+                    <button type="submit" class="btn btn-memeIO">Perfil</button>
+                </form>
                 <a class="btn btn-memeIO" href="/usuarios/configuracoes"><i class="fas fa-user-cog"></i></a>
                 <a class="btn btn-memeIO" href="/usuarios/logout"><i class="fas fa-sign-out-alt"></i></a>
             </nav>

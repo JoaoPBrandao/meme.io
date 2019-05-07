@@ -6,9 +6,9 @@
 </head>
 <body>
 <% if (usuario) { %>
-    <% include components/headerUsuario %>
+    <% include components/headerUsuario/headerUsuario.ejs %>
 <% }else{ %>
-    <% include components/headerVisitante %>
+    <% include components/headerVisitante/headerVisitante.ejs %>
 <% } %>
 <div class="container cardWrapper">
     <div class="container d-flex justify-content-around flex-wrap containerMemes">

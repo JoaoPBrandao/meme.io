@@ -7,6 +7,7 @@ body{
     margin: auto;
     padding-bottom: 270px;
     position: relative;
+    word-wrap: break-word;
 }
 
 .card-body{
@@ -277,7 +278,7 @@ CSS PARA A PÁGINA DE REPOSITÓRIO DE MEMES
     outline: none;
 }
 
-.memeCategory, .updateAccount{
+.memeCategory, .updateAccount, #concederPrivilegios{
     width: 70%;
     padding: .375rem .75rem;
     font-size: 1rem;
@@ -408,4 +409,21 @@ CSS PARA A PÁGINA DE CONFIGURAÇÕES
     flex-direction: row;
     flex-wrap: wrap;
     height: 100%;
+}
+
+#divAdministradores{
+    background-color: #ededed;
+    height: 250px;
+    border-radius: 10px;
+    border: 1px solid #b5b5b5;
+    overflow: auto;
+    padding: 0px;
+    margin-bottom: 20px;
+}
+
+#divAdministradores .row{
+    margin:0;
+    padding: 5px;
+    background-color: #e6e6e6;
+    border: 1px solid #b5b5b5;
 }

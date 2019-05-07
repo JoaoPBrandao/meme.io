@@ -5,7 +5,7 @@
     <title>Perfil</title>
 </head>
 <body>
-<% include components/headerUsuario %>
+<% include components/headerUsuario/headerUsuario.ejs %>
 
 <main>
     <div class="container">
@@ -20,6 +20,19 @@
                     </div>
                     <div class="row">
                         <h3>Outras informações</h3>
+                        <% if (usuarioSessao.adm == 1) { %>
+                            <% if (usuario.adm == 1) { %>
+                                <form method="post" action="/usuarios/revogarPrivilegios">
+                                    <input name="emailAdm" type="hidden" value="<%= usuario.email %>">
+                                    <button type="submit" class="btn btn-memeIO">Revogar privilégios</button>
+                                </form>
+                            <% }else{ %>
+                                    <form method="post" action="/usuarios/concederPrivilegios">
+                                        <input name="emailUsuario" type="hidden" value="<%= usuario.email %>">
+                                        <button type="submit" class="btn btn-memeIO">Conceder privilégios</button>
+                                    </form>
+                            <% } %>
+                        <% }%>
                     </div>
                 </div>
             </div>

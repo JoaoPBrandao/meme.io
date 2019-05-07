@@ -5,18 +5,19 @@
     <title>Perfil</title>
 </head>
 <body>
-<% include components/headerUsuario %>
+<% include components/headerUsuario/headerUsuario.ejs %>
 <div class="container d-flex justify-content-around flex-wrap containerMemes" style="margin: 10px auto;">
-    <% if(usuarios.length > 0) { %>
-        <% usuarios.forEach((usuario) => { %>
+    <% if(usuarioBuscado) { %>
             <div class="card" style="width: 18rem; margin: 10px">
-                <img class="card-img-top" src="../media/profile-placeholder.png" alt="Card image cap">
+                <img class="card-img-top" src="<%= usuarioBuscado.foto %>" alt="Card image cap">
                 <div class="card-body">
-                    <h5 class="card-title"><%= usuario.nome %></h5>
-                    <a href="/emconstrucao" class="btn btn-primary">Visitar Perfil</a>
+                    <h5 class="card-title"><%= usuarioBuscado.nome %></h5>
+                    <form method="get" action="/usuarios/perfilUsuario">
+                        <input type="hidden" value="<%= usuarioBuscado.email %>" name="usuario">
+                        <button type="submit" class="btn btn-memeIO">Acessar perfil</button>
+                    </form>
                 </div>
             </div>
-        <% });%>
     <% } else { %>
         <h4 style="margin: auto;">Nenhum usuário encontrado!</h4>
     <% } %>
