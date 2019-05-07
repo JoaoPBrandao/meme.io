@@ -16,7 +16,6 @@ class UsuariosRoute extends Route {
             await axios.get("http://localhost" + ":" + "3000" + "/usuarios/administradores")
                 .then(apiResponse => {
                     administradores = apiResponse.data;
-                    console.log("Administradores encontrados.");
                 })
                 .catch(err => {
                     console.log("Erro ao buscar administradores na API.");
@@ -37,15 +36,15 @@ class UsuariosRoute extends Route {
         //ROTA QUE LEVA PARA A PÁGINA DE PERFIL DO USUÁRIO
         this.router.get('/perfilUsuario',SessionController.authenticationMiddleware(), async (req, res) => {
             let usuario;
-            if (req.query.usuario == "meuPerfil"){
+            if (req.query.usuario == req.user.email){
                 usuario = req.user;
-                res.render('perfil.ejs', {usuario: usuario, usuarioSessao: usuario});
+                res.render('perfil.ejs', {usuarioVisitado: usuario, usuarioSessao: usuario});
             }else{
                 await axios.get("http://localhost" + ":" + "3000" + "/usuarios/buscarUsuario" + req.query.usuario)
                     .then(apiResponse => {
                         console.log("Usuário encontrado com sucesso.");
                         usuario = apiResponse.data;
-                        res.render('perfil.ejs', {usuario: usuario, usuarioSessao: req.user});
+                        res.render('perfil.ejs', {usuarioVisitado: usuario, usuario: req.user});
                     })
                     .catch(err => {
                         console.log("Erro ao buscar usuário.");
@@ -233,7 +232,7 @@ class UsuariosRoute extends Route {
                         console.log("Erro: " + err.message);
                     })
             }
-            res.redirect('perfilUsuario');
+            res.redirect('/memes/');
         });
         //ROTA QUE REALIZA O LOGOUT DE UM USUÁRIO
         this.router.get('/logout', (req, res) =>{

@@ -40,7 +40,7 @@ class MemesRoute extends Route {
             res.render('repositorio.ejs', {memes: memesAtivos, usuario: usuario});
         });
 
-        this.router.post('/novoMeme', SessionController.authenticationMiddleware(),upload.single('arquivoEnviado'), (req, res) => {
+        this.router.post('/novoMeme', SessionController.authenticationMiddleware(), upload.single('arquivoEnviado'), (req, res) => {
             let meme = {};
             let categorias = req.body.categorias;
             //Tratamento mínimo das categorias
