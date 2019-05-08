@@ -132,6 +132,18 @@ class UsuariosRoute extends Route {
                 res.redirect('configuracoes');
             }
         });
+        //ROTA QUE BANE UM USUÁRIO
+        this.router.post('/banirUsuario', async (req, res) => {
+            const emailUsuario = req.body.emailUsuario;
+            await axios.put("http://localhost" + ":" + "3000" + "/usuarios" + "/banirUsuario" + emailUsuario)
+                .then(apiResponse => {
+                    res.redirect('configuracoes');
+                })
+                .catch(err => {
+                    console.log("Erro ao banir usuário");
+                    res.redirect('configuracoes');
+                });
+        });
         //ROTA QUE ATUALIZA O NOME DE UM USUÁRIO
         this.router.post('/atualizarNome', SessionController.authenticationMiddleware(), async (req,res) => {
             const nome = req.body.novoNome;

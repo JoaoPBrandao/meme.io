@@ -18,10 +18,9 @@
                     <h1><%= usuarioVisitado.nome%></h1>
                     <h3><%= usuarioVisitado.email %></h3>
                     <% if (usuario.adm == 1) { %>
-                        <!-- ALTERAR O ACTION DO FORM DE BANIR USUÁRIO -->
-                        <form style="display: inline-block; margin: 3px;" method="post" action="/">
-                            <input type="hidden" value="<%= usuarioVisitado.email %>">
-                            <button type="button" class="btn btn-memeIO">Banir usuário</button>
+                        <form style="display: inline-block; margin: 3px;" method="post" action="/usuarios/banirUsuario">
+                            <input type="hidden" name="emailUsuario" value="<%= usuarioVisitado.email %>">
+                            <button type="submit" class="btn btn-memeIO">Banir usuário</button>
                         </form>
                         <% if (usuarioVisitado.adm == 1) { %>
                             <form style="display: inline-block; margin: 3px;" method="post" action="/usuarios/revogarPrivilegios">

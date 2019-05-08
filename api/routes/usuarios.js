@@ -3,10 +3,12 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Usuario = require(process.cwd() + "/models/usuarioModel.js");
 
-// Rota usuários:
+//ROTA QUE REALIZA A BUSCA DOS USUÁRIOS NO SISTEMA
+//TODO: FAZER COM QUE A ROTA FUNCIONE COM O NOME TAMBÉM
 router.get('/buscarUsuario:emailUsuario', async (req, res) => {
     Usuario.findOne({
-        "email": req.params.emailUsuario
+        "email": req.params.emailUsuario,
+        "status": 2
     }, (err, usuario) => {
         if (err) {
             console.log("Erro ao buscar usuário.");
@@ -68,6 +70,22 @@ router.put('/revogarPrivilegios:emailUsuario', (req, res) => {
         .catch(err => {
             console.log("Erro ao revogar privilégios.");
             res.status(400).send("Erro ao revogar privilégios");
+        });
+});
+
+router.put('/banirUsuario:emailUsuario', (req, res) => {
+    Usuario.updateOne({"email": req.params.emailUsuario}, {status: 0}, err => {
+        if (err){
+            console.log("Erro ao banir usuário.");
+            res.status(400).send("Erro ao banir usuário.");
+        };
+    })
+        .then(() => {
+            res.status(200).send("Usuário banido com sucesso.");
+        })
+        .catch(err => {
+            console.log("Erro ao banir usuário.");
+            res.status(400).send("Erro ao banir usuário.");
         });
 });
 
