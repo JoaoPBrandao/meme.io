@@ -7,8 +7,7 @@ const Usuario = require(process.cwd() + "/models/usuarioModel.js");
 //TODO: FAZER COM QUE A ROTA FUNCIONE COM O NOME TAMBÉM
 router.get('/buscarUsuario:emailUsuario', async (req, res) => {
     Usuario.findOne({
-        "email": req.params.emailUsuario,
-        "status": 2
+        "email": req.params.emailUsuario
     }, (err, usuario) => {
         if (err) {
             console.log("Erro ao buscar usuário.");
