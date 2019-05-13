@@ -99,7 +99,7 @@ class MemesRoute extends Route {
 
         this.router.post('/deletarMeme', SessionController.authenticationMiddleware(),(req, res) => {
             //Enviar a requisição de delete do meme para a API para que seja deletado do BD
-            axios.delete("http://localhost" + ":" + "3000" + "/memes/" + req.body.memeID)
+            axios.delete("http://localhost" + ":" + "3000" + "/memes/deletarMeme" + req.body.memeID)
                 .then((apiResponse) => {
                     console.log("Resposta da API: " + apiResponse.status);
                     //Excluir a foto armazenada no Imgur
@@ -133,7 +133,7 @@ class MemesRoute extends Route {
             res.render('perfilMeme.ejs', {meme});
         })
 
-        this.router.post('/atualizarMeme', (req, res) => {
+        this.router.post('/criarSugestao', (req, res) => {
             let novoCategorias = req.body.novasCategorias;
             //Tratamento mínimo das categorias
             novoCategorias = novoCategorias.replace(/ /g, '');
@@ -144,7 +144,7 @@ class MemesRoute extends Route {
             } else {
                 novoCategorias = novoCategorias.split(";");
                 //Enviar para a API para que o meme seja atualizado no BD
-                axios.put("http://localhost" + ":" + "3000" + "/memes/alterarMeme" + req.body.memeID, novoCategorias)
+                axios.post("http://localhost" + ":" + "3000" + "/memes/sugestaoAlteracao" + req.body.memeID, novoCategorias)
                     .then(apiResponse => {
                         res.redirect('/memes/'); // TODO: RENDER success FLASH MESSAGE
                     }).catch(err => {
@@ -152,6 +152,38 @@ class MemesRoute extends Route {
                         res.redirect('/memes/'); // TODO: RENDER failure FLASH MESSAGE
                 });
             }
+        });
+
+        this.router.post('/validarSugestao', (req, res) => {
+            axios.put("http://localhost:3000/memes/validarSugestao" + req.body.idSugestao)
+                .then(apiResponse => {
+                    if (apiResponse.status == 400){
+                        console.log("Erro ao validar a sugestão na API.");
+                    }else{
+                        console.log("Sugestão validada com sucesso.");
+                    };
+                    res.redirect('../usuarios/configuracoes');
+                })
+                .catch(err => {
+                    console.log("Erro ao tentar validar a sugestão.");
+                    res.redirect('../usuarios/configuracoes');
+                })
+        });
+
+        this.router.post('/deletarSugestao', (req, res) => {
+           axios.delete("http://localhost:3000/memes/deletarSugestao" + req.body.idSugestao)
+               .then(apiResponse => {
+                   if (apiResponse.status == 400){
+                       console.log("Erro ao deletar a sugestão na API.");
+                   }else{
+                       console.log("Sugestão deletada com sucesso.");
+                   };
+                   res.redirect('../usuarios/configuracoes');
+               })
+               .catch(err => {
+                   console.log("Erro ao tentar deletar a sugestão.");
+                   res.redirect('../usuarios/configuracoes');
+               });
         });
 
         this.router.post('/buscarMeme', (req, res) => {

@@ -399,11 +399,11 @@ CSS PARA A PÁGINA DE CONFIGURAÇÕES
 }
 
 #nav-tabContent2{
-    height: 380px;
+    height: 450px;
     overflow: auto;
 }
 
-#list-memesPendentes{
+#divMemesPendentes, #divSugestoesPendentes{
     justify-content: space-evenly;
     display: flex;
     flex-direction: row;

@@ -27,7 +27,13 @@ class UsuariosRoute extends Route {
                     memes = apiResponse.data;
                 })
                 .catch(err => console.log("Erro ao buscar memes na API."));
-            res.render('configuracoes.ejs', {usuario: usuario, memes: memes, administradores: administradores});
+            let sugestoes;
+            await axios.get("http://localhost" + ":" + "3000" + "/memes/sugestoes")
+                .then(apiResponse => {
+                    sugestoes = apiResponse.data;
+                })
+                .catch(err => console.log("Erro ao buscar sugestoes na API."));
+            res.render('configuracoes.ejs', {usuario: usuario, memes: memes, administradores: administradores, sugestoes: sugestoes});
         });
         //ROTA QUE LEVA PARA A PÁGINA DE CADASTRO DO USUÁRIO
         this.router.get('/cadastro', (req, res) => {
@@ -60,6 +66,7 @@ class UsuariosRoute extends Route {
             await axios.get("http://localhost" + ":" + "3000" + "/usuarios/buscarUsuario" + emailUsuario)
                 .then(apiResponse => {
                     usuarioBuscado = apiResponse.data;
+                    console.log(usuarioBuscado);
                     res.render('buscaDeUsuarios.ejs', {usuarioBuscado: usuarioBuscado});
                 })
                 .catch(err => {

@@ -4,8 +4,8 @@ const mongoose = require("mongoose");
 const Usuario = require(process.cwd() + "/models/usuarioModel.js");
 
 //ROTA QUE REALIZA A BUSCA DOS USUÁRIOS NO SISTEMA
-//TODO: FAZER COM QUE A ROTA FUNCIONE COM O NOME TAMBÉM
 router.get('/buscarUsuario:emailUsuario', async (req, res) => {
+    console.log("entrou na rota errada");
     Usuario.findOne({
         "email": req.params.emailUsuario
     }, (err, usuario) => {

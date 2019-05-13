@@ -52,7 +52,7 @@
                             <i class="fas fa-edit"></i>
                         </button>
                         <div id="<%= meme._id %>" class="row collapse" style="margin: 5px 0px; border-top: 1px solid #dadada; padding: 5px 0px;">
-                            <form class="" method="post" action="/memes/atualizarMeme" style="display: block;">
+                            <form class="" method="post" action="/memes/criarSugestao" style="display: block;">
                                 <!-- Input invisível que vai armazenar o ID do meme para fazer as alterações -->
                                 <input name="memeID" type="hidden" value="<%= meme._id %>">
                                 <input name="novasCategorias" type="text" class="memeCategory" placeholder="Novas categorias" style="width: 179px" required>

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require("mongoose"); //Utilizamos o Mongoose para fazer a integração com o MongoDB
 const Meme = require(process.cwd() + "/models/memeModel.js"); //Importando o modelo utilizado para o documento de Memes no BD
+const Sugestao = require(process.cwd() + "/models/sugestaoModel.js"); //Importando o modelo utilizado para o documento de Sugestões no BD
 
 // Rota memes:
 router.post('/', (req, res) => {
@@ -42,7 +43,7 @@ router.get('/id=:memeID', (req, res) => {
         })
 });
 
-router.delete('/:idMeme', async (req, res) => {
+router.delete('/deletarMeme:idMeme', async (req, res) => {
     console.log("Requisição de delete do meme recebida.");
     let meme= {};
     await Meme.findById(req.params.idMeme, (err, res) =>{
@@ -62,21 +63,61 @@ router.delete('/:idMeme', async (req, res) => {
     })
 });
 
-router.put('/alterarMeme:idMeme', (req, res) => {
-    console.log("Requisição para alterar meme recebida.");
-    Meme.updateOne({
-        "_id": req.params.idMeme
-    }, {
-        categorias: req.body
-    }, err => {
-        if (err) console.log("Erro no update do meme: " + err)
-    }).then(() => {
-        console.log("Meme atualizado com sucesso!");
-        res.status(200).send("Meme atualizado com sucesso!");
-    }).catch(err => {
-        console.log("Erro ao atualizar meme: " + err);
-        res.status(400).send("Erro ao atualizar meme: " + err);
+router.post('/sugestaoAlteracao:idMeme', (req, res) => {
+    console.log("Requisição para criar sugestão recebida.");
+    const sugestao = new Sugestao({idMeme: req.params.idMeme, categorias: req.body});
+    sugestao.save()
+        .then(() => {
+            res.status(200).send("Sugestão salva com sucesso.");
+        })
+        .catch(err => {
+            res.status(400).send("Erro ao salvar sugestão.");
+        });
+});
+
+router.get('/sugestoes', (req, res) => {
+    Sugestao.find({}, (err, sugestoes) => {
+        res.status(200).send(sugestoes);
     })
+        .catch(err => {
+            console.log("Erro ao buscar as sugestoes do BD:" + err);
+            res.status(400).send("Erro ao buscar as sugestoes do BD!");
+        });
+});
+
+router.put('/validarSugestao:idSugestao', async (req, res) => {
+    const sugestaoEncontrada = await Sugestao.findById(req.params.idSugestao)
+    const memeEncontrado = await Meme.findById(sugestaoEncontrada.idMeme);
+    console.log(sugestaoEncontrada);
+    let novasCategorias = [];
+    memeEncontrado.categorias.forEach(categoria => {
+        novasCategorias.push(categoria);
+    });
+    sugestaoEncontrada.categorias.forEach(categoria => {
+        novasCategorias.push(categoria);
+    });
+    Meme.updateOne({"_id": memeEncontrado._id}, {"categorias": novasCategorias})
+       .then()
+       .catch(err => {
+           res.status(400).send("Erro ao alterar meme.");
+       });
+    Sugestao.deleteOne({"_id": sugestaoEncontrada._id})
+        .then(() => {
+            res.status(200).send("Meme alterado e Sugestão deletada com sucesso.");
+        })
+        .catch(err => {
+            res.status(400).send("Meme alterado porém erro ao deletar sugestão.");
+        });
+});
+
+router.delete('/deletarSugestao:idSugestao', (req, res) => {
+    Sugestao.deleteOne({"_id": req.params.idSugestao})
+        .then(() => {
+            res.status(200).send("Sugestão deletada com sucesso.");
+        })
+        .catch(err => {
+            res.status(400).send("Erro ao deletar sugestão.");
+        });
 });
 
 router.get('/buscarMemes', (req, res) => {

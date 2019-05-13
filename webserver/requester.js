@@ -14,6 +14,7 @@ axios.post('https://api.imgur.com/3/upload', {
     }).catch((err) =>{
         console.log(err);
 });
+
 // axios.put('http://localhost:8080/usuarios/atualizarUsuario', {
 //     novoNomeUsuario: 'Leonardo de Lanna Ferraz',
 //     novaSenhaUsuario: 'Leonardo1528',

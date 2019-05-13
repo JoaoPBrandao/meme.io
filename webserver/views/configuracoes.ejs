@@ -109,7 +109,8 @@
                                 </a>
                             </div>
                             <div class="tab-content" id="nav-tabContent2">
-                                <div class="tab-pane fade show active" id="list-memesPendentes" role="tabpanel" aria-labelledby="list-memesPendentes-list">
+                                <div class="tab-pane fade show active" id="list-memesPendentes" style="height: 100%" role="tabpanel" aria-labelledby="list-memesPendentes-list">
+                                    <div id="divMemesPendentes">
                                     <% let memesPendentes = [] %>
                                     <% memes.forEach(meme => {if (meme.status == 0) { memesPendentes.push(meme); } }) %>
                                     <% if(memesPendentes.length > 0) { %>
@@ -141,9 +142,47 @@
                                     <% }else {%>
                                         <h4 style="margin: auto;">Nenhum meme pendente!</h4>
                                     <% } %>
+                                    </div>
                                 </div>
-                                <div class="tab-pane fade" id="list-sugestoesAlteracoes" role="tabpanel">
-                                    div das sugestoes de alteracoes
+                                <div class="tab-pane fade" id="list-sugestoesAlteracoes" style="height: 100%" role="tabpanel">
+                                    <div id="divSugestoesPendentes">
+                                        <% if(sugestoes.length > 0) { %>
+                                            <% sugestoes.forEach((sugestao) => { %>
+                                            <% let memeSugestao; %>
+                                                <% memes.forEach(meme => {if (sugestao.idMeme == meme._id){memeSugestao = meme}}) %>
+                                                <div class="card memeCard" style="width: 18rem; margin: 10px">
+                                                    <img class="card-img-top" src=<%= memeSugestao.urlImgur%> alt="Imagem do meme">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Categorias Antigas</h5>
+                                                        <p class="card-text">
+                                                            <% memeSugestao.categorias.forEach((categoria) => { %>
+                                                                <span class="categoria">#<%= categoria %></span>
+                                                            <% });%>
+                                                        </p>
+                                                        <h5 class="card-title">Categorias Adicionadas</h5>
+                                                        <p class="card-text">
+                                                            <% sugestao.categorias.forEach((categoria) => { %>
+                                                                <span class="categoria">#<%= categoria %></span>
+                                                            <% });%>
+                                                        </p>
+                                                        <form method="post" action="/memes/validarSugestao" style="display: inline-block;">
+                                                            <input name="idSugestao" type="hidden" value="<%= sugestao._id %>">
+                                                            <button type="submit" class="btn btn-memeIO">
+                                                                <i class="fas fa-check"></i>
+                                                            </button>
+                                                        </form>
+                                                        <form method="post" action="/memes/deletarSugestao" style="display: inline-block;">
+                                                            <!-- Input invisível que vai armazenar o ID do meme para fazer a exclusão -->
+                                                            <input name="idSugestao" type="hidden" value="<%= sugestao._id %>">
+                                                            <button type="submit" class="btn btn-memeIO"><i class="fas fa-trash-alt"></i></button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            <% });%>
+                                        <% }else {%>
+                                            <h4 style="margin: auto;">Nenhuma sugestão pendente!</h4>
+                                        <% } %>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -189,10 +228,6 @@
                             <input name="emailUsuario" id="concederPrivilegios" style="width: 40%;" placeholder="E-mail do usuário" required>
                             <button type="submit" class="btn btn-memeIO">Conceder</button>
                         </form>
-                    </div>
-                    <!-- DIV DOS MEMES -->
-                    <div class="tab-pane fade" style="margin: 30px" id="list-memes" role="tabpanel" aria-labelledby="list-memes-list">
-                        div dos memes
                     </div>
                 </div>
             </div>
