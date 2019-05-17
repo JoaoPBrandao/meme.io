@@ -239,7 +239,7 @@ class UsuariosRoute extends Route {
                 });
         })
         //ROTA QUE REALIZA O LOGIN DE UM USUÁRIO
-        this.router.post('/logarUsuario', passport.authenticate('local'), (req, res) =>{
+        this.router.post('/logarUsuario', passport.authenticate('local',{ failureRedirect: '/'}), (req, res) =>{
             if (req.user.status == 1){
                 console.log("entrou no if");
                 axios.put("http://localhost" + ":" + "3000" + "/usuarios" + "/reativarUsuario" + req.user._id)
