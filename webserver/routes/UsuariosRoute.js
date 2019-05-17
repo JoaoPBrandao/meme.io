@@ -66,7 +66,6 @@ class UsuariosRoute extends Route {
             await axios.get("http://localhost" + ":" + "3000" + "/usuarios/buscarUsuario" + emailUsuario)
                 .then(apiResponse => {
                     usuarioBuscado = apiResponse.data;
-                    console.log(usuarioBuscado);
                     res.render('buscaDeUsuarios.ejs', {usuarioBuscado: usuarioBuscado});
                 })
                 .catch(err => {

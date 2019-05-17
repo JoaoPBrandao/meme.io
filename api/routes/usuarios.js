@@ -5,7 +5,6 @@ const Usuario = require(process.cwd() + "/models/usuarioModel.js");
 
 //ROTA QUE REALIZA A BUSCA DOS USUÁRIOS NO SISTEMA
 router.get('/buscarUsuario:emailUsuario', async (req, res) => {
-    console.log("entrou na rota errada");
     Usuario.findOne({
         "email": req.params.emailUsuario
     }, (err, usuario) => {
@@ -26,7 +25,6 @@ router.get('/administradores', async (req, res) => {
             console.log("Erro ao buscar administradores.");
             res.status(400).send("Erro ao buscar administradores.");
         }else{
-            console.log("Administradores encontrados com sucesso.");
             res.status(200).send(adms);
         }
     })
