@@ -70,11 +70,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/webserver/routes/UsuariosRoute.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2854">
-              <caret line="68" selection-start-line="68" selection-end-line="68" />
+            <state relative-caret-position="1292">
+              <caret line="76" column="23" selection-start-line="76" selection-start-column="19" selection-end-line="76" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -88,10 +88,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api/routes/usuarios.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
+            <state relative-caret-position="17">
               <caret line="27" selection-start-line="27" selection-end-line="27" />
             </state>
           </provider>
@@ -117,8 +117,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>access</find>
-      <find>cadastro</find>
       <find>memeCate</find>
       <find>input</find>
       <find>console</find>
@@ -147,6 +145,8 @@
       <find>delete</find>
       <find>adminis</find>
       <find>console.log</find>
+      <find>cadas</find>
+      <find>cria</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -384,12 +384,14 @@
       <workItem from="1557768086581" duration="8957000" />
       <workItem from="1557941969832" duration="44000" />
       <workItem from="1558106854554" duration="907000" />
-      <workItem from="1558117602496" duration="691000" />
+      <workItem from="1558117602496" duration="1641000" />
+      <workItem from="1558130225882" duration="1291000" />
+      <workItem from="1558540096752" duration="599000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="185943000" />
+    <option name="totallyTimeSpent" value="188783000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -711,17 +713,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/webserver/routes/UsuariosRoute.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1292">
+          <caret line="76" column="23" selection-start-line="76" selection-start-column="19" selection-end-line="76" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/webserver/views/perfil.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
           <caret line="20" column="118" lean-forward="true" selection-start-line="20" selection-start-column="118" selection-end-line="20" selection-end-column="118" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/routes/usuarios.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="27" selection-start-line="27" selection-end-line="27" />
         </state>
       </provider>
     </entry>
@@ -732,10 +734,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webserver/routes/UsuariosRoute.js">
+    <entry file="file://$PROJECT_DIR$/api/routes/usuarios.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2854">
-          <caret line="68" selection-start-line="68" selection-end-line="68" />
+        <state relative-caret-position="17">
+          <caret line="27" selection-start-line="27" selection-end-line="27" />
         </state>
       </provider>
     </entry>
