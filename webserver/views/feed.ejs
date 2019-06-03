@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+    <% include components/projectDefaultHead/projectDefaultHead.ejs %>
+    <title>Página Inicial</title>
+</head>
+<body>
+    <% include components/headerUsuario/headerUsuario.ejs %>
+
+    <div class="container">
+        <div id="criarPublicação" class="">
+            <div class="row" style="margin: 10px;">
+                <div class="col-sm-2" style="display: flex; justify-content: center">
+                    <img src="<%= user.foto %>" style="border-radius: 70px; height: 100%; width: 100%; min-width: 50px; max-width: 90px">
+                </div>
+                <div class="col-sm-10" id="criarPublicaçãoInputDiv">
+                    <form method="post" enctype="multipart/form-data" action="/posts/createPost">
+                        <input type="hidden" id="memeID" name="memeID" value="0" required>
+                        <input id="criarPublicaçãoInput" name="conteudoPost" type="text" placeholder="Faça seus amigos rirem!">
+                        <div style="margin-bottom: 10px; display: flex; justify-content: space-between" id="opçõesPublicação">
+                            <div class="d-flex">
+                                <label data-toggle="tooltip" data-placement="bottom" title="Adicionar foto" id="labelInput" for="input-file">
+                                    <i class="fas fa-image fa-2x" style="color: #bb5342;"></i>
+                                </label>
+                                <input name="arquivoEnviado" accept="image/png, image/jpeg, image/jpg, image/gif" id="input-file" type="file" style="display: none" required>
+                                <button type="button" style="margin-left: 10px;" class="btn btn-memeIO" data-toggle="modal" data-target="#associarMeme">Associar a um meme</button>
+                            </div>
+                        <div>
+                        <button type="submit" class="btn-memeIO btn">Publicar</button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <div id="feed" class="">
+            <!-- BOTÃO PARA TESTAR SE O DELETE DO POST TÁ FUNCIONANDO
+             <form method="post" action="posts/deletePost">
+                <input name="postID" type="hidden" value="5cf45937967b4e19c8779c51">
+                <button>deletar</button>
+            </form>
+            -->
+        </div>
+    </div>
+
+
+    <!-- MODAL PARA O FORMULÁRIO DE ASSOCIAR MEME À PUBLICAÇÃO -->
+    <div class="modal fade" id="associarMeme" tabindex="-1" role="dialog" aria-labelledby="modalAssociarMeme" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Associar meme</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input id="memeSearch" name="searchQuery" type="text" placeholder="Categoria 1; Categoria 2..." aria-label="Insira uma categoria" required>
+                    <button class="btn btn-memeIO" type="submit" style="margin-left: 5px;">Pesquisar</button>
+                    <div id="associarMemeSearch" class="d-flex flex-wrap" style="padding: 10px; height: 300px; overflow: auto; margin-top: 5px;">
+                        <% memes.forEach(meme => { %>
+                            <img data-idMeme="<%= meme._id %>" onclick="associarMeme(this)" data-dismiss="modal" style="cursor:pointer;" class="memeImage" src="<%= meme.urlImgur %>">
+                        <% }); %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <% include components/footer/projectDefaultFooter.ejs %>
+    <% include components/projectDefaultScripts/projectDefaultScripts.ejs %>
+</body>
+</html>

@@ -250,7 +250,7 @@ class UsuariosRoute extends Route {
                         console.log("Erro: " + err.message);
                     })
             }
-            res.redirect('/memes/');
+            res.redirect('/');
         });
         //ROTA QUE REALIZA O LOGOUT DE UM USUÁRIO
         this.router.get('/logout', (req, res) =>{

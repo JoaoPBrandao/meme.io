@@ -111,6 +111,18 @@ class MemesRoute extends Route {
                         .catch(err => {
                             console.log("Erro ao excluir a imagem do imgur: " + err);
                         });
+                    //Deletar as sugestões associadas a esse meme
+                    axios.delete("http://localhost:3000/memes/deletarSugestoesDoMeme" + req.body.memeID)
+                        .then(apiResponse => {
+                            if (apiResponse.status == 400){
+                                console.log("Erro ao deletar as sugestões desse meme na API.");
+                            }else{
+                                console.log("Sugestões deletada com sucesso.");
+                            };
+                        })
+                        .catch(err => {
+                            console.log("Erro ao tentar deletar a sugestão.");
+                        });
                     //Redirecionar o usuário para a página que ele estava
                     res.redirect(req.body.paginaEnviada); // TODO: RENDER success FLASH MESSAGE
                 })

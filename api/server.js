@@ -79,6 +79,7 @@ class API {
 
         api.use('/usuarios', require(process.cwd() + '/routes/usuarios.js'));
         api.use('/memes', require(process.cwd() + '/routes/memes.js'));
+        api.use('/posts', require(process.cwd() + '/routes/posts.js'));
     }
 
     static startServer() {

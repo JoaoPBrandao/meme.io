@@ -1,13 +1,21 @@
 const Route = require("./Route.js");
 const SessionController = require("../controllers/SessionController.js");
+const axios = require("axios"); // Usamos Axios para fazer as requests à API
 
 class IndexRoute extends Route {
     constructor(basePath) {
         super('/');
 
-        this.router.get('/', (req, res) => {
+        this.router.get('/', async (req, res) => {
             if (req.user){
-                res.redirect('/usuarios/configuracoes');
+                let memes;
+                //TODO: BUSCAR APENAS POR MEMES APROVADOS
+                await axios.get("http://localhost" + ":" + "3000" + "/memes")
+                    .then(apiResponse => {
+                        memes = apiResponse.data;
+                    })
+                    .catch(err => console.log("Erro ao buscar memes na API."));
+                res.render('feed.ejs', {user: req.user, memes: memes});
             }else{
                 res.render('landingpage.ejs', {});
             }
@@ -15,7 +23,7 @@ class IndexRoute extends Route {
 
         this.router.get('/login', (req, res) => {
             if (req.user){
-                res.redirect('/usuarios/dadospessoais');
+                res.redirect('/');
             }else{
                 res.render('login.ejs', {});
             }
@@ -27,7 +35,7 @@ class IndexRoute extends Route {
 
         this.router.get('/recuperarsenha', (req, res) => {
             if (req.user){
-                res.redirect('/usuarios/dadospessoais');
+                res.redirect('/');
             }else {
                 res.render('recuperarSenha.ejs', {});
             }

@@ -120,6 +120,16 @@ router.delete('/deletarSugestao:idSugestao', (req, res) => {
         });
 });
 
+router.delete('/deletarSugestoesDoMeme:idMeme', (req, res) => {
+    Sugestao.deleteMany({"idMeme": req.params.idMeme})
+        .then(() => {
+            res.status(200).send("Sugestões deletadas com sucesso.");
+        })
+        .catch(err => {
+            res.status(400).send("Erro ao deletar sugestões.");
+        });
+});
+
 router.get('/buscarMemes', (req, res) => {
     //Transformar a string com múltiplas categorias em um vetor com objetos do tipo {categorias: /categoria/i}
     let newQuery = req.query.queryRecebida.split(';');

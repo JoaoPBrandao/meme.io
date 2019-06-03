@@ -427,3 +427,58 @@ CSS PARA A PÁGINA DE CONFIGURAÇÕES
     background-color: #e6e6e6;
     border: 1px solid #b5b5b5;
 }
+
+/*
+CSS PARA A PÁGINA DE FEED
+ */
+
+#criarPublicação{
+    width: 100%;
+    background-color: white;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #BB5342;
+    margin-top: 50px;
+}
+
+#criarPublicaçãoInputDiv{
+    background-color: #dbdbdb;
+    border: 1px solid #aeaeb2;
+    border-radius: 5px;
+}
+
+#criarPublicaçãoInput{
+    border: none;
+    background-color: inherit;
+    padding: 5px;
+    padding-bottom: 20px;
+    width: 100%;
+    height: 70px;
+}
+
+#criarPublicaçãoInput:focus { outline: none; }
+
+#labelInput{
+    cursor: pointer;
+    padding: 5px;
+    margin: 0;
+    border: 1px solid #dbdbdb;
+    display: inline-flex;
+    height: 45px;
+    width: 45px;
+    justify-content: center;
+}
+
+#labelInput:hover{
+    cursor: pointer;
+    background-color: #c8c8c8;
+    border: 1px solid #bfbfbf;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.memeImage{
+    margin: 3px;
+}
