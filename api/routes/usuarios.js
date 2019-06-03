@@ -198,14 +198,15 @@ router.put('/atualizarSenha:idUsuario', (req, res) => {
     Usuario.updateOne({
         "_id": idUsuario
     },{
-        senha: senha
+        senha: senha,
+        recuperacao: []
     }, err => {
         if(err) {
             console.log("Erro: " + err.message);
         }
     })
         .then(() => {
-            res.status(200).send("Senha atualizada com sucesso.")
+                res.status(200).send("Senha atualizada com sucesso.")
         })
         .catch(err => {
             console.log(err.message)
@@ -230,6 +231,43 @@ router.put('/reativarUsuario:idUsuario', (req, res) => {
         .catch(err => {
             console.log(err.message)
         });
+});
+
+router.put('/recuperarSenha', (req, res) => {
+    console.log("Requisição put recebida");
+    const emailUsuario = req.body.emailUsuario;
+    let recuperacao = [];
+    recuperacao.push(req.body.chave);
+    recuperacao.push(req.body.validade);
+    Usuario.updateOne({
+        "email": emailUsuario
+    },{
+        recuperacao: recuperacao
+    }, err => {
+        if(err) {
+            console.log("Erro: " + err.message);
+        }
+    })
+        .then(() => {
+            res.status(200).send("Recuperação definida com sucesso.")
+        })
+        .catch(err => {
+            console.log(err.message)
+        });
+});
+
+//ROTA QUE REALIZA A BUSCA DOS USUÁRIOS NO SISTEMA
+router.get('/buscarChave:chave', async (req, res) => {
+    Usuario.findOne({
+        "recuperacao": {$all: [req.params.chave]}
+    }, (err, usuario) => {
+        if (err) {
+            console.log("Erro ao buscar usuário.");
+            res.status(400).send("Erro ao buscar usuário.");
+        }else{
+            res.status(200).send(usuario);
+        }
+    });
 });
 
 module.exports = router;

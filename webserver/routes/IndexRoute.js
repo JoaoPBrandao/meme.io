@@ -1,6 +1,7 @@
 const Route = require("./Route.js");
 const SessionController = require("../controllers/SessionController.js");
 const axios = require("axios"); // Usamos Axios para fazer as requests à API
+const rota = require('../configs/rota');
 
 class IndexRoute extends Route {
     constructor(basePath) {
@@ -10,7 +11,7 @@ class IndexRoute extends Route {
             if (req.user){
                 let memes;
                 //TODO: BUSCAR APENAS POR MEMES APROVADOS
-                await axios.get("http://localhost" + ":" + "3000" + "/memes")
+                await axios.get(rota + "/memes")
                     .then(apiResponse => {
                         memes = apiResponse.data;
                     })

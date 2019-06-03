@@ -6,15 +6,16 @@
 </head>
 <body>
 <% include components/headerVisitante/headerVisitante.ejs %>
-
 <div class="container d-flex flex-column justify-content-center align-items-center" style="margin: 30px auto;">
-    <form class="formCadastroUsuario" method="post" action="/usuarios/recuperarSenha2">
+    <form class="formCadastroUsuario" method="post" action="/usuarios/alterarSenha">
         <div class="formBanner">
-            Recuperar Senha
+            Redefinir Senha
         </div>
         <div class="labelInputContainer">
-            <label class="label-txt" for="emailUsuario">INSIRA SEU EMAIL</label>
-            <input type="text" class="input" id="emailUsuario" name="emailUsuario" value="<%= typeof email != 'undefined' ? email: '' %>">
+            <label class="label-txt" for="senhaUsuario">INSIRA SUA SENHA</label>
+            <input type="password" class="input" id="senhaUsuario" name="senhaUsuario">
+            <input type="hidden" id="idUsuario" name="idUsuario" value="<%= usuario.idUsuario %>">
+            <input type="hidden" id="nomeUsuario" name="nomeUsuario" value="<%= usuario.nome %>">
             <div class="line-box">
                 <div class="line"></div>
             </div>

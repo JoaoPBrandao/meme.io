@@ -1,4 +1,5 @@
 const axios = require("axios");
+const rota = require('../configs/rota');
 
 // Controllers são classes estáticas com o único objetivo de agregar, semanticamente, funções a serem chamadas pelas
 // rotas. Essas funções devem executar a lógica do negócio.
@@ -33,7 +34,7 @@ class UsuariosController {
     //Função para procurar um usuário na base
     static async buscarUsuario(email){
         let resultado = false;
-        await axios.get("http://localhost" + ":" + "3000" + "/usuarios?email=" + email)
+        await axios.get(rota + "/usuarios?email=" + email)
             .then((apiResponse) => {
                 resultado = JSON.stringify(apiResponse.data[0]);
             })
@@ -48,7 +49,7 @@ class UsuariosController {
     //Função para procurar um usuário ativo na base
     static async buscarUsuarioAtivo(email){
         let resultado = false;
-        await axios.get("http://localhost" + ":" + "3000" + "/usuarios?email=" + email + "&status=1")
+        await axios.get(rota + "/usuarios?email=" + email + "&status=1")
             .then((apiResponse) => {
                 resultado = JSON.stringify(apiResponse.data[0]);
             })

@@ -5,6 +5,8 @@ const fs = require('fs'); // FileSystem padrão do Node
 const apiKeys = require('../configs/apiKeys'); //Arquivo com as chaves das APIs utilizadas
 const SessionController = require("../controllers/SessionController.js");
 const date = require('date-and-time'); //Utilizado para criar objetos do tipo Data com formatos específicos
+const rota = require('../configs/rota');
+
 
 //Configurar aspectos específicos do Multer
 const storage = multer.diskStorage({
@@ -56,7 +58,7 @@ class PostsRoute extends Route {
                         post.conteudo = req.body.conteudoPost;
                         console.log("Resposta da API do Imgur: " + apiResponse.data.status);
                         //Enviando o novo post para a API para que seja enviado para o BD
-                        axios.post("http://localhost" + ":" + "3000" + "/posts/novoPost", post)
+                        axios.post(rota + "/posts/novoPost", post)
                             .then(apiResponse => {
                                 console.log("Resposta da nossa API: " + apiResponse.status);
                                 res.redirect('/'); // TODO: RENDER success FLASH MESSAGE
@@ -76,7 +78,7 @@ class PostsRoute extends Route {
 
         this.router.post('/deletePost', SessionController.authenticationMiddleware(), (req, res) => {
             //Enviar a requisição de delete do post para a API para que seja deletado do BD
-            axios.delete("http://localhost" + ":" + "3000" + "/posts/deletePost" + req.body.postID)
+            axios.delete(rota + "/posts/deletePost" + req.body.postID)
                 .then((apiResponse) => {
                     console.log("Resposta da API: " + apiResponse.status);
                     //Excluir a foto armazenada no Imgur

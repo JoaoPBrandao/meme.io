@@ -4,6 +4,8 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const UsuariosController = require("../controllers/UsuariosController.js");
 const axios = require("axios");
+const rota = require('./rota'); //Arquivo com as chaves das APIs utilizadas
+
 
 module.exports = (passport) => {
     passport.serializeUser((user, done) => {
@@ -11,7 +13,7 @@ module.exports = (passport) => {
     });
 
     passport.deserializeUser((id, done) => {
-        axios.get("http://localhost" + ":" + "3000" + "/usuarios/id", {params: {_id: id}})
+        axios.get(rota + "/usuarios/id", {params: {_id: id}})
             .then(apiResponse => {
                 usuario = apiResponse.data;
                 done(null, usuario);
@@ -20,7 +22,7 @@ module.exports = (passport) => {
 
     passport.use(new LocalStrategy(
         (username, password, done) => {
-            axios.get("http://localhost" + ":" + "3000" + "/usuarios/email", {params: {email: username}})
+            axios.get(rota + "/usuarios/email", {params: {email: username}})
                 .then(apiResponse => {
                     if(apiResponse.status != 200){
                         return done(err);

@@ -4,6 +4,14 @@ const bcrypt = require("bcrypt");
 const UsuariosController = require("../controllers/UsuariosController.js");
 const SessionController = require("../controllers/SessionController.js");
 const passport = require('passport');
+const uuid = require('uuid/v1');
+const date = require('date-and-time');
+const apiKeys = require('../configs/apiKeys'); //Arquivo com as chaves das APIs utilizadas
+const nodemailer = require("nodemailer");
+const { google } = require("googleapis");
+const OAuth2 = google.auth.OAuth2;
+const rota = require('../configs/rota');
+
 
 class UsuariosRoute extends Route {
     constructor(basePath) {
@@ -13,7 +21,7 @@ class UsuariosRoute extends Route {
             let usuario = req.user;
             //Enviar os administradores para serem exibidos nas partes do administrador
             let administradores = [];
-            await axios.get("http://localhost" + ":" + "3000" + "/usuarios/administradores")
+            await axios.get(rota + "/usuarios/administradores")
                 .then(apiResponse => {
                     administradores = apiResponse.data;
                 })
@@ -22,13 +30,13 @@ class UsuariosRoute extends Route {
                 });
             //Enviar os memes para serem exibidos nas partes do administrador
             let memes;
-            await axios.get("http://localhost" + ":" + "3000" + "/memes")
+            await axios.get(rota + "/memes")
                 .then(apiResponse => {
                     memes = apiResponse.data;
                 })
                 .catch(err => console.log("Erro ao buscar memes na API."));
             let sugestoes;
-            await axios.get("http://localhost" + ":" + "3000" + "/memes/sugestoes")
+            await axios.get(rota + "/memes/sugestoes")
                 .then(apiResponse => {
                     sugestoes = apiResponse.data;
                 })
@@ -39,6 +47,10 @@ class UsuariosRoute extends Route {
         this.router.get('/cadastro', (req, res) => {
             res.render('cadastro.ejs');
         });
+        //ROTA QUE LEVA PARA A PÁGINA DE RECUPERAR SENHA
+        this.router.get('/recuperarSenha', (req, res) => {
+            res.render('recuperarSenha.ejs');
+        });
         //ROTA QUE LEVA PARA A PÁGINA DE PERFIL DO USUÁRIO
         this.router.get('/perfilUsuario',SessionController.authenticationMiddleware(), async (req, res) => {
             let usuario;
@@ -46,7 +58,7 @@ class UsuariosRoute extends Route {
                 usuario = req.user;
                 res.render('perfil.ejs', {usuarioVisitado: usuario, usuarioSessao: usuario});
             }else{
-                await axios.get("http://localhost" + ":" + "3000" + "/usuarios/buscarUsuario" + req.query.usuario)
+                await axios.get(rota + "/usuarios/buscarUsuario" + req.query.usuario)
                     .then(apiResponse => {
                         console.log("Usuário encontrado com sucesso.");
                         usuario = apiResponse.data;
@@ -63,7 +75,7 @@ class UsuariosRoute extends Route {
             let emailUsuario = req.query.emailUsuario;
             let usuarioBuscado;
             // TODO: Fazer endpoint na API que busca só por usuários ativos e usá-lo aqui.
-            await axios.get("http://localhost" + ":" + "3000" + "/usuarios/buscarUsuario" + emailUsuario)
+            await axios.get(rota + "/usuarios/buscarUsuario" + emailUsuario)
                 .then(apiResponse => {
                     usuarioBuscado = apiResponse.data;
                     res.render('buscaDeUsuarios.ejs', {usuarioBuscado: usuarioBuscado});
@@ -102,7 +114,7 @@ class UsuariosRoute extends Route {
                 let salt = bcrypt.genSaltSync(10);
                 let hash = bcrypt.hashSync(auxUsuario.senha, salt);
                 auxUsuario.senha = hash;
-                axios.post("http://localhost" + ":" + "3000" + "/usuarios", auxUsuario)
+                axios.post(rota + "/usuarios", auxUsuario)
                     .then((apiResponse) => {
                         console.log("Resposta da API: " + apiResponse.status);
                         res.render(process.cwd() + '/views/login.ejs', {}); // TODO: RENDER success FLASH MESSAGE
@@ -123,7 +135,7 @@ class UsuariosRoute extends Route {
             const senhaAtual = req.body.senhaAtualUsuario;
             const match = await bcrypt.compare(senhaAtual, req.user.senha);
             if (match){
-                axios.put("http://localhost" + ":" + "3000" + "/usuarios/desativarUsuario" + req.user._id)
+                axios.put(rota + "/usuarios/desativarUsuario" + req.user._id)
                     .then(apiResponse => {
                         console.log("Resposta da API: " + apiResponse.data);
                         res.redirect('logout');
@@ -141,7 +153,7 @@ class UsuariosRoute extends Route {
         //ROTA QUE BANE UM USUÁRIO
         this.router.post('/banirUsuario', async (req, res) => {
             const emailUsuario = req.body.emailUsuario;
-            await axios.put("http://localhost" + ":" + "3000" + "/usuarios" + "/banirUsuario" + emailUsuario)
+            await axios.put(rota + "/usuarios" + "/banirUsuario" + emailUsuario)
                 .then(apiResponse => {
                     res.redirect('configuracoes');
                 })
@@ -154,7 +166,7 @@ class UsuariosRoute extends Route {
         this.router.post('/atualizarNome', SessionController.authenticationMiddleware(), async (req,res) => {
             const nome = req.body.novoNome;
             if (UsuariosController.validarNome(nome)){
-                axios.put("http://localhost" + ":" + "3000" + "/usuarios" + "/atualizarNome" + req.user._id, {novoNome: nome})
+                axios.put(rota + "/usuarios" + "/atualizarNome" + req.user._id, {novoNome: nome})
                     .then((apiResponse) => {
                         console.log("Resposta da API: " + apiResponse.status);
                         res.redirect('configuracoes');
@@ -172,7 +184,7 @@ class UsuariosRoute extends Route {
         this.router.post('/atualizarEmail', SessionController.authenticationMiddleware(), async (req,res) => {
             const email = req.body.novoEmail;
             if (UsuariosController.verificarEmailUnico(email) && UsuariosController.validarEmail(email)){
-                axios.put("http://localhost" + ":" + "3000" + "/usuarios" + "/atualizarEmail" + req.user._id, {novoEmail: email})
+                axios.put(rota + "/usuarios" + "/atualizarEmail" + req.user._id, {novoEmail: email})
                     .then((apiResponse) => {
                         console.log("Resposta da API: " + apiResponse.status);
                         res.redirect('configuracoes');
@@ -195,7 +207,7 @@ class UsuariosRoute extends Route {
                 let salt = bcrypt.genSaltSync(10);
                 let hash = bcrypt.hashSync(novaSenha, salt);
                 novaSenha = hash;
-                axios.put("http://localhost" + ":" + "3000" + "/usuarios" + "/atualizarSenha" + req.user._id, {novaSenha: novaSenha})
+                axios.put(rota + "/usuarios" + "/atualizarSenha" + req.user._id, {novaSenha: novaSenha})
                     .then((apiResponse) => {
                         console.log("Resposta da API: " + apiResponse.status);
                         res.redirect('configuracoes');
@@ -211,7 +223,7 @@ class UsuariosRoute extends Route {
         });
         //ROTA QUE CONCEDE PRIVILÉGIOS DE ADMINISTRADOR A UM USUÁRIO
         this.router.post('/concederPrivilegios', async (req, res) => {
-                await axios.put("http://localhost" + ":" + "3000" + "/usuarios" + "/concederPrivilegios" + req.body.emailUsuario)
+                await axios.put(rota + "/usuarios" + "/concederPrivilegios" + req.body.emailUsuario)
                     .then(apiResponse => {
                         //TODO: RENDER SUCCESS FLASH MESSAGE
                         console.log("Privilégios concedidos com sucesso!");
@@ -227,7 +239,7 @@ class UsuariosRoute extends Route {
 
         //ROTA QUE REVOGA PRIVILÉGIOS DE ADMINISTRADOR DE UM USUÁRIO
         this.router.post('/revogarPrivilegios', async (req, res) => {
-            await axios.put("http://localhost" + ":" + "3000" + "/usuarios" + "/revogarPrivilegios" + req.body.emailAdm)
+            await axios.put(rota + "/usuarios" + "/revogarPrivilegios" + req.body.emailAdm)
                 .then(apiResponse => {
                     console.log("Privilégios revogados com sucesso.");
                     res.redirect('configuracoes');
@@ -242,7 +254,7 @@ class UsuariosRoute extends Route {
         this.router.post('/logarUsuario', passport.authenticate('local',{ failureRedirect: '/'}), (req, res) =>{
             if (req.user.status == 1){
                 console.log("entrou no if");
-                axios.put("http://localhost" + ":" + "3000" + "/usuarios" + "/reativarUsuario" + req.user._id)
+                axios.put(rota + "/usuarios" + "/reativarUsuario" + req.user._id)
                     .then(apiResponse => {
                         console.log("Resposta da API: " + apiResponse.data);
                     })
@@ -256,6 +268,121 @@ class UsuariosRoute extends Route {
         this.router.get('/logout', (req, res) =>{
             req.logout();
             res.redirect('/');
+        });
+
+        //ROTA QUE ENVIA O EMAIL DE RECUPERAÇÃO DE SENHA PARA O USUÁRIO
+        this.router.post('/recuperarSenha2', async (req,res) => {
+            let email = req.body.emailUsuario;
+            if (!UsuariosController.validarEmail(email)){
+                //TODO flash email inválido
+                res.redirect('/usuarios/recuperarSenha');
+            }else {
+                // Buscando usuário:
+                axios.get(rota + "/usuarios/buscarUsuario" + email)
+                    .then((apiResponse) => {
+                        console.log("Resposta da API: " + apiResponse.status);
+                        if (apiResponse.data.status == 2 || apiResponse.data.status == 1){
+                            let chave = uuid();
+                            let validade = new Date;
+                            validade = date.addDays(validade, 1);
+                            axios.put(rota + "/usuarios" + "/recuperarSenha", {emailUsuario : email, chave : chave, validade : validade})
+                                .then(apiResponse => {
+                                    console.log("Resposta da API: " + apiResponse.status);
+                                    if (apiResponse.status==200){
+                                        let transporter = nodemailer.createTransport({
+                                            service: 'gmail',
+                                            auth: {
+                                                type: 'oauth2',
+                                                user: 'memeiopcs@gmail.com',
+                                                clientId: '702862755088-mfjh7cm1gdmdclh83ntbu9rsndbpaa5g.apps.googleusercontent.com',
+                                                clientSecret: 'm51QcltlJiG9pS0u539Rfv2l',
+                                                refreshToken: '1/SIyldO2Nj0eTUz0KQd1LdIk0fSfvplHtSR6a7pTcqZo',
+                                            }
+                                        });
+                                        let mailOptions = {
+                                            from: 'memeiopcs@gmail.com',
+                                            to: email,
+                                            subject: 'Recuperação de senha memeIO',
+                                            text: 'texto',
+                                            html: 'Link para recuperação de senha<br> http://localhost:8080/usuarios/redefinirSenha' + chave //TODO criar um html bom
+                                        };
+                                        transporter.sendMail(mailOptions, (err, resp) => {
+                                            if (err) {
+                                                return console.log(err);
+                                                //TODO flash erro ao enviar email
+                                                res.redirect('/');
+
+                                            } else {
+                                                console.log(JSON.stringify(resp));
+                                                res.redirect('/');
+                                            }
+                                        });
+
+                                    }
+                                })
+                                .catch(err=>{
+                                    console.log("Erro: " + err.message);
+                                })
+                        }else{
+                            //TODO flash usuário desativado
+                            res.redirect('recuperarSenha');
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }
+        });
+
+        //ROTA QUE LEVA PARA A PÁGINA DE redefinir SENHA
+        this.router.get('/redefinirSenha:chave', (req, res) => {
+            let chave = req.params.chave;
+            axios.get(rota + "/usuarios/buscarchave" + chave)
+                .then((apiResponse) => {
+                    console.log("Resposta da API: " + apiResponse.status);
+                    if(apiResponse.data){
+                        let date = new Date;
+                        let validade = new Date(apiResponse.data.recuperacao[1]);
+                        let usuario= {idUsuario: apiResponse.data._id, nome: apiResponse.data.nome}
+                        if (validade>date){
+                            res.render('redefinirSenha.ejs', {usuario: usuario});
+                        }else{
+                            res.redirect("recuperarSenha");
+                            //TODO chave fora da validade
+                        }
+                    }else{
+                        res.redirect("recuperarSenha");
+                        //TODO chave não encontrada
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        });
+
+        //ROTA QUE REDEFINE A SENHA DE UM USUÁRIO
+        this.router.post('/alterarSenha', async (req,res) => {
+            let novaSenha = req.body.senhaUsuario;
+            let id = req.body.idUsuario;
+            console.log(id);
+            let nome = req.body.nomeUsuario;
+            if(UsuariosController.validarSenha(novaSenha, nome)){
+                let salt = bcrypt.genSaltSync(10);
+                let hash = bcrypt.hashSync(novaSenha, salt);
+                novaSenha = hash;
+                axios.put(rota + "/usuarios" + "/atualizarSenha" + id, {novaSenha: novaSenha})
+                    .then((apiResponse) => {
+                        console.log("Resposta da API: " + apiResponse.status);
+                        res.redirect('/');
+                    })
+                    .catch(err => {
+                        console.log("Erro ao atualizar senha: " + err.message);
+                        res.status(400).send("Erro ao atualizar senha.");
+                    });
+            }else{
+                //TODO senha inválida
+                res.redirect('/');
+            }
         });
     }
 

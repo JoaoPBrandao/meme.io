@@ -1,20 +1,6 @@
-const axios = require("axios");
-const fs = require("fs");
-let auxPost
-axios.post('https://api.imgur.com/3/upload', {
-            image: fs.readFileSync('static/media/memes/beyonce.jpg', 'base64'),
-            album: 'XUKKNbX',
-            type: 'base64',
-            name: 'beyonce.jpg' }, {headers:
-        {'Authorization':`Bearer 1aa1d4cc8db34a63ac9280116a8b6c740fbf63a9`}})
-    .then(apiResponse => {
-        if (apiResponse.success == true) {
-            console.log("Resposta da API do Imgur: " + apiResponse.status);
-        }
-    }).catch((err) =>{
-        console.log(err);
-});
+const rota = require('./configs/rota'); //Arquivo com as chaves das APIs utilizadas
 
+console.log(rota);
 // axios.put('http://localhost:8080/usuarios/atualizarUsuario', {
 //     novoNomeUsuario: 'Leonardo de Lanna Ferraz',
 //     novaSenhaUsuario: 'Leonardo1528',

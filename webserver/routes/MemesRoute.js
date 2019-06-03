@@ -5,6 +5,8 @@ const fs = require('fs'); // FileSystem padrão do Node
 const apiKeys = require('../configs/apiKeys'); //Arquivo com as chaves das APIs utilizadas
 const SessionController = require("../controllers/SessionController.js");
 const date = require('date-and-time'); //Utilizado para criar objetos do tipo Data com formatos específicos
+const rota = require('../configs/rota');
+
 
 //Configurar aspectos específicos do Multer
 const storage = multer.diskStorage({
@@ -26,7 +28,7 @@ class MemesRoute extends Route {
         this.router.get('/', async (req, res) => {
             let usuario = req.user;
             let memes = [];
-            await axios.get("http://localhost" + ":" + "3000" + "/memes")
+            await axios.get(rota + "/memes")
                 .then(apiResponse => {
                     memes = apiResponse.data;
                 });
@@ -76,7 +78,7 @@ class MemesRoute extends Route {
                             meme.data = now;
                             console.log("Resposta da API do Imgur: " + apiResponse.data.status);
                             //Enviando o novo meme para a API para que seja enviado para o BD
-                            axios.post("http://localhost" + ":" + "3000" + "/memes", meme)
+                            axios.post(rota + "/memes", meme)
                                 .then(apiResponse => {
                                     console.log("Resposta da nossa API: " + apiResponse.status);
                                     res.redirect('/memes/'); // TODO: RENDER success FLASH MESSAGE
@@ -99,7 +101,7 @@ class MemesRoute extends Route {
 
         this.router.post('/deletarMeme', SessionController.authenticationMiddleware(),(req, res) => {
             //Enviar a requisição de delete do meme para a API para que seja deletado do BD
-            axios.delete("http://localhost" + ":" + "3000" + "/memes/deletarMeme" + req.body.memeID)
+            axios.delete(rota + "/memes/deletarMeme" + req.body.memeID)
                 .then((apiResponse) => {
                     console.log("Resposta da API: " + apiResponse.status);
                     //Excluir a foto armazenada no Imgur
@@ -112,7 +114,7 @@ class MemesRoute extends Route {
                             console.log("Erro ao excluir a imagem do imgur: " + err);
                         });
                     //Deletar as sugestões associadas a esse meme
-                    axios.delete("http://localhost:3000/memes/deletarSugestoesDoMeme" + req.body.memeID)
+                    axios.delete(rota + "/memes/deletarSugestoesDoMeme" + req.body.memeID)
                         .then(apiResponse => {
                             if (apiResponse.status == 400){
                                 console.log("Erro ao deletar as sugestões desse meme na API.");
@@ -135,7 +137,7 @@ class MemesRoute extends Route {
         this.router.post('/acessarPerfilMeme', async (req, res) => {
             let meme = {};
             //Enviar a requisição com o ID para a API fazer a busca no BD
-            await axios.get("http://localhost" + ":" + "3000" + "/memes/id=" + req.body.memeID)
+            await axios.get(rota + "/memes/id=" + req.body.memeID)
                 .then(apiResponse => {
                     meme = apiResponse.data;
                 }).catch(err => {
@@ -156,7 +158,7 @@ class MemesRoute extends Route {
             } else {
                 novoCategorias = novoCategorias.split(";");
                 //Enviar para a API para que o meme seja atualizado no BD
-                axios.post("http://localhost" + ":" + "3000" + "/memes/sugestaoAlteracao" + req.body.memeID, novoCategorias)
+                axios.post(rota + "/memes/sugestaoAlteracao" + req.body.memeID, novoCategorias)
                     .then(apiResponse => {
                         res.redirect('/memes/'); // TODO: RENDER success FLASH MESSAGE
                     }).catch(err => {
@@ -167,7 +169,7 @@ class MemesRoute extends Route {
         });
 
         this.router.post('/validarSugestao', (req, res) => {
-            axios.put("http://localhost:3000/memes/validarSugestao" + req.body.idSugestao)
+            axios.put(rota + req.body.idSugestao)
                 .then(apiResponse => {
                     if (apiResponse.status == 400){
                         console.log("Erro ao validar a sugestão na API.");
@@ -183,7 +185,7 @@ class MemesRoute extends Route {
         });
 
         this.router.post('/deletarSugestao', (req, res) => {
-           axios.delete("http://localhost:3000/memes/deletarSugestao" + req.body.idSugestao)
+           axios.delete(rota + "/memes/deletarSugestao" + req.body.idSugestao)
                .then(apiResponse => {
                    if (apiResponse.status == 400){
                        console.log("Erro ao deletar a sugestão na API.");
@@ -207,7 +209,7 @@ class MemesRoute extends Route {
                 //TODO TRATAR ERRO
             } else {
                 //Enviar a requisição com os parâmetros da busca para a API para que seja feita a busca no BD
-                axios.get("http://localhost" + ":" + "3000" + "/memes/buscarMemes", {params: {queryRecebida: searchQuery}})
+                axios.get(rota + "/memes/buscarMemes", {params: {queryRecebida: searchQuery}})
                     .then(apiResponse => {
                         console.log("Resposta da API: " + apiResponse.status);
                         const memes = apiResponse.data;
@@ -222,7 +224,7 @@ class MemesRoute extends Route {
         });
 
         this.router.post('/aprovarMeme', (req, res) => {
-            axios.put("http://localhost" + ":" + "3000" + "/memes/aprovarMeme" + req.body.memeID)
+            axios.put(rota + "/memes/aprovarMeme" + req.body.memeID)
                 .then(apiResponse => {
                     console.log("Meme aprovado com sucesso!");
                     res.redirect('../usuarios/configuracoes');
