@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+    <% include components/projectDefaultHead/projectDefaultHead %>
+    <title>Testes</title>
+</head>
+<body>
+<% include components/headerVisitante/headerVisitante.ejs%>
+
+<div class="container">
+    <% posts.forEach( post => { %>
+        <% include components/posts/posts.ejs %>
+    <% }) %>
+</div>
+
+<!-- MODAL PRA DENUNCIAR PUBLICAÇÃO -->
+<div class="modal fade" id="denunciarPublicação" tabindex="-1" role="dialog" aria-labelledby="modalDenunciarPublicação" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Denunciar Publicação</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="/posts/denunciarPost">
+                <input type="hidden" id="inputIdDenuncia" name="postID">
+                <div class="modal-body">
+                    <input style="width: 100%; height: 4em;" placeholder="Qual o motivo de sua denúncia?" name="conteudoDenuncia" type="text" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-memeIO">Enviar denúncia</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<% include components/footer/projectDefaultFooter.ejs %>
+<% include components/projectDefaultScripts/projectDefaultScripts.ejs %>
+</body>
+</html>

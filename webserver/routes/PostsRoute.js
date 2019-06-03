@@ -53,6 +53,8 @@ class PostsRoute extends Route {
                         post.urlImgur = apiResponse.data.data.link;
                         post.idImgur = apiResponse.data.data.id;
                         post.data = now;
+                        post.urlImgurUsuario = req.user.foto;
+                        post.nomeUsuario = req.user.nome;
                         post.idUsuario = req.user._id;
                         post.idMemeAssociado = req.body.memeID;
                         post.conteudo = req.body.conteudoPost;
@@ -75,7 +77,7 @@ class PostsRoute extends Route {
                     console.log("Erro ao enviar a imagem para o Imgur:" + err);
                 });
         });
-
+        //ROTA QUE DELETA UM POST
         this.router.post('/deletePost', SessionController.authenticationMiddleware(), (req, res) => {
             //Enviar a requisição de delete do post para a API para que seja deletado do BD
             axios.delete(rota + "/posts/deletePost" + req.body.postID)
@@ -95,6 +97,22 @@ class PostsRoute extends Route {
                 })
                 .catch((err) => {
                     console.log("Erro ao deletar post: " + err.data);
+                });
+        });
+
+        //ROTA QUE DENUNCIA UM POST
+        this.router.post('/denunciarPost', SessionController.authenticationMiddleware(), (req, res) => {
+            const denuncia = {
+                idUsuario: req.user._id,
+                postID: req.body.postID,
+                conteudo: req.body.conteudoDenuncia
+            };
+            axios.post(rota + '/posts/denunciarPost', denuncia)
+                .then(res.redirect('back'))
+                .catch(err => {
+                    console.log("Erro ao criar denúncia.");
+                    //TODO: RENDER ERROR FLASH MESSAGE
+                    res.redirect('/');
                 });
         });
     }

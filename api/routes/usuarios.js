@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Usuario = require(process.cwd() + "/models/usuarioModel.js");
 
-//ROTA QUE REALIZA A BUSCA DOS USUÁRIOS NO SISTEMA
+//ROTA QUE REALIZA A BUSCA DOS USUÁRIOS NO SISTEMA PELO EMAIL
 router.get('/buscarUsuario:emailUsuario', async (req, res) => {
     Usuario.findOne({
         "email": req.params.emailUsuario

@@ -1,0 +1,16 @@
+<div class="post">
+    <div class="row">
+            <img class="fotoUsuarioPost" src="<%= post.urlImgurUsuario %>">
+            <h4><%= post.nomeUsuario %></h4>
+    </div>
+    <div class="row">
+            <p style="width: 100%;"><%= post.conteudo%></p>
+            <img src="<%= post.urlImgur %>">
+    </div>
+    <div style="border-top: 1px solid #BB5342; padding: 5px 0px 0px 0px" class="row">
+        <a><i style="padding: 15px; margin-right: 2px" class="far fa-laugh-squint fa-2x"></i></a>
+        <a data-toggle="modal" data-target="#denunciarPublicação" data-idPost="<%= post._id %>" onclick="associarIdPost(this)">
+            <i style="padding: 15px; margin-left: 2px" class="fas fa-flag fa-2x"></i>
+        </a>
+    </div>
+</div>

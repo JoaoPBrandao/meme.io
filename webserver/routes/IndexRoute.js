@@ -7,6 +7,20 @@ class IndexRoute extends Route {
     constructor(basePath) {
         super('/');
 
+        this.router.get('/testes', (req, res) => {
+            let posts = [];
+            axios.get(rota + '/posts/pegarTodosPosts')
+                .then(apiResponse => {
+                    posts = apiResponse.data;
+                    res.render('testes.ejs', {posts: posts});
+                })
+                .catch(err => {
+                    console.log(err.message);
+                    console.log("Erro ao buscar os posts");
+                    res.redirect('/');
+                });
+        });
+
         this.router.get('/', async (req, res) => {
             if (req.user){
                 let memes;

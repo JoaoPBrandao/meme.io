@@ -6,6 +6,14 @@ const postSchema = new mongoose.Schema(
             "type": String,
             "required": true
         },
+        "urlImgurUsuario": {
+            "type": String,
+            "required": true
+        },
+        "nomeUsuario": {
+            "type": String,
+            "required": true
+        },
         "idImgur": {
             "type": String,
             "required": true
