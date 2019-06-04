@@ -35,12 +35,23 @@ router.post('/novoPost', (req, res) => {
         });
 });
 
+router.get('/postID&=:postID', (req, res) => {
+   Post.findById(req.params.postID, (err, post) => {
+       res.status(200).send(post);
+   })
+       .catch(err => {
+           console.log("Erro ao buscar post por ID: " + err.message);
+           res.status(400).send("Erro ao buscar post por ID.");
+       });
+});
+
 router.post('/denunciarPost', (req, res) => {
     const novaDenuncia = new Denuncia({
         postID: req.body.postID,
         usuarioID: req.body.idUsuario,
-        conteudo: req.body.conteudo
-
+        conteudo: req.body.conteudo,
+        postUrlImgur: req.body.postUrlImgur,
+        postConteudo: req.body.postConteudo
     });
     novaDenuncia.save()
         .then(() => {
@@ -49,6 +60,16 @@ router.post('/denunciarPost', (req, res) => {
         .catch(err => {
             console.log(err.message);
             res.status(400).send("Problema salvando denúncia.");
+        });
+});
+
+router.get('/denuncias', (req, res) => {
+    Denuncia.find({}, (err, denuncias) => {
+        res.status(200).send(denuncias);
+    })
+        .catch(err => {
+            console.log("Erro ao buscar as denúncias no BD:" + err.message);
+            res.status(400).send("Erro ao buscar as denúncias no BD!");
         });
 });
 

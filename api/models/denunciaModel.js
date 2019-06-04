@@ -6,6 +6,14 @@ const denunciaSchema = new mongoose.Schema(
             "type": String,
             "required": true
         },
+        "postUrlImgur": {
+            "type": String,
+            "required": true
+        },
+        "postConteudo": {
+            "type": String,
+            "required": true
+        },
         "usuarioID": {
             "type": String,
             "required": true

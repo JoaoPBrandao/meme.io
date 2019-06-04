@@ -411,7 +411,7 @@ CSS PARA A PÁGINA DE CONFIGURAÇÕES
     height: 100%;
 }
 
-#divAdministradores{
+#divAdministradores, #divDenuncias{
     background-color: #ededed;
     height: 250px;
     border-radius: 10px;
@@ -421,7 +421,7 @@ CSS PARA A PÁGINA DE CONFIGURAÇÕES
     margin-bottom: 20px;
 }
 
-#divAdministradores .row{
+#divAdministradores .row, #divDenuncias .row{
     margin:0;
     padding: 5px;
     background-color: #e6e6e6;
