@@ -126,6 +126,66 @@ class PostsRoute extends Route {
                     res.redirect('/');
                 });
         });
+
+        this.router.post('/aceitarDenuncia', async (req, res) => {
+            await axios.put(rota + "/usuarios/atualizarDenuncia" + req.body.idUsuario)
+                .then(apiResponse => {
+                    if (apiResponse.status == 400){
+                        console.log("Erro ao aceitar a denuncia na API.");
+                    }else{
+                        console.log("Denuncia aceita com sucesso.");
+                    };
+                })
+                .catch(err => {
+                    console.log("Erro ao tentar aceitar a denuncia.");
+                });
+            await axios.delete(rota + "/posts/deletarDenuncia" + req.body.idDenuncia)
+                .then(apiResponse => {
+                    if (apiResponse.status == 400){
+                        console.log("Erro ao deletar a sugestão na API.");
+                    }else{
+                        console.log("Sugestão deletada com sucesso.");
+                    };
+                })
+                .catch(err => {
+                    console.log("Erro ao tentar deletar a sugestão.");
+                    res.redirect('../usuarios/configuracoes');
+                });
+            await axios.delete(rota + "/posts/deletePost" + req.body.idPost)
+                .then((apiResponse) => {
+                    console.log("Resposta da API: " + apiResponse.status);
+                    //Excluir a foto armazenada no Imgur
+                    axios.delete('https://api.imgur.com/3/image/' + apiResponse.data.idImgur, {headers:
+                            {'Authorization':`Bearer ${apiKeys.imgurAccessToken}`}})
+                        .then(respostaAPI => {
+                            console.log("Resposta da API do Imgur ao deletar: " + respostaAPI.data.status);
+                        })
+                        .catch(err => {
+                            console.log("Erro ao excluir a imagem do imgur: " + err);
+                        });
+                    //Redirecionar o usuário
+                })
+                .catch((err) => {
+                    console.log("Erro ao deletar post: " + err.data);
+                });
+            res.end();
+        });
+
+        this.router.post('/recusarDenuncia', (req, res) => {
+            axios.delete(rota + "/posts/deletarDenuncia" + req.body.idDenuncia)
+                .then(apiResponse => {
+                    if (apiResponse.status == 400){
+                        console.log("Erro ao deletar a sugestão na API.");
+                    }else{
+                        console.log("Denuncia deletada com sucesso.");
+                    };
+                    res.end();
+                })
+                .catch(err => {
+                    console.log("Erro ao tentar deletar a denuncia.");
+                    res.end();
+                });
+        });
     }
 }
 module.exports = PostsRoute;

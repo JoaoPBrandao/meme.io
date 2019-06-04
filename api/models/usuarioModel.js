@@ -33,6 +33,11 @@ const usuarioSchema = new mongoose.Schema(
             "type": Array,
             "default": [],
             "required": true
+        },
+        "denunciasAprovadas": {
+            "type": Number,
+            "default": 0,
+            "required": true
         }
     }
 );

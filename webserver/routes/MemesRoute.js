@@ -169,7 +169,7 @@ class MemesRoute extends Route {
         });
 
         this.router.post('/validarSugestao', (req, res) => {
-            axios.put(rota + req.body.idSugestao)
+            axios.put(rota + "/memes/validarSugestao" + req.body.idSugestao)
                 .then(apiResponse => {
                     if (apiResponse.status == 400){
                         console.log("Erro ao validar a sugestão na API.");

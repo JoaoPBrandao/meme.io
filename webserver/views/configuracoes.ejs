@@ -216,8 +216,8 @@
                                     </div>
                                     <div class="col-sm-3 d-flex justify-content-center">
                                         <!-- FAZER OS BOTÕES FUNCIONAREM -->
-                                        <button type="submit" style="margin: 2px;" class="btn btn-memeIO"><i class="fas fa-check"></i></button>
-                                        <button type="submit" style="margin: 2px;" class="btn btn-memeIO"><i class="fas fa-trash-alt"></i></button>
+                                        <button type="submit" style="margin: 2px;" class="btn btn-memeIO" onclick="aceitarDenuncia('<%= denuncia._id %>','<%= denuncia.usuarioID %>','<%= denuncia.postID %>');"><i class="fas fa-check"></i></button>
+                                        <button type="submit" style="margin: 2px;" class="btn btn-memeIO" onclick="recusarDenuncia('<%= denuncia._id %>');"><i class="fas fa-trash-alt"></i></button>
                                     </div>
                                 </div>
                             <% })%>

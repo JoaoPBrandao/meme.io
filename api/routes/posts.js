@@ -92,4 +92,14 @@ router.delete('/deletePost:idPost', async (req, res) => {
     });
 });
 
+router.delete('/deletarDenuncia:idDenuncia', (req, res) => {
+    Denuncia.deleteOne({"_id": req.params.idDenuncia})
+        .then(() => {
+            res.status(200).send("Denuncia deletada com sucesso.");
+        })
+        .catch(err => {
+            res.status(400).send("Erro ao deletar denuncia.");
+        });
+});
+
 module.exports = router;

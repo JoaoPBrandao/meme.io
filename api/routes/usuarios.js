@@ -270,4 +270,34 @@ router.get('/buscarChave:chave', async (req, res) => {
     });
 });
 
+router.put('/atualizarDenuncia:idUsuario', async (req, res) => {
+    await Usuario.findById(req.params.idUsuario, (err, usuario) => {
+        if (usuario.denunciasAprovadas == 2){
+            Usuario.updateOne({"email": usuario.email}, {status: 0,denunciasAprovadas: 3}, err => {
+                if (err){
+                    console.log("Erro ao banir usuário.");
+                    res.status(400).send("Erro ao banir usuário.");
+                };
+            })
+                .then(() => {})
+                .catch(err => {
+                    console.log("Erro ao banir usuário.");
+                    res.status(400).send("Erro ao banir usuário.");
+                });
+        }
+    })
+        .catch((err) => {
+            console.log(err);
+            res.status(400).send("Erro no processamento.");
+        });
+    Usuario.updateOne({"_id": req.params.idUsuario}, { $inc: {"denunciasAprovadas": 1}})
+        .then(() => {
+            res.status(400).send("Usuario atualizado.");
+
+        })
+        .catch(err => {
+            res.status(400).send("Erro ao atualizar usuario.");
+        });
+});
+
 module.exports = router;
