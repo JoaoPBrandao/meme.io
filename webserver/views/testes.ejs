@@ -2,21 +2,6 @@
 <html>
 <head>
     <% include components/projectDefaultHead/projectDefaultHead %>
-    <script type="text/javascript">
-        function ajaxTest(){
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("POST","/posts/denunciarPost",true);
-            xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
-            let conteudo = document.getElementById("conteudoDenuncia").value;
-            let id = document.getElementById("inputIdDenuncia").value;
-            xmlhttp.send("postID="+id+"&conteudoDenuncia="+conteudo);
-            xmlhttp.onreadystatechange = function() {
-                if(xmlhttp.readyState==4){
-                    document.getElementById("close").click();
-                }
-            }
-        }
-    </script>
     <title>Testes</title>
 </head>
 <body>
@@ -43,7 +28,7 @@
                     <input style="width: 100%; height: 4em;" placeholder="Qual o motivo de sua denúncia?" id="conteudoDenuncia" name="conteudoDenuncia" type="text" required>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-memeIO" onclick="ajaxTest()">Enviar denúncia</button>
+                    <button type="button" class="btn btn-memeIO" onclick="denunciarPublicacao()">Enviar denúncia</button>
                 </div>
         </div>
     </div>

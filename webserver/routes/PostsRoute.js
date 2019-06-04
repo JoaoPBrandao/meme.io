@@ -101,9 +101,20 @@ class PostsRoute extends Route {
         });
 
         //ROTA QUE DENUNCIA UM POST
-        this.router.post('/denunciarPost', SessionController.authenticationMiddleware(), (req, res) => {
+        this.router.post('/denunciarPost', SessionController.authenticationMiddleware(), async (req, res) => {
+            //Pegar as informações do post
+            let post = {};
+            await axios.get(rota + '/posts/postID&=' + req.body.postID)
+                .then(apiResponse => {
+                    post = apiResponse.data;
+                })
+                .catch(err => {
+                    console.log("Erro ao buscar post por ID: " + err.messsage);
+                });
             const denuncia = {
-                idUsuario: req.user._id,
+                idUsuario: post.idUsuario,
+                postUrlImgur: post.urlImgur,
+                postConteudo: post.conteudo,
                 postID: req.body.postID,
                 conteudo: req.body.conteudoDenuncia
             };

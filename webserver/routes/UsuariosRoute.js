@@ -28,6 +28,15 @@ class UsuariosRoute extends Route {
                 .catch(err => {
                     console.log("Erro ao buscar administradores na API.");
                 });
+            //Enviar as denúncias para serem exibidas nas partes do administrador
+            let denuncias = [];
+            await axios.get(rota + "/posts/denuncias")
+                .then(apiResponse => {
+                    denuncias = apiResponse.data;
+                })
+                .catch(err => {
+                    console.log("Erro ao buscar denúncias na API.");
+                });
             //Enviar os memes para serem exibidos nas partes do administrador
             let memes;
             await axios.get(rota + "/memes")
@@ -41,7 +50,7 @@ class UsuariosRoute extends Route {
                     sugestoes = apiResponse.data;
                 })
                 .catch(err => console.log("Erro ao buscar sugestoes na API."));
-            res.render('configuracoes.ejs', {usuario: usuario, memes: memes, administradores: administradores, sugestoes: sugestoes});
+            res.render('configuracoes.ejs', {usuario: usuario, memes: memes, administradores: administradores, sugestoes: sugestoes, denuncias: denuncias});
         });
         //ROTA QUE LEVA PARA A PÁGINA DE CADASTRO DO USUÁRIO
         this.router.get('/cadastro', (req, res) => {

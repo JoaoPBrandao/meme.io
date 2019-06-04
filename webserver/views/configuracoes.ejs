@@ -25,8 +25,6 @@
                        href="#list-denuncias" role="tab" aria-controls="messages">Denúncias</a>
                     <a class="list-group-item list-group-item-action sidebarDiv" data-toggle="list"
                        href="#list-administracao" role="tab" aria-controls="settings">Administradores</a>
-                    <a class="list-group-item list-group-item-action sidebarDiv" data-toggle="list"
-                       href="#list-memes" role="tab" aria-controls="settings">Memes</a>
                     <% } %>
                 </div>
             </div>
@@ -189,7 +187,41 @@
                     </div>
                     <!-- DIV DAS DENÚNCIAS -->
                     <div class="tab-pane fade" style="margin: 30px" id="list-denuncias" role="tabpanel" aria-labelledby="list-denuncias-list">
-                        div das denúncias
+                        <h3>Denúncias</h3>
+                        <div id="divDenuncias" class="container" style="height: 400px">
+                            <div class="row" style="background-color: #dadada">
+                                <div class="col-sm-3 d-flex justify-content-center">
+                                    Foto
+                                </div>
+                                <div class="col-sm-3 d-flex justify-content-center">
+                                    Conteúdo
+                                </div>
+                                <div class="col-sm-3 d-flex justify-content-center">
+                                    Motivo
+                                </div>
+                                <div class="col-sm-3 d-flex justify-content-center">
+                                    Avaliar
+                                </div>
+                            </div>
+                            <% denuncias.forEach(denuncia => { %>
+                                <div class="row" id="<%= denuncia._id %>" >
+                                    <div class="col-sm-3">
+                                        <img src="<%= denuncia.postUrlImgur %>">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <%= denuncia.postConteudo %>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <%= denuncia.conteudo %>
+                                    </div>
+                                    <div class="col-sm-3 d-flex justify-content-center">
+                                        <!-- FAZER OS BOTÕES FUNCIONAREM -->
+                                        <button type="submit" style="margin: 2px;" class="btn btn-memeIO"><i class="fas fa-check"></i></button>
+                                        <button type="submit" style="margin: 2px;" class="btn btn-memeIO"><i class="fas fa-trash-alt"></i></button>
+                                    </div>
+                                </div>
+                            <% })%>
+                        </div>
                     </div>
                     <!-- DIV DA ADMINISTRAÇÃO -->
                     <div class="tab-pane fade" style="margin: 30px" id="list-administracao" role="tabpanel" aria-labelledby="list-administracao-list">
