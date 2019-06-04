@@ -233,7 +233,30 @@ class MemesRoute extends Route {
                     console.log("Erro ao aprovar meme");
                     res.redirect('../usuarios/configuracoes');
                 })
-        })
+        });
+
+        this.router.post('/buscarMemeAssociacao', (req, res) => {
+            let searchQuery = req.body.searchQuery;
+            //Tratamento mínimo das categorias
+            searchQuery = searchQuery.replace(/ /g, '');
+            searchQuery = searchQuery.replace(/#/g, '');
+                //Enviar a requisição com os parâmetros da busca para a API para que seja feita a busca no BD
+                axios.get(rota + "/memes/buscarMemes", {params: {queryRecebida: searchQuery}})
+                    .then(apiResponse => {
+                        console.log("Resposta da API: " + apiResponse.status);
+                        const memes = apiResponse.data;
+                        let html = "";
+                        memes.forEach( meme=>{
+                            html = html+"<img data-idMeme='"+meme._id+"'onclick='associarMeme(this)' data-dismiss='modal' style='cursor:pointer;' class='memeImage' src='"+meme.urlImgur+"'>";
+                        });
+                        //Renderizar a página do repositório apenas com os memes retornados pela busca
+                        res.send(html);
+                    })
+                    .catch(err => {
+                        console.log("Erro ao buscar memes na api.");
+                        console.log(err);
+                    })
+        });
 
     }
 }
