@@ -75,8 +75,8 @@ router.get('/denuncias', (req, res) => {
 
 router.delete('/deletePost:idPost', async (req, res) => {
     let post = {};
-    await Post.findById(req.params.idPost, (err, res) =>{
-        post = res;
+    await Post.findById(req.params.idPost, (err, resposta) =>{
+        post = resposta;
     }).catch(err => {
         console.log("Erro ao buscar post com o ID requerido.");
     });
@@ -99,6 +99,42 @@ router.delete('/deletarDenuncia:idDenuncia', (req, res) => {
         })
         .catch(err => {
             res.status(400).send("Erro ao deletar denuncia.");
+        });
+});
+
+router.get('/pegarLikes:idPost', (req, res) => {
+    Post.findById(req.params.idPost, (err, resposta) => {
+        res.status(200).send(resposta.userLikes);
+    })
+        .catch(err => {
+            console.log("Erro ao pegar likes: " + err.message);
+            res.status(400).send("Erro ao pegar likes.");
+        });
+});
+
+router.put('/curtirPost:idPost/:idUsuario/:idPost', (req, res) => {
+    Post.updateOne({"_id": req.params.idPost}, {$push: {"userLikes": req.params.idUsuario}, $inc:{"likes": 1}}, err => {
+        console.log("Erro ao curtir post: " + err.message);
+    })
+        .then(() => {
+            res.status(200).send("Post curtido com sucesso.");
+        })
+        .catch(err => {
+            console.log("Erro ao curtir post: " + err.message);
+            res.status(400).send("Erro ao curtir post.");
+        });
+});
+
+router.put('/descurtirPost:idPost/:idUsuario/:idPost', (req, res) => {
+    Post.updateOne({"_id": req.params.idPost}, {$pull: {"userLikes": req.params.idUsuario}, $inc:{"likes": -1}}, err => {
+        console.log("Erro ao descurtir post: " + err.message);
+    })
+        .then(() => {
+            res.status(200).send("Post descurtido com sucesso.");
+        })
+        .catch(err => {
+            console.log("Erro ao descurtir post: " + err.message);
+            res.status(400).send("Erro ao descurtir post.");
         });
 });
 

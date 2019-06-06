@@ -488,7 +488,7 @@ CSS PARA OS POSTS
  */
 
 .post{
-    width: 100%;
+    width: 50%;
     background-color: #FFFFFF;
     border: 1px solid #BB5342;
     border-radius: 10px;
@@ -498,12 +498,6 @@ CSS PARA OS POSTS
 
 .post .row{
     margin: 5px 0px;
-}
-
-.post i:hover{
-    cursor: pointer;
-    background-color: #E6E6E6;
-    border-radius: 10px;
 }
 
 .fotoUsuarioPost{

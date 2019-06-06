@@ -61,3 +61,23 @@ function recusarDenuncia(idDenuncia){
     };
 }
 
+function deletarPost(idPost){
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST","/posts/deletePost",true);
+    xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+    xmlhttp.send("postID="+idPost);
+    xmlhttp.onreadystatechange = function() {
+        if(xmlhttp.readyState==4){
+            let elem = document.getElementById(idPost);
+            elem.parentNode.removeChild(elem);
+        }
+    };
+}
+
+function avaliarPost(idPost, idUsuario){
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST","/posts/avaliarPost",true);
+    xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+    xmlhttp.send("postID="+idPost+"&usuarioID="+idUsuario);
+
+}

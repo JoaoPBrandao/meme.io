@@ -12,7 +12,7 @@ class IndexRoute extends Route {
             axios.get(rota + '/posts/pegarTodosPosts')
                 .then(apiResponse => {
                     posts = apiResponse.data;
-                    res.render('testes.ejs', {posts: posts});
+                    res.render('testes.ejs', {posts: posts, usuario: req.user});
                 })
                 .catch(err => {
                     console.log(err.message);

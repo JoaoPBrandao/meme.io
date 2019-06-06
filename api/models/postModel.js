@@ -32,6 +32,16 @@ const postSchema = new mongoose.Schema(
         "conteudo": {
             "type": String,
             "required": true
+        },
+        "userLikes": {
+            "type": Array,
+            "required": true,
+            "default": []
+        },
+        "totalLikes": {
+            "type": Number,
+            "required": true,
+            "default": 0
         }
     }
 );
