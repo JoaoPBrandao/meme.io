@@ -500,11 +500,15 @@ CSS PARA OS POSTS
     margin: 5px 0px;
 }
 
-.fotoUsuarioPost{
+.fotoUsuarioPost {
     width: 45px;
     height: 45px;
     -webkit-border-radius: 30px;
     -moz-border-radius: 30px;
     border-radius: 30px;
     margin-right: 5px;
+}
+
+.liked{
+    color: #ffe599;
 }

@@ -74,10 +74,10 @@ function deletarPost(idPost){
     };
 }
 
-function avaliarPost(idPost, idUsuario){
+function avaliarPost(idPost, idUsuario, botao){
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("POST","/posts/avaliarPost",true);
     xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
     xmlhttp.send("postID="+idPost+"&usuarioID="+idUsuario);
-
+    botao.childNodes[1].classList.toggle('liked');
 }

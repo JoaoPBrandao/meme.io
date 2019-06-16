@@ -191,35 +191,32 @@ class PostsRoute extends Route {
             let userLikes = [];
             await axios.get(rota + "/posts/pegarLikes" + req.body.postID)
                 .then(apiResponse => {
-                    userLikes = apiResponse;
+                    userLikes = apiResponse.data;
                 })
                 .catch(err => {
                     console.log("Erro ao pegar likes: " + err.message);
                 });
             //Variável que diz se a publicação está curtida ou descurtida no momento. (True = curtida, false = descurtida)
-            let likeOrDislike = false;
-            //DAR UM OPOSTO DO STRINGIFY
-            userLikes.forEach(user => {
-                if (user._id = req.body.usuarioID) {
-                    likeOrDislike = true;
-                }
-            });
-            if (likeOrDislike) {
+            let isAlreadyLiked = false;
+            if (userLikes.includes(req.body.usuarioID)){
+                isAlreadyLiked = true;
+            }
+            if (isAlreadyLiked) {
                 //Descurtir o post
-                axios.put(rota + "posts/curtirPost" + req.body.postID + "/" + req.body.usuarioID)
-                    .then()
-                    .catch(err => {
-                        console.log("Erro ao curtir post: " + err.message);
-                    })
-            } else{
-                //Curtir o post
-                axios.put(rota + "posts/descurtirPost" + req.body.postID + "/" + req.body.usuarioID)
+                axios.put(rota + "/posts/descurtirPost" + req.body.postID + "/" + req.body.usuarioID)
                     .then()
                     .catch(err => {
                         console.log("Erro ao descurtir post: " + err.message);
                     })
+            } else{
+                //Curtir o post
+                axios.put(rota + "/posts/curtirPost" + req.body.postID + "/" + req.body.usuarioID)
+                    .then()
+                    .catch(err => {
+                        console.log("Erro ao curtir post: " + err.message);
+                    })
             }
-        })
+        });
     }
 }
 module.exports = PostsRoute;
