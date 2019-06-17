@@ -5,8 +5,8 @@
 
         <div style="position:absolute; right: 0;">
             <% if (post.userLikes.includes(usuario._id)){ %>
-                <button class="btn-memeIO btn liked" onclick="avaliarPost('<%= post._id %>','<%= usuario._id %>', this)">
-                    <i class="fas fa-laugh-squint fa-lg"></i>
+                <button class="btn-memeIO btn" onclick="avaliarPost('<%= post._id %>','<%= usuario._id %>', this)">
+                    <i class="fas fa-laugh-squint fa-lg liked"></i>
                 </button>
             <% }else { %>
                     <button class="btn-memeIO btn" onclick="avaliarPost('<%= post._id %>','<%= usuario._id %>', this)">
