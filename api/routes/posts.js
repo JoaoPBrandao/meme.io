@@ -112,10 +112,8 @@ router.get('/pegarLikes:idPost', (req, res) => {
         });
 });
 
-router.put('/curtirPost:idPost/:idUsuario/:idPost', (req, res) => {
-    Post.updateOne({"_id": req.params.idPost}, {$push: {"userLikes": req.params.idUsuario}, $inc:{"likes": 1}}, err => {
-        console.log("Erro ao curtir post: " + err.message);
-    })
+router.put('/curtirPost:idPost/:idUsuario', (req, res) => {
+    Post.updateOne({"_id": req.params.idPost}, {$push: {"userLikes": req.params.idUsuario}, $inc: { totalLikes: 1 }})
         .then(() => {
             res.status(200).send("Post curtido com sucesso.");
         })
@@ -125,10 +123,8 @@ router.put('/curtirPost:idPost/:idUsuario/:idPost', (req, res) => {
         });
 });
 
-router.put('/descurtirPost:idPost/:idUsuario/:idPost', (req, res) => {
-    Post.updateOne({"_id": req.params.idPost}, {$pull: {"userLikes": req.params.idUsuario}, $inc:{"likes": -1}}, err => {
-        console.log("Erro ao descurtir post: " + err.message);
-    })
+router.put('/descurtirPost:idPost/:idUsuario', (req, res) => {
+    Post.updateOne({"_id": req.params.idPost}, {$pull: {"userLikes": req.params.idUsuario}, $inc: { totalLikes: -1 }})
         .then(() => {
             res.status(200).send("Post descurtido com sucesso.");
         })
