@@ -38,6 +38,16 @@ const usuarioSchema = new mongoose.Schema(
             "type": Number,
             "default": 0,
             "required": true
+        },
+        "usuariosSeguidos": {
+            "type": Array,
+            "required": true,
+            "default": []
+        },
+        "memesSeguidos": {
+            "type": Array,
+            "required": true,
+            "default": []
         }
     }
 );

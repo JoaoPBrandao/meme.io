@@ -81,3 +81,27 @@ function avaliarPost(idPost, idUsuario, botao){
     xmlhttp.send("postID="+idPost+"&usuarioID="+idUsuario);
     botao.childNodes[1].classList.toggle('liked');
 }
+
+function seguirMeme(idMeme, idUsuario, botao){
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST","/usuarios/seguirMeme",true);
+    xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+    xmlhttp.send("memeID="+idMeme+"&usuarioID="+idUsuario);
+    if (botao.innerText == 'Seguir'){
+        botao.innerText = 'Seguindo';
+    }else{
+        botao.innerText = 'Seguir';
+    };
+};
+
+function seguirUsuario(idUsuarioVisitado, idUsuario, botao){
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST","/usuarios/seguirUsuario",true);
+    xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+    xmlhttp.send("usuarioVisitadoID="+idUsuarioVisitado+"&usuarioID="+idUsuario);
+    if (botao.innerText == 'Seguir'){
+        botao.innerText = 'Seguindo';
+    }else{
+        botao.innerText = 'Seguir';
+    };
+};

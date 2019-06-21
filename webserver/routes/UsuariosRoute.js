@@ -393,6 +393,60 @@ class UsuariosRoute extends Route {
                 res.redirect('/');
             }
         });
+
+        //ROTA QUE SEGUE UM MEME
+        this.router.post('/seguirMeme', async (req, res) => {
+            let usuario = {};
+            await axios.get(rota + "/usuarios/id", {params: {_id: req.body.usuarioID}})
+                .then(apiResponse => {
+                    usuario = apiResponse.data;
+                })
+                .catch(err => {
+                    if (err) { console.log("Erro ao buscar usuário: " + err.message); }
+                });
+            if(usuario.memesSeguidos.includes(req.body.memeID)) {
+                //Deixar de seguir o meme
+                axios.put(rota + "/usuarios/unfollowMeme" + usuario._id + "/" + req.body.memeID)
+                    .then()
+                    .catch(err => {
+                        console.log("Erro ao deixar de seguir meme: " + err.message);
+                    });
+            } else{
+                //Seguir o meme
+                axios.put(rota + "/usuarios/seguirMeme" + usuario._id + "/" + req.body.memeID)
+                    .then()
+                    .catch(err => {
+                        console.log("Erro ao seguir meme: " + err.message);
+                    });
+            };
+        });
+
+        //ROTA QUE SEGUE UM USUÁRIO
+        this.router.post('/seguirUsuario', async (req, res) => {
+            let usuario = {};
+            await axios.get(rota + "/usuarios/id", {params: {_id: req.body.usuarioID}})
+                .then(apiResponse => {
+                    usuario = apiResponse.data;
+                })
+                .catch(err => {
+                    if (err) { console.log("Erro ao buscar usuário: " + err.message); }
+                });
+            if(usuario.usuariosSeguidos.includes(req.body.usuarioVisitadoID)) {
+                //Deixar de seguir o usuário
+                axios.put(rota + "/usuarios/unfollowUsuario" + usuario._id + "/" + req.body.usuarioVisitadoID)
+                    .then()
+                    .catch(err => {
+                        console.log("Erro ao deixar de seguir usuário: " + err.message);
+                    });
+            } else{
+                //Seguir o usuário
+                axios.put(rota + "/usuarios/seguirUsuario" + usuario._id + "/" + req.body.usuarioVisitadoID)
+                    .then()
+                    .catch(err => {
+                        console.log("Erro ao seguir usuário: " + err.message);
+                    });
+            };
+        });
     }
 
 }

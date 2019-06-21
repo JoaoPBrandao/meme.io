@@ -300,4 +300,56 @@ router.put('/atualizarDenuncia:idUsuario', async (req, res) => {
         });
 });
 
+router.put('/unfollowMeme:usuarioID/:memeID', (req, res) => {
+    Usuario.updateOne({"_id": req.params.usuarioID}, { $pull: {"memesSeguidos": req.params.memeID}})
+        .then(() => {
+            res.status(200).send("Meme unfollowed com sucesso.");
+        })
+        .catch(err => {
+            if (err) {
+                console.log("Erro ao unfollow meme: " + err.message);
+                res.status(400).send("Erro ao unfollow meme: " + err.message);
+            }
+        });
+});
+
+router.put('/seguirMeme:usuarioID/:memeID', (req, res) => {
+    Usuario.updateOne({"_id": req.params.usuarioID}, { $push: {"memesSeguidos": req.params.memeID}})
+        .then(() => {
+            res.status(200).send("Meme seguido com sucesso.");
+        })
+        .catch(err => {
+            if (err) {
+                console.log("Erro ao seguir meme: " + err.message);
+                res.status(400).send("Erro ao seguir meme: " + err.message);
+            }
+        });
+});
+
+router.put('/unfollowUsuario:usuarioID/:usuarioVisitadoID', (req, res) => {
+    Usuario.updateOne({"_id": req.params.usuarioID}, { $pull: {"usuariosSeguidos": req.params.usuarioVisitadoID}})
+        .then(() => {
+            res.status(200).send("Usuário unfollowed com sucesso.");
+        })
+        .catch(err => {
+            if (err) {
+                console.log("Erro ao unfollow usuário: " + err.message);
+                res.status(400).send("Erro ao unfollow usuário: " + err.message);
+            }
+        });
+});
+
+router.put('/seguirUsuario:usuarioID/:usuarioVisitadoID', (req, res) => {
+    Usuario.updateOne({"_id": req.params.usuarioID}, { $push: {"usuariosSeguidos": req.params.usuarioVisitadoID}})
+        .then(() => {
+            res.status(200).send("Usuário seguido com sucesso.");
+        })
+        .catch(err => {
+            if (err) {
+                console.log("Erro ao seguir Usuário: " + err.message);
+                res.status(400).send("Erro ao seguir Usuário: " + err.message);
+            }
+        });
+});
+
 module.exports = router;
