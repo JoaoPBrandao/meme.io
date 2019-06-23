@@ -13,38 +13,39 @@
 
 <main>
     <div class="container">
-        <div id="memeCard" class="border-memeProfile rounded">
+        <div id="memeCard" style="position:relative;" class="border-memeProfile rounded">
             <div class="row">
                 <div class="col-sm-2">
                     <img src="<%= meme.urlImgur%>">
                 </div>
                 <div class="col-sm-9">
                 <div class="row">
-                    <h1><a href="<%= meme.urlImgur%>">Link do Imgur</a></h1>
+                    <h4>Categorias:</h4>
                 </div>
-                <div class="row">
-                    <h3>Categorias:
+                    <div class="row">
                         <% meme.categorias.forEach(categoria => { %>
-                            <%= categoria %>
+                            <span class="categoria" style="margin-right: 3px;">#<%= categoria %> </span>
                         <% }) %>
-                </h3>
-                </div>
-                <div class="row">
-                    <h3>Adicionado em:
+                    </div>
+                <div class="row" style="margin-top: 5px;">
+                    <h4>Adicionado em:
                         <%= meme.data %>
-                    </h3>
+                    </h4>
                 </div>
             </div>
-                <div class="col-sm-1" style="padding-right: 0px; padding-left: 0px; height: 100%;">
-                     <% if (usuario) { %>
-                        <% if (seguidores.includes(usuario._id)) { %>
-                                <button onclick="seguirMeme('<%= meme._id %>', '<%= usuario._id %>', this)" class="btn btn-memeIO">Seguindo</button>
-                        <% } else { %>
-                                <button onclick="seguirMeme('<%= meme._id %>', '<%= usuario._id %>', this)" class="btn btn-memeIO">Seguir</button>
-                        <% } %>
-                    <% } %>
-                </div>
         </div>
+            <div style="position: absolute; right: 15px; top: 15px;">
+                <% if (usuario) { %>
+                    <% if (seguidores.includes(usuario._id)) { %>
+                        <button onclick="seguirMeme('<%= meme._id %>', '<%= usuario._id %>', this)" class="btn btn-memeIO">Seguindo</button>
+                    <% } else { %>
+                        <button onclick="seguirMeme('<%= meme._id %>', '<%= usuario._id %>', this)" class="btn btn-memeIO">Seguir</button>
+                    <% } %>
+                <% } %>
+                <a target="_blank" class="btn btn-memeIO" href="<%= meme.urlImgur%>">
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
         </div>
         <div id="" class="feed">
             <% include components/feed/feed.ejs %>

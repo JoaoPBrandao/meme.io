@@ -10,6 +10,31 @@ body{
     word-wrap: break-word;
 }
 
+#searchBarForm{
+    width: 60%;
+}
+
+@media (max-width: 1100px)
+{
+    #searchBarForm{
+        width: 50%;
+    }
+}
+
+@media (max-width: 900px)
+{
+    #searchBarForm{
+        width: 40%;
+    }
+}
+
+@media (max-width: 750px)
+{
+    #searchBarForm{
+        width: 20%;
+    }
+}
+
 .feed{
     flex-wrap: wrap-reverse;
 }
@@ -203,6 +228,7 @@ CSS PARA AS PÁGINAS DE PERFIL
     margin: 30px 0px;
     padding: 25px;
 }
+
 #profileCard h1, #profilePosts h2, #memeCard h1, #memePosts h2{
     color: #000000;
     font-size: 170%
@@ -240,7 +266,7 @@ CSS PARA A PÁGINA DE REPOSITÓRIO DE MEMES
     height: fit-content;
 }
 
-.memeCard .categoria{
+.categoria{
     background-color: #8be0ff91;
     border-radius: 3px;
     padding: 2px;
@@ -250,7 +276,7 @@ CSS PARA A PÁGINA DE REPOSITÓRIO DE MEMES
     cursor: default;
 }
 
-.memeCard .categoria:hover{
+.categoria:hover{
     cursor: default;
     background-color: #42b3ff9c;
 }

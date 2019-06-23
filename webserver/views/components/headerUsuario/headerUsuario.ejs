@@ -1,12 +1,12 @@
 <header>
-    <div class="container">
+    <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center" style="height: 60px;">
             <nav id="nav1" class="nav">
                 <a class="btn btn-memeIO" href="/">Inicio</a>
                 <a class="btn btn-memeIO" href="/memes">Memes</a>
                 <a class="btn btn-memeIO" href="/trending"><i class="fab fa-hotjar"></i> Trending</a>
             </nav>
-            <form class="input-group md-form form-sm form-2 pl-0" style="width: 40%;" action="/usuarios/buscarUsuarios" method="get">
+            <form class="input-group md-form form-sm form-2 pl-0" id="searchBarForm" action="/usuarios/buscarUsuarios" method="get">
                 <input class="form-control my-0 py-1 amber-border" type="text" placeholder="Pesquisar" aria-label="Pesquisar" name="emailUsuario">
                 <div class="input-group-append">
                     <button class="btn rounded" type="submit" style="cursor:pointer;">

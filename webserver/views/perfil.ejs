@@ -9,7 +9,7 @@
 
 <main>
     <div class="container">
-        <div id="profileCard" class="border-profile rounded">
+        <div id="profileCard" style="position:relative;" class="border-profile rounded">
             <div class="row">
                 <div class="col-sm-2">
                     <img src=<%= usuarioVisitado.foto %>>
@@ -36,14 +36,17 @@
                     <% }%>
                 </div>
                 <div class="col-sm-1" style="padding-right: 0px; padding-left: 0px; height: 100%;">
-                    <% if (usuarioVisitado._id != usuario._id) { %>
-                        <% if (seguidores.includes(usuario._id)) { %>
-                            <button onclick="seguirUsuario('<%= usuarioVisitado._id %>', '<%= usuario._id %>', this)" class="btn btn-memeIO">Seguindo</button>
-                        <% } else { %>
-                            <button onclick="seguirUsuario('<%= usuarioVisitado._id %>', '<%= usuario._id %>', this)" class="btn btn-memeIO">Seguir</button>
-                        <% } %>
-                    <% } %>
+
                 </div>
+            </div>
+            <div style="position: absolute; right: 15px; top: 15px;">
+                <% if (usuarioVisitado._id != usuario._id) { %>
+                    <% if (seguidores.includes(usuario._id)) { %>
+                        <button onclick="seguirUsuario('<%= usuarioVisitado._id %>', '<%= usuario._id %>', this)" class="btn btn-memeIO">Seguindo</button>
+                    <% } else { %>
+                        <button onclick="seguirUsuario('<%= usuarioVisitado._id %>', '<%= usuario._id %>', this)" class="btn btn-memeIO">Seguir</button>
+                    <% } %>
+                <% } %>
             </div>
         </div>
         <div id="" class="feed">
