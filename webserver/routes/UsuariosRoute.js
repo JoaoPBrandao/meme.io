@@ -81,7 +81,7 @@ class UsuariosRoute extends Route {
             let usuario;
             let feed;
             if (req.query.usuario == req.user.email){
-                await client.feed('user', req.user._id).get({ limit:20, offset:0 })
+                await client.feed('user', req.user._id).get({ limit:20, offset:0, reactions: {own: true, counts: true}  })
                     .then(apiResponse =>{
                         feed = apiResponse;
                     })
@@ -94,7 +94,8 @@ class UsuariosRoute extends Route {
                 await axios.get(rota + "/usuarios/buscarUsuario" + req.query.usuario)
                     .then(async apiResponse => {
                         usuario = apiResponse.data;
-                        await client.feed('user', usuario._id).get({ limit:20, offset:0 })
+                        const client2 = stream.connect('55j5n3pfjx3u', req.user.userToken,  '54136');
+                        await client2.feed('user', usuario._id).get({ limit:20, offset:0, reactions: {own: true, counts: true}  })
                             .then(apiResponse =>{
                                 feed = apiResponse;
                             })
@@ -458,7 +459,7 @@ class UsuariosRoute extends Route {
                 });
             if(usuario.memesSeguidos.includes(req.body.memeID)) {
                 //Deixar de seguir o meme
-                let feed = client.feed('user', req.user._id);
+                let feed = client.feed('timeline', req.user._id);
                 feed.unfollow('meme', req.body.memeID);
                 axios.put(rota + "/usuarios/unfollowMeme" + usuario._id + "/" + req.body.memeID)
                     .then()
@@ -467,7 +468,7 @@ class UsuariosRoute extends Route {
                     });
             } else{
                 //Seguir o meme
-                let feed = client.feed('user', req.user._id);
+                let feed = client.feed('timeline', req.user._id);
                 feed.follow('meme', req.body.memeID);
                 axios.put(rota + "/usuarios/seguirMeme" + usuario._id + "/" + req.body.memeID)
                     .then()
@@ -489,7 +490,7 @@ class UsuariosRoute extends Route {
                 });
             if(usuario.usuariosSeguidos.includes(req.body.usuarioVisitadoID)) {
                 //Deixar de seguir o usuário
-                let feed = client.feed('user', req.user._id);
+                let feed = client.feed('timeline', req.user._id);
                 feed.unfollow('user', req.body.usuarioVisitadoID);
                 axios.put(rota + "/usuarios/unfollowUsuario" + usuario._id + "/" + req.body.usuarioVisitadoID)
                     .then()
@@ -498,7 +499,7 @@ class UsuariosRoute extends Route {
                     });
             } else{
                 //Seguir o usuário
-                let feed = client.feed('user', req.user._id);
+                let feed = client.feed('timeline', req.user._id);
                 feed.follow('user', req.body.usuarioVisitadoID);
                 axios.put(rota + "/usuarios/seguirUsuario" + usuario._id + "/" + req.body.usuarioVisitadoID)
                     .then()

@@ -5,17 +5,21 @@ const bcrypt = require('bcrypt');
 const UsuariosController = require("../controllers/UsuariosController.js");
 const axios = require("axios");
 const rota = require('./rota'); //Arquivo com as chaves das APIs utilizadas
+const stream = require('getstream');
+const client = stream.connect('55j5n3pfjx3u', '29kr9qdxat6gx4uw5d53sg3akbymwf7qcs85252bmhakxt426zjxctaaah3j9hdr', '54136');
 
 
 module.exports = (passport) => {
     passport.serializeUser((user, done) => {
-        done(null,user._id);
+        const userToken = client.createUserToken(user._id);
+        done(null, {"_id": user._id, "userToken": userToken});
     });
 
     passport.deserializeUser((id, done) => {
-        axios.get(rota + "/usuarios/id", {params: {_id: id}})
+        axios.get(rota + "/usuarios/id", {params: {_id: id._id}})
             .then(apiResponse => {
                 usuario = apiResponse.data;
+                usuario.userToken = id.userToken;
                 done(null, usuario);
             });
     });

@@ -20,7 +20,11 @@ const denunciaSchema = new mongoose.Schema(
         },
         "conteudo": {
             "type": String,
-            "required": true,
+            "required": true
+        },
+        "idImgur": {
+            "type": String,
+            "required": true
         }
     }
 );

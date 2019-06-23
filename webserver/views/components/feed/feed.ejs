@@ -5,22 +5,27 @@
             <h4><%= post.nome %></h4>
 
             <div style="position:absolute; right: 0;">
-                <!--
-                <% /*if (post.userLikes.includes(usuario._id)){ %>
-                    <button class="btn-memeIO btn" onclick="avaliarPost('<%= post._id %>','<%= usuario._id %>', this)">
-                        <i class="fas fa-laugh-squint fa-lg liked"></i>
-                    </button>
+                <% if (post.own_reactions.like) { %>
+                    <% if (post.own_reactions.like.filter(like => (like.user_id == usuario._id)).length == 1){ %>
+                        <button class="btn-memeIO btn" onclick="avaliarPost('<%= post.id %>','<%= usuario._id %>', this)">
+                            <i class="fas fa-laugh-squint fa-lg liked"></i>
+                        </button>
+                    <% }else { %>
+                            <button class="btn-memeIO btn" onclick="avaliarPost('<%= post.id %>','<%= usuario._id %>', this)">
+                                <i class="fas fa-laugh-squint fa-lg"></i>
+                            </button>
+                    <% }; %>
                 <% }else { %>
-                    <button class="btn-memeIO btn" onclick="avaliarPost('<%= post._id %>','<%= usuario._id %>', this)">
-                        <i class="fas fa-laugh-squint fa-lg"></i>
-                    </button>
-                <% };*/ %>
-                -->
-                <button class="btn btn-memeIO" data-toggle="modal" data-target="#denunciarPublicação" data-idPost="<%= post.id %>" onclick="associarIdPost(this)">
+                        <button class="btn-memeIO btn" onclick="avaliarPost('<%= post.id %>','<%= usuario._id %>', this)">
+                            <i class="fas fa-laugh-squint fa-lg"></i>
+                        </button>
+                    <% }; %>
+
+                <button class="btn btn-memeIO" data-toggle="modal" data-target="#denunciarPublicação" onclick="associarIdPost(<%= JSON.stringify(post) %>)">
                     <i class="fas fa-flag"></i>
                 </button>
                 <% if (usuario._id == post.actor.substring(5) || usuario.adm == 1) { %>
-                    <button class="btn btn-memeIO" onclick="deletarPost('<%= post.id %>')">
+                    <button class="btn btn-memeIO" onclick="deletarPost('<%= post.id %>', '<%= post.actor.substring(5) %>', '<%= post.idImgur %>')">
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 <% } %>
@@ -33,3 +38,28 @@
 
     </div>
 <% }) %>
+
+<!-- MODAL PRA DENUNCIAR PUBLICAÇÃO -->
+<div class="modal fade" id="denunciarPublicação" tabindex="-1" role="dialog" aria-labelledby="modalDenunciarPublicação" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Denunciar Publicação</h5>
+                <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <input type="hidden" id="inputIdDenuncia" name="postID">
+            <input type="hidden" id="inputIdUsuario" name="idUsuario">
+            <input type="hidden" id="inputPostUrlImgur" name="postUrlImgur">
+            <input type="hidden" id="inputPostConteudo" name="postConteudo">
+            <input type="hidden" id="inputPostIdImgur" name="postIdImgur">
+            <div class="modal-body">
+                <input style="width: 100%; height: 4em;" placeholder="Qual o motivo de sua denúncia?" id="conteudoDenuncia" name="conteudoDenuncia" type="text" required>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-memeIO" onclick="denunciarPublicacao()">Enviar denúncia</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -133,7 +133,8 @@ class MemesRoute extends Route {
         this.router.post('/acessarPerfilMeme', async (req, res) => {
             let meme = {};
             let feed;
-            await client.feed('meme', req.body.memeID).get({ limit:20, offset:0 })
+            const client2 = stream.connect('55j5n3pfjx3u', req.user.userToken,  '54136');
+            await client2.feed('meme', req.body.memeID).get({ limit:20, offset:0, reactions: {own: true, counts: true} })
                 .then(apiResponse =>{
                     feed = apiResponse;
                 })

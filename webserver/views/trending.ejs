@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+    <% include components/projectDefaultHead/projectDefaultHead %>
+    <title>Trending</title>
+</head>
+<body>
+
+    <% include components/headerUsuario/headerUsuario.ejs %>
+
+    <div class="container">
+        <div class="feed">
+            <% if (feed){ %>
+                <% include components/feed/feed.ejs %>
+            <%}%>
+        </div>
+    </div>
+
+    <% include components/footer/projectDefaultFooter.ejs %>
+    <% include components/projectDefaultScripts/projectDefaultScripts.ejs %>
+</body>
+</html>
