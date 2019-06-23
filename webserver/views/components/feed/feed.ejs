@@ -9,15 +9,18 @@
                     <% if (post.own_reactions.like.filter(like => (like.user_id == usuario._id)).length == 1){ %>
                         <button class="btn-memeIO btn" onclick="avaliarPost('<%= post.id %>','<%= usuario._id %>', this)">
                             <i class="fas fa-laugh-squint fa-lg liked"></i>
+                            <span><%= post.reaction_counts.like %></span>
                         </button>
                     <% }else { %>
                             <button class="btn-memeIO btn" onclick="avaliarPost('<%= post.id %>','<%= usuario._id %>', this)">
                                 <i class="fas fa-laugh-squint fa-lg"></i>
+                                <span><%= post.reaction_counts.like %></span>
                             </button>
                     <% }; %>
                 <% }else { %>
                         <button class="btn-memeIO btn" onclick="avaliarPost('<%= post.id %>','<%= usuario._id %>', this)">
                             <i class="fas fa-laugh-squint fa-lg"></i>
+                            <span>0</span>
                         </button>
                     <% }; %>
 

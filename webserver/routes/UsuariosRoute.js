@@ -80,6 +80,7 @@ class UsuariosRoute extends Route {
         this.router.get('/perfilUsuario',SessionController.authenticationMiddleware(), async (req, res) => {
             let usuario;
             let feed;
+            let seguidores = [];
             if (req.query.usuario == req.user.email){
                 await client.feed('user', req.user._id).get({ limit:20, offset:0, reactions: {own: true, counts: true}  })
                     .then(apiResponse =>{
@@ -102,7 +103,16 @@ class UsuariosRoute extends Route {
                             .catch(err => {
                                 console.log("Erro ao buscar feed.");
                             });
-                        res.render('perfil.ejs', {usuarioVisitado: usuario, usuario: req.user, feed: feed});
+                        await client.feed('user', usuario._id).followers()
+                            .then(results => {
+                                results.results.forEach(objeto => {
+                                    seguidores.push(objeto.feed_id.substring(9));
+                                });
+                            })
+                            .catch(err =>{
+                                console.log(err.message);
+                            });
+                        res.render('perfil.ejs', {usuarioVisitado: usuario, usuario: req.user, feed: feed, seguidores: seguidores});
                     })
                     .catch(err => {
                         console.log("Erro ao buscar usuário.");
@@ -450,6 +460,7 @@ class UsuariosRoute extends Route {
         //ROTA QUE SEGUE UM MEME
         this.router.post('/seguirMeme', async (req, res) => {
             let usuario = {};
+            let seguidores = [];
             await axios.get(rota + "/usuarios/id", {params: {_id: req.body.usuarioID}})
                 .then(apiResponse => {
                     usuario = apiResponse.data;
@@ -457,30 +468,30 @@ class UsuariosRoute extends Route {
                 .catch(err => {
                     if (err) { console.log("Erro ao buscar usuário: " + err.message); }
                 });
-            if(usuario.memesSeguidos.includes(req.body.memeID)) {
-                //Deixar de seguir o meme
-                let feed = client.feed('timeline', req.user._id);
-                feed.unfollow('meme', req.body.memeID);
-                axios.put(rota + "/usuarios/unfollowMeme" + usuario._id + "/" + req.body.memeID)
-                    .then()
-                    .catch(err => {
-                        console.log("Erro ao deixar de seguir meme: " + err.message);
+            await client.feed('meme', req.body.memeID).followers()
+                .then(results => {
+                    results.results.forEach(objeto => {
+                        seguidores.push(objeto.feed_id.substring(9));
                     });
-            } else{
+                })
+                .catch(err =>{
+                    console.log(err.message);
+                });
+            if(seguidores == undefined || !seguidores.includes(req.user._id)) {
                 //Seguir o meme
                 let feed = client.feed('timeline', req.user._id);
                 feed.follow('meme', req.body.memeID);
-                axios.put(rota + "/usuarios/seguirMeme" + usuario._id + "/" + req.body.memeID)
-                    .then()
-                    .catch(err => {
-                        console.log("Erro ao seguir meme: " + err.message);
-                    });
+            } else{
+                //Deixar de seguir o usuário
+                let feed = client.feed('timeline', req.user._id);
+                feed.unfollow('meme', req.body.memeID);
             };
         });
 
         //ROTA QUE SEGUE UM USUÁRIO
         this.router.post('/seguirUsuario', async (req, res) => {
             let usuario = {};
+            let seguidores = [];
             await axios.get(rota + "/usuarios/id", {params: {_id: req.body.usuarioID}})
                 .then(apiResponse => {
                     usuario = apiResponse.data;
@@ -488,24 +499,20 @@ class UsuariosRoute extends Route {
                 .catch(err => {
                     if (err) { console.log("Erro ao buscar usuário: " + err.message); }
                 });
-            if(usuario.usuariosSeguidos.includes(req.body.usuarioVisitadoID)) {
-                //Deixar de seguir o usuário
-                let feed = client.feed('timeline', req.user._id);
-                feed.unfollow('user', req.body.usuarioVisitadoID);
-                axios.put(rota + "/usuarios/unfollowUsuario" + usuario._id + "/" + req.body.usuarioVisitadoID)
-                    .then()
-                    .catch(err => {
-                        console.log("Erro ao deixar de seguir usuário: " + err.message);
-                    });
-            } else{
+            await client.feed('user', req.body.usuarioVisitadoID).followers()
+                .then(results => {
+                    results.results.forEach(objeto => {
+                        seguidores.push(objeto.feed_id.substring(9));
+                    })
+                });
+            if(seguidores == undefined || !seguidores.includes(req.user._id)) {
                 //Seguir o usuário
                 let feed = client.feed('timeline', req.user._id);
                 feed.follow('user', req.body.usuarioVisitadoID);
-                axios.put(rota + "/usuarios/seguirUsuario" + usuario._id + "/" + req.body.usuarioVisitadoID)
-                    .then()
-                    .catch(err => {
-                        console.log("Erro ao seguir usuário: " + err.message);
-                    });
+            } else{
+                //Deixar de seguir o usuário
+                let feed = client.feed('timeline', req.user._id);
+                feed.unfollow('user', req.body.usuarioVisitadoID);
             };
         });
     }

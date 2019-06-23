@@ -133,13 +133,13 @@ class MemesRoute extends Route {
         this.router.post('/acessarPerfilMeme', async (req, res) => {
             let meme = {};
             let feed;
-            const client2 = stream.connect('55j5n3pfjx3u', req.user.userToken,  '54136');
-            await client2.feed('meme', req.body.memeID).get({ limit:20, offset:0, reactions: {own: true, counts: true} })
+            let seguidores = [];
+            await client.feed('meme', req.body.memeID).get({ limit:20, offset:0, reactions: {own: true, counts: true} })
                 .then(apiResponse =>{
                     feed = apiResponse;
                 })
                 .catch(err => {
-                    console.log("Erro ao buscar feed.");
+                    console.log("Erro ao buscar feed." + err.message);
                 });
             //Enviar a requisição com o ID para a API fazer a busca no BD
             await axios.get(rota + "/memes/id=" + req.body.memeID)
@@ -148,8 +148,20 @@ class MemesRoute extends Route {
                 }).catch(err => {
                     console.log("Erro ao buscar meme: " + err);
                 });
+            await client.feed('meme', req.body.memeID).followers()
+                .then(results => {
+                    results.results.forEach(objeto => {
+                        seguidores.push(objeto.feed_id.substring(9));
+                    });
+                })
+                .catch(err =>{
+                    console.log(err.message);
+                });
+            if (feed == undefined){
+                feed = {};
+            }
             //Renderizar a página do perfil com as informações do meme específico.
-            res.render('perfilMeme.ejs', {meme: meme, usuario: req.user, feed: feed});
+            res.render('perfilMeme.ejs', {meme: meme, usuario: req.user, feed: feed, seguidores: seguidores});
         })
 
         this.router.post('/criarSugestao', (req, res) => {

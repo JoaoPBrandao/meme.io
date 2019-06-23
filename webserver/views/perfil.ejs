@@ -37,7 +37,7 @@
                 </div>
                 <div class="col-sm-1" style="padding-right: 0px; padding-left: 0px; height: 100%;">
                     <% if (usuarioVisitado._id != usuario._id) { %>
-                        <% if (usuario.usuariosSeguidos.includes(usuarioVisitado._id)) { %>
+                        <% if (seguidores.includes(usuario._id)) { %>
                             <button onclick="seguirUsuario('<%= usuarioVisitado._id %>', '<%= usuario._id %>', this)" class="btn btn-memeIO">Seguindo</button>
                         <% } else { %>
                             <button onclick="seguirUsuario('<%= usuarioVisitado._id %>', '<%= usuario._id %>', this)" class="btn btn-memeIO">Seguir</button>

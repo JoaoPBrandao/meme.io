@@ -59,11 +59,12 @@ class IndexRoute extends Route {
                     console.log("Erro ao buscar feed.");
                 });
             feed.results.forEach(post => {
-                if (isEmpty(post.reaction_count)){
-                    post.reaction_count = {like: 0};
+                if (Object.getOwnPropertyNames(post.reaction_counts).length == 0){
+                    post.reaction_counts = {like: 0};
                 };
             });
-            feed.results = feed.results.sort(compare);
+            feed.results = bubbleSort(feed.results);
+            feed.results = feed.results.reverse();
             res.render('trending.ejs', {feed: feed, usuario: req.user});
         });
     }
@@ -71,14 +72,18 @@ class IndexRoute extends Route {
 
 module.exports = IndexRoute;
 
-function compare(a, b){
-    let compareValue = 0;
-    if (a.reaction_counts.like > b.reaction_counts.like){
-        compareValue = -1;
-    }else if(a.reaction_counts.like < b.reaction_counts.like){
-        compareValue = 1;
+function bubbleSort(arr){
+    var len = arr.length;
+    for (var i = len-1; i>=0; i--){
+        for(var j = 1; j<=i; j++){
+            if(arr[j-1].reaction_counts.like>arr[j].reaction_counts.like){
+                var temp = arr[j-1];
+                arr[j-1] = arr[j];
+                arr[j] = temp;
+            }
+        }
     }
-    return compareValue;
+    return arr;
 };
 
 function isEmpty(objeto){
