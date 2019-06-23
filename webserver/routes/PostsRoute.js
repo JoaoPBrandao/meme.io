@@ -6,6 +6,8 @@ const apiKeys = require('../configs/apiKeys'); //Arquivo com as chaves das APIs 
 const SessionController = require("../controllers/SessionController.js");
 const date = require('date-and-time'); //Utilizado para criar objetos do tipo Data com formatos específicos
 const rota = require('../configs/rota');
+const stream = require('getstream');
+const client = stream.connect('55j5n3pfjx3u', '29kr9qdxat6gx4uw5d53sg3akbymwf7qcs85252bmhakxt426zjxctaaah3j9hdr', '54136');
 
 
 //Configurar aspectos específicos do Multer
@@ -29,10 +31,6 @@ class PostsRoute extends Route {
 
         this.router.post('/createPost', SessionController.authenticationMiddleware(), upload.single('arquivoEnviado'), (req, res) => {
             let post = {};
-            console.log("LOG DO REQ");
-            console.log(req);
-            console.log("LOG DO FILE----------------------------");
-            console.log(req.file);
             axios.post('https://api.imgur.com/3/upload',
                 { image: fs.readFileSync(req.file.path, 'base64'),
                     album: '1BQ66Yj',
@@ -48,6 +46,7 @@ class PostsRoute extends Route {
                     });
                     if (apiResponse.data.success == true) {
                         //Criando o novo post caso o upload para o Imgur tenha dado certo
+
                         let now = new Date();
                         now = date.format(now, 'DD/MM/YYYY');
                         post.urlImgur = apiResponse.data.data.link;
@@ -58,6 +57,12 @@ class PostsRoute extends Route {
                         post.idUsuario = req.user._id;
                         post.idMemeAssociado = req.body.memeID;
                         post.conteudo = req.body.conteudoPost;
+                        let user = client.feed('user', post.idUsuario);
+                        let activity = {actor: 'User:'+post.idUsuario, verb: 'post', object: 0, nome: post.nomeUsuario,
+                            url: post.urlImgur, to: ['meme:'+post.idMemeAssociado], conteudo: post.conteudo, urlImgUsuario:  post.urlImgurUsuario};
+                        user.addActivity(activity).
+                            then(function(data) { console.log(data) })
+                            .catch(function(reason) { console.log(reason.error)});
                         console.log("Resposta da API do Imgur: " + apiResponse.data.status);
                         //Enviando o novo post para a API para que seja enviado para o BD
                         axios.post(rota + "/posts/novoPost", post)

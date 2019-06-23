@@ -2,6 +2,8 @@ const Route = require("./Route.js");
 const SessionController = require("../controllers/SessionController.js");
 const axios = require("axios"); // Usamos Axios para fazer as requests à API
 const rota = require('../configs/rota');
+const stream = require('getstream');
+const client = stream.connect('55j5n3pfjx3u', '29kr9qdxat6gx4uw5d53sg3akbymwf7qcs85252bmhakxt426zjxctaaah3j9hdr', '54136');
 
 class IndexRoute extends Route {
     constructor(basePath) {
@@ -24,13 +26,22 @@ class IndexRoute extends Route {
         this.router.get('/', async (req, res) => {
             if (req.user){
                 let memes;
+                let feed;
                 //TODO: BUSCAR APENAS POR MEMES APROVADOS
                 await axios.get(rota + "/memes")
                     .then(apiResponse => {
                         memes = apiResponse.data;
                     })
                     .catch(err => console.log("Erro ao buscar memes na API."));
-                res.render('feed.ejs', {user: req.user, memes: memes});
+                await client.feed('user', req.user._id).get({ limit:20, offset:0 })
+                    .then(apiResponse =>{
+                        feed = apiResponse;
+                        console.log(feed);
+                    })
+                    .catch(err => {
+                        console.log("Erro ao buscar feed.");
+                    });
+                res.render('feed.ejs', {user: req.user, memes: memes, feed: feed});
             }else{
                 res.render('landingpage.ejs', {});
             }

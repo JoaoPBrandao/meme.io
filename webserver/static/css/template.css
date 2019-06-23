@@ -10,6 +10,10 @@ body{
     word-wrap: break-word;
 }
 
+.feed{
+    flex-wrap: wrap-reverse;
+}
+
 .card-body{
     background-color: #FFFFFF;
 }
@@ -313,6 +317,22 @@ CSS PARA A PÁGINA DE CONFIGURAÇÕES
     padding: 0px;
 }
 
+#alterarFotoDiv{
+    border-radius: 70px;
+    height: 100%;
+    width: 100%;
+    min-width: 50px;
+    background-color: #101010;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+}
+
+#alterarFotoDiv:hover{
+    cursor: pointer;
+    opacity: 0.5;
+}
+
 .sidebarDiv{
     padding: 10px;
     border-bottom: 1px solid #b5b5b5;
@@ -335,6 +355,7 @@ CSS PARA A PÁGINA DE CONFIGURAÇÕES
     display: flex;
     justify-content: center;
     margin: 30px;
+    position: relative;
 }
 
 .atualizarSenha{
@@ -488,7 +509,7 @@ CSS PARA OS POSTS
  */
 
 .post{
-    width: 50%;
+    width: 100%;
     background-color: #FFFFFF;
     border: 1px solid #BB5342;
     border-radius: 10px;

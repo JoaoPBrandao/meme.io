@@ -6,6 +6,8 @@ const apiKeys = require('../configs/apiKeys'); //Arquivo com as chaves das APIs 
 const SessionController = require("../controllers/SessionController.js");
 const date = require('date-and-time'); //Utilizado para criar objetos do tipo Data com formatos específicos
 const rota = require('../configs/rota');
+const stream = require('getstream');
+const client = stream.connect('55j5n3pfjx3u', '29kr9qdxat6gx4uw5d53sg3akbymwf7qcs85252bmhakxt426zjxctaaah3j9hdr', '54136');
 
 
 //Configurar aspectos específicos do Multer
@@ -76,11 +78,9 @@ class MemesRoute extends Route {
                             meme.urlImgur = apiResponse.data.data.link;
                             meme.idImgur = apiResponse.data.data.id;
                             meme.data = now;
-                            console.log("Resposta da API do Imgur: " + apiResponse.data.status);
                             //Enviando o novo meme para a API para que seja enviado para o BD
                             axios.post(rota + "/memes", meme)
                                 .then(apiResponse => {
-                                    console.log("Resposta da nossa API: " + apiResponse.status);
                                     res.redirect('/memes/'); // TODO: RENDER success FLASH MESSAGE
                                 })
                                 .catch((err) => {
@@ -103,12 +103,10 @@ class MemesRoute extends Route {
             //Enviar a requisição de delete do meme para a API para que seja deletado do BD
             axios.delete(rota + "/memes/deletarMeme" + req.body.memeID)
                 .then((apiResponse) => {
-                    console.log("Resposta da API: " + apiResponse.status);
                     //Excluir a foto armazenada no Imgur
                     axios.delete('https://api.imgur.com/3/image/' + apiResponse.data.idImgur, {headers:
                             {'Authorization':`Bearer ${apiKeys.imgurAccessToken}`}})
                         .then(respostaAPI => {
-                            console.log("Resposta da API do Imgur ao deletar: " + respostaAPI.data.status);
                         })
                         .catch(err => {
                             console.log("Erro ao excluir a imagem do imgur: " + err);
@@ -119,7 +117,6 @@ class MemesRoute extends Route {
                             if (apiResponse.status == 400){
                                 console.log("Erro ao deletar as sugestões desse meme na API.");
                             }else{
-                                console.log("Sugestões deletada com sucesso.");
                             };
                         })
                         .catch(err => {
@@ -129,13 +126,20 @@ class MemesRoute extends Route {
                     res.redirect(req.body.paginaEnviada); // TODO: RENDER success FLASH MESSAGE
                 })
                 .catch((err) => {
-                    console.log(err);
                     console.log("Erro ao deletar meme: " + err.data);
                 });
         });
 
         this.router.post('/acessarPerfilMeme', async (req, res) => {
             let meme = {};
+            let feed;
+            await client.feed('meme', req.body.memeID).get({ limit:20, offset:0 })
+                .then(apiResponse =>{
+                    feed = apiResponse;
+                })
+                .catch(err => {
+                    console.log("Erro ao buscar feed.");
+                });
             //Enviar a requisição com o ID para a API fazer a busca no BD
             await axios.get(rota + "/memes/id=" + req.body.memeID)
                 .then(apiResponse => {
@@ -144,7 +148,7 @@ class MemesRoute extends Route {
                     console.log("Erro ao buscar meme: " + err);
                 });
             //Renderizar a página do perfil com as informações do meme específico.
-            res.render('perfilMeme.ejs', {meme});
+            res.render('perfilMeme.ejs', {meme: meme, usuario: req.user, feed: feed});
         })
 
         this.router.post('/criarSugestao', (req, res) => {
@@ -174,7 +178,6 @@ class MemesRoute extends Route {
                     if (apiResponse.status == 400){
                         console.log("Erro ao validar a sugestão na API.");
                     }else{
-                        console.log("Sugestão validada com sucesso.");
                     };
                     res.redirect('../usuarios/configuracoes');
                 })
@@ -190,7 +193,6 @@ class MemesRoute extends Route {
                    if (apiResponse.status == 400){
                        console.log("Erro ao deletar a sugestão na API.");
                    }else{
-                       console.log("Sugestão deletada com sucesso.");
                    };
                    res.redirect('../usuarios/configuracoes');
                })
@@ -211,7 +213,6 @@ class MemesRoute extends Route {
                 //Enviar a requisição com os parâmetros da busca para a API para que seja feita a busca no BD
                 axios.get(rota + "/memes/buscarMemes", {params: {queryRecebida: searchQuery}})
                     .then(apiResponse => {
-                        console.log("Resposta da API: " + apiResponse.status);
                         const memes = apiResponse.data;
                         //Renderizar a página do repositório apenas com os memes retornados pela busca
                         res.render('repositorio.ejs', {memes: memes, usuario: req.user});
@@ -226,7 +227,6 @@ class MemesRoute extends Route {
         this.router.post('/aprovarMeme', (req, res) => {
             axios.put(rota + "/memes/aprovarMeme" + req.body.memeID)
                 .then(apiResponse => {
-                    console.log("Meme aprovado com sucesso!");
                     res.redirect('../usuarios/configuracoes');
                 })
                 .catch(err => {
@@ -243,7 +243,6 @@ class MemesRoute extends Route {
                 //Enviar a requisição com os parâmetros da busca para a API para que seja feita a busca no BD
                 axios.get(rota + "/memes/buscarMemes", {params: {queryRecebida: searchQuery}})
                     .then(apiResponse => {
-                        console.log("Resposta da API: " + apiResponse.status);
                         const memes = apiResponse.data;
                         let html = "";
                         memes.forEach( meme=>{

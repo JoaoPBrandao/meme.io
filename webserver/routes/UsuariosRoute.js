@@ -11,7 +11,23 @@ const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 const rota = require('../configs/rota');
+const multer  = require('multer'); //Usamos o Multer para parsear formuláros do tipo multipart/form-data
+const fs = require('fs'); // FileSystem padrão do Node
+const stream = require('getstream');
+const client = stream.connect('55j5n3pfjx3u', '29kr9qdxat6gx4uw5d53sg3akbymwf7qcs85252bmhakxt426zjxctaaah3j9hdr', '54136');
 
+//Configurar aspectos específicos do Multer
+const storage = multer.diskStorage({
+    //Mudando o destino para salvar as fotos enviadas pro webServer
+    destination: function (req, file, cb) {
+        cb(null, 'static/media/userPhotos')
+    },
+    //Configurando para que o nome da foto salva no servidor seja igual ao nome original
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    }
+});
+const upload = multer({storage: storage});
 
 class UsuariosRoute extends Route {
     constructor(basePath) {
@@ -63,15 +79,29 @@ class UsuariosRoute extends Route {
         //ROTA QUE LEVA PARA A PÁGINA DE PERFIL DO USUÁRIO
         this.router.get('/perfilUsuario',SessionController.authenticationMiddleware(), async (req, res) => {
             let usuario;
+            let feed;
             if (req.query.usuario == req.user.email){
+                await client.feed('user', req.user._id).get({ limit:20, offset:0 })
+                    .then(apiResponse =>{
+                        feed = apiResponse;
+                    })
+                    .catch(err => {
+                        console.log("Erro ao buscar feed.");
+                    });
                 usuario = req.user;
-                res.render('perfil.ejs', {usuarioVisitado: usuario, usuarioSessao: usuario});
+                res.render('perfil.ejs', {usuarioVisitado: usuario, usuarioSessao: usuario, feed: feed});
             }else{
                 await axios.get(rota + "/usuarios/buscarUsuario" + req.query.usuario)
-                    .then(apiResponse => {
-                        console.log("Usuário encontrado com sucesso.");
+                    .then(async apiResponse => {
                         usuario = apiResponse.data;
-                        res.render('perfil.ejs', {usuarioVisitado: usuario, usuario: req.user});
+                        await client.feed('user', usuario._id).get({ limit:20, offset:0 })
+                            .then(apiResponse =>{
+                                feed = apiResponse;
+                            })
+                            .catch(err => {
+                                console.log("Erro ao buscar feed.");
+                            });
+                        res.render('perfil.ejs', {usuarioVisitado: usuario, usuario: req.user, feed: feed});
                     })
                     .catch(err => {
                         console.log("Erro ao buscar usuário.");
@@ -125,7 +155,6 @@ class UsuariosRoute extends Route {
                 auxUsuario.senha = hash;
                 axios.post(rota + "/usuarios", auxUsuario)
                     .then((apiResponse) => {
-                        console.log("Resposta da API: " + apiResponse.status);
                         res.render(process.cwd() + '/views/login.ejs', {}); // TODO: RENDER success FLASH MESSAGE
                     })
                     .catch((err) => {
@@ -146,7 +175,6 @@ class UsuariosRoute extends Route {
             if (match){
                 axios.put(rota + "/usuarios/desativarUsuario" + req.user._id)
                     .then(apiResponse => {
-                        console.log("Resposta da API: " + apiResponse.data);
                         res.redirect('logout');
                     })
                     .catch(err => {
@@ -177,7 +205,6 @@ class UsuariosRoute extends Route {
             if (UsuariosController.validarNome(nome)){
                 axios.put(rota + "/usuarios" + "/atualizarNome" + req.user._id, {novoNome: nome})
                     .then((apiResponse) => {
-                        console.log("Resposta da API: " + apiResponse.status);
                         res.redirect('configuracoes');
                     })
                     .catch(err => {
@@ -189,13 +216,49 @@ class UsuariosRoute extends Route {
                 //TODO: DISPLAY ERROR FLASH MESSAGE
             }
         });
+        //ROTA QUE ATUALIZA A FOTO DE UM USUÁRIO
+        this.router.post('/alterarFoto', upload.single('novaFoto'),SessionController.authenticationMiddleware(), async (req, res) =>{
+            //Enviar a imagem do usuário para o imgur
+            axios.post('https://api.imgur.com/3/upload',
+                { image: fs.readFileSync(req.file.path, 'base64'),
+                    album: 'pAd0rJh',
+                    type: 'base64',
+                    name: req.file.filename }, {headers:
+                        {'Authorization':`Bearer ${apiKeys.imgurAccessToken}`}})
+                .then(apiResponse => {
+                    //Deletar a imagem temporária armazenada no file system
+                    fs.unlink(req.file.path, err => {
+                        if (err) {
+                            console.log("Erro ao excluir a imagem");
+                        }
+                    });
+                    if (apiResponse.data.success == true) {
+                        //Atualizando a foto do usuário
+                        axios.put(rota + '/usuarios/alterarFotoUsuario=' + req.user._id, {novaFoto: apiResponse.data.data.link})
+                            .then(apiResponse => {
+                                res.redirect('/usuarios/configuracoes');
+                            })
+                            .catch(err => {
+                                if (err) {
+                                    console.log("Erro ao atualizar a foto do usuário.");
+                                    res.redirect('/usuarios/configuracoes');
+                                };
+                            });
+                    };
+                })
+                .catch(err => {
+                    fs.unlink(req.file.path, err => {
+                        console.log("Erro ao excluir a imagem")
+                    });
+                    console.log("erro do catch do post pra api do imgur" + err);
+                });
+        });
         //ROTA QUE ATUALIZA O E-MAIL DE UM USUÁRIO
         this.router.post('/atualizarEmail', SessionController.authenticationMiddleware(), async (req,res) => {
             const email = req.body.novoEmail;
             if (UsuariosController.verificarEmailUnico(email) && UsuariosController.validarEmail(email)){
                 axios.put(rota + "/usuarios" + "/atualizarEmail" + req.user._id, {novoEmail: email})
                     .then((apiResponse) => {
-                        console.log("Resposta da API: " + apiResponse.status);
                         res.redirect('configuracoes');
                     })
                     .catch(err => {
@@ -218,7 +281,6 @@ class UsuariosRoute extends Route {
                 novaSenha = hash;
                 axios.put(rota + "/usuarios" + "/atualizarSenha" + req.user._id, {novaSenha: novaSenha})
                     .then((apiResponse) => {
-                        console.log("Resposta da API: " + apiResponse.status);
                         res.redirect('configuracoes');
                     })
                     .catch(err => {
@@ -235,7 +297,6 @@ class UsuariosRoute extends Route {
                 await axios.put(rota + "/usuarios" + "/concederPrivilegios" + req.body.emailUsuario)
                     .then(apiResponse => {
                         //TODO: RENDER SUCCESS FLASH MESSAGE
-                        console.log("Privilégios concedidos com sucesso!");
                         res.redirect('configuracoes');
                     })
                     .catch(err => {
@@ -250,7 +311,6 @@ class UsuariosRoute extends Route {
         this.router.post('/revogarPrivilegios', async (req, res) => {
             await axios.put(rota + "/usuarios" + "/revogarPrivilegios" + req.body.emailAdm)
                 .then(apiResponse => {
-                    console.log("Privilégios revogados com sucesso.");
                     res.redirect('configuracoes');
                 })
                 .catch(err => {
@@ -262,10 +322,8 @@ class UsuariosRoute extends Route {
         //ROTA QUE REALIZA O LOGIN DE UM USUÁRIO
         this.router.post('/logarUsuario', passport.authenticate('local',{ failureRedirect: '/'}), (req, res) =>{
             if (req.user.status == 1){
-                console.log("entrou no if");
                 axios.put(rota + "/usuarios" + "/reativarUsuario" + req.user._id)
                     .then(apiResponse => {
-                        console.log("Resposta da API: " + apiResponse.data);
                     })
                     .catch(err=>{
                         console.log("Erro: " + err.message);
@@ -289,14 +347,12 @@ class UsuariosRoute extends Route {
                 // Buscando usuário:
                 axios.get(rota + "/usuarios/buscarUsuario" + email)
                     .then((apiResponse) => {
-                        console.log("Resposta da API: " + apiResponse.status);
                         if (apiResponse.data.status == 2 || apiResponse.data.status == 1){
                             let chave = uuid();
                             let validade = new Date;
                             validade = date.addDays(validade, 1);
                             axios.put(rota + "/usuarios" + "/recuperarSenha", {emailUsuario : email, chave : chave, validade : validade})
                                 .then(apiResponse => {
-                                    console.log("Resposta da API: " + apiResponse.status);
                                     if (apiResponse.status==200){
                                         let transporter = nodemailer.createTransport({
                                             service: 'gmail',
@@ -322,7 +378,6 @@ class UsuariosRoute extends Route {
                                                 res.redirect('/');
 
                                             } else {
-                                                console.log(JSON.stringify(resp));
                                                 res.redirect('/');
                                             }
                                         });
@@ -348,7 +403,6 @@ class UsuariosRoute extends Route {
             let chave = req.params.chave;
             axios.get(rota + "/usuarios/buscarchave" + chave)
                 .then((apiResponse) => {
-                    console.log("Resposta da API: " + apiResponse.status);
                     if(apiResponse.data){
                         let date = new Date;
                         let validade = new Date(apiResponse.data.recuperacao[1]);
@@ -373,7 +427,6 @@ class UsuariosRoute extends Route {
         this.router.post('/alterarSenha', async (req,res) => {
             let novaSenha = req.body.senhaUsuario;
             let id = req.body.idUsuario;
-            console.log(id);
             let nome = req.body.nomeUsuario;
             if(UsuariosController.validarSenha(novaSenha, nome)){
                 let salt = bcrypt.genSaltSync(10);
@@ -381,7 +434,6 @@ class UsuariosRoute extends Route {
                 novaSenha = hash;
                 axios.put(rota + "/usuarios" + "/atualizarSenha" + id, {novaSenha: novaSenha})
                     .then((apiResponse) => {
-                        console.log("Resposta da API: " + apiResponse.status);
                         res.redirect('/');
                     })
                     .catch(err => {
@@ -406,6 +458,8 @@ class UsuariosRoute extends Route {
                 });
             if(usuario.memesSeguidos.includes(req.body.memeID)) {
                 //Deixar de seguir o meme
+                let feed = client.feed('user', req.user._id);
+                feed.unfollow('meme', req.body.memeID);
                 axios.put(rota + "/usuarios/unfollowMeme" + usuario._id + "/" + req.body.memeID)
                     .then()
                     .catch(err => {
@@ -413,6 +467,8 @@ class UsuariosRoute extends Route {
                     });
             } else{
                 //Seguir o meme
+                let feed = client.feed('user', req.user._id);
+                feed.follow('meme', req.body.memeID);
                 axios.put(rota + "/usuarios/seguirMeme" + usuario._id + "/" + req.body.memeID)
                     .then()
                     .catch(err => {
@@ -433,6 +489,8 @@ class UsuariosRoute extends Route {
                 });
             if(usuario.usuariosSeguidos.includes(req.body.usuarioVisitadoID)) {
                 //Deixar de seguir o usuário
+                let feed = client.feed('user', req.user._id);
+                feed.unfollow('user', req.body.usuarioVisitadoID);
                 axios.put(rota + "/usuarios/unfollowUsuario" + usuario._id + "/" + req.body.usuarioVisitadoID)
                     .then()
                     .catch(err => {
@@ -440,6 +498,8 @@ class UsuariosRoute extends Route {
                     });
             } else{
                 //Seguir o usuário
+                let feed = client.feed('user', req.user._id);
+                feed.follow('user', req.body.usuarioVisitadoID);
                 axios.put(rota + "/usuarios/seguirUsuario" + usuario._id + "/" + req.body.usuarioVisitadoID)
                     .then()
                     .catch(err => {

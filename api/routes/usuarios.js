@@ -213,6 +213,19 @@ router.put('/atualizarSenha:idUsuario', (req, res) => {
         });
 });
 
+router.put('/alterarFotoUsuario=:idUsuario', (req, res) => {
+    Usuario.updateOne({"_id": req.params.idUsuario}, {"foto": req.body.novaFoto})
+        .then(() => {
+            res.status(200).send("Foto atualizada com sucesso!");
+        })
+        .catch(err => {
+            if(err){
+                console.log("Erro ao atualizar foto.");
+                res.status(400).send("Erro ao atualizar foto.");
+            }
+        });
+});
+
 router.put('/reativarUsuario:idUsuario', (req, res) => {
     const idUsuario = req.params.idUsuario;
     console.log("Requisição put recebida");

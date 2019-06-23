@@ -11,12 +11,12 @@
         <div id="criarPublicação" class="">
             <div class="row" style="margin: 10px;">
                 <div class="col-sm-2" style="display: flex; justify-content: center">
-                    <img src="<%= user.foto %>" style="border-radius: 70px; height: 100%; width: 100%; min-width: 50px; max-width: 90px">
+                    <img src="<%= user.foto %>" style="border: 1px solid black; border-radius: 70px; height: 100%; width: 100%; min-width: 50px; max-width: 90px">
                 </div>
                 <div class="col-sm-10" id="criarPublicaçãoInputDiv">
                     <form method="post" enctype="multipart/form-data" action="/posts/createPost">
                         <input type="hidden" id="memeID" name="memeID" value="0" required>
-                        <input id="criarPublicaçãoInput" name="conteudoPost" type="text" placeholder="Faça seus amigos rirem!">
+                        <input id="criarPublicaçãoInput" name="conteudoPost" type="text">
                         <div style="margin-bottom: 10px; display: flex; justify-content: space-between" id="opçõesPublicação">
                             <div class="d-flex">
                                 <label data-toggle="tooltip" data-placement="bottom" title="Adicionar foto" id="labelInput" for="input-file">
@@ -34,13 +34,8 @@
             </div>
 
         </div>
-        <div id="feed" class="">
-            <!-- BOTÃO PARA TESTAR SE O DELETE DO POST TÁ FUNCIONANDO
-             <form method="post" action="posts/deletePost">
-                <input name="postID" type="hidden" value="5cf45937967b4e19c8779c51">
-                <button>deletar</button>
-            </form>
-            -->
+        <div id="feed" class="feed">
+            <% include components/feed/feed.ejs %>
         </div>
     </div>
 

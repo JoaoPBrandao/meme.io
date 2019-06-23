@@ -18,6 +18,7 @@
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-session": "^1.16.1",
+    "getstream": "^4.2.2",
     "googleapis": "^39.2.0",
     "multer": "^1.4.1",
     "nodemailer": "^6.2.1",
