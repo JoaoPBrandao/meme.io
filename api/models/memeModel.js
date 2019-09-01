@@ -18,6 +18,7 @@ const memeSchema = new mongoose.Schema(
             "type": String,
             "required": true
         },
+        //STATUS DO MEME, 0 = PENDENTE, 1 = ACEITO
         "status": {
             "type": Number,
             "required": true,
