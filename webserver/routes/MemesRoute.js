@@ -259,7 +259,9 @@ class MemesRoute extends Route {
                         const memes = apiResponse.data;
                         let html = "";
                         memes.forEach( meme=>{
-                            html = html+"<img data-idMeme='"+meme._id+"'onclick='associarMeme(this)' data-dismiss='modal' style='cursor:pointer;' class='memeImage' src='"+meme.urlImgur+"'>";
+                            if (meme.status == 1){
+                                html = html+"<img data-idMeme='"+meme._id+"'onclick='associarMeme(this)' data-dismiss='modal' style='cursor:pointer;' class='memeImage' src='"+meme.urlImgur+"'>";
+                            }
                         });
                         //Renderizar a página do repositório apenas com os memes retornados pela busca
                         res.send(html);

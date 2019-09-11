@@ -55,7 +55,9 @@
                     <button class="btn btn-memeIO" type="button" style="margin-left: 5px;" onclick="filtrarMeme(document.getElementById('memeSearch').value)">Pesquisar</button>
                     <div id="associarMemeSearch" class="d-flex flex-wrap" style="padding: 10px; height: 300px; overflow: auto; margin-top: 5px;">
                         <% memes.forEach(meme => { %>
-                            <img data-idMeme="<%= meme._id %>" onclick="associarMeme(this)" data-dismiss="modal" style="cursor:pointer;" class="memeImage" src="<%= meme.urlImgur %>">
+                            <% if (meme.status == 1) {%>
+                                <img data-idMeme="<%= meme._id %>" onclick="associarMeme(this)" data-dismiss="modal" style="cursor:pointer;" class="memeImage" src="<%= meme.urlImgur %>">
+                            <% } %>
                         <% }); %>
                     </div>
                 </div>
