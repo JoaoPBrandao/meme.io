@@ -8,5 +8,3 @@ Instruções de utilização:
 3. No terminal, navegue até a pasta webserver e execute o comando "node index"
 4. Em outro terminal, navegue até a pasta api e execute o comando "node server"
 5. Abra o navegador e acesse a url localhost:8080/
-6. Aula de PM 28/08/2019
-7. CONFLITO DO PC 2 (branch 2 teste 2)
