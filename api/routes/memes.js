@@ -4,7 +4,7 @@ const mongoose = require("mongoose"); //Utilizamos o Mongoose para fazer a integ
 const Meme = require(process.cwd() + "/models/memeModel.js"); //Importando o modelo utilizado para o documento de Memes no BD
 const Sugestao = require(process.cwd() + "/models/sugestaoModel.js"); //Importando o modelo utilizado para o documento de Sugestões no BD
 
-// Rota memes:
+// Rota para criar um novo meme
 router.post('/', (req, res) => {
     console.log("Post recebido.");
     const novoMeme = new Meme({
@@ -23,6 +23,7 @@ router.post('/', (req, res) => {
         });
 });
 
+//Rota para obter todos os memes no banco de dados
 router.get('/', (req, res) => {
         Meme.find({}, (err, memes) => {
             res.status(200).send(memes);
@@ -33,6 +34,7 @@ router.get('/', (req, res) => {
             });
 });
 
+//Rota para obter um meme específico no banco de dados (busca por ID)
 router.get('/id=:memeID', (req, res) => {
     Meme.findById(req.params.memeID, (err, meme) => {
         res.status(200).send(meme);
@@ -43,6 +45,7 @@ router.get('/id=:memeID', (req, res) => {
         })
 });
 
+//Rota para deletar um meme específico no banco de dados (utilizando o ID)
 router.delete('/deletarMeme:idMeme', async (req, res) => {
     console.log("Requisição de delete do meme recebida.");
     let meme= {};
@@ -63,6 +66,7 @@ router.delete('/deletarMeme:idMeme', async (req, res) => {
     })
 });
 
+//Rota para criar uma sugestão de alteração de meme no banco de dados
 router.post('/sugestaoAlteracao:idMeme', (req, res) => {
     console.log("Requisição para criar sugestão recebida.");
     const sugestao = new Sugestao({idMeme: req.params.idMeme, categorias: req.body});
@@ -75,6 +79,7 @@ router.post('/sugestaoAlteracao:idMeme', (req, res) => {
         });
 });
 
+//Rota para obter todas as sugestões existentes no banco de dados
 router.get('/sugestoes', (req, res) => {
     Sugestao.find({}, (err, sugestoes) => {
         res.status(200).send(sugestoes);
@@ -85,6 +90,7 @@ router.get('/sugestoes', (req, res) => {
         });
 });
 
+//Rota para validar uma sugestão existente no banco de dados
 router.put('/validarSugestao:idSugestao', async (req, res) => {
     const sugestaoEncontrada = await Sugestao.findById(req.params.idSugestao)
     const memeEncontrado = await Meme.findById(sugestaoEncontrada.idMeme);
@@ -110,6 +116,7 @@ router.put('/validarSugestao:idSugestao', async (req, res) => {
         });
 });
 
+//Rota para deletar uma sugestão existente no banco de dados
 router.delete('/deletarSugestao:idSugestao', (req, res) => {
     Sugestao.deleteOne({"_id": req.params.idSugestao})
         .then(() => {
@@ -120,6 +127,7 @@ router.delete('/deletarSugestao:idSugestao', (req, res) => {
         });
 });
 
+//Rota para deletar todas as sugestões de um meme específico, chamada quando um meme é deletado
 router.delete('/deletarSugestoesDoMeme:idMeme', (req, res) => {
     Sugestao.deleteMany({"idMeme": req.params.idMeme})
         .then(() => {
@@ -130,6 +138,7 @@ router.delete('/deletarSugestoesDoMeme:idMeme', (req, res) => {
         });
 });
 
+//Rota para buscar memes no banco de dados
 router.get('/buscarMemes', (req, res) => {
     //Transformar a string com múltiplas categorias em um vetor com objetos do tipo {categorias: /categoria/i}
     let newQuery = req.query.queryRecebida.split(';');
@@ -153,6 +162,7 @@ router.get('/buscarMemes', (req, res) => {
     });
 });
 
+//Rota para aprovar um meme pendente
 router.put('/aprovarMeme:idMeme', (req, res)=>{
     Meme.updateOne({
         "_id": req.params.idMeme

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+//Esquema para o documento de Memes no MondoDB
 const memeSchema = new mongoose.Schema(
     {
         "urlImgur": {

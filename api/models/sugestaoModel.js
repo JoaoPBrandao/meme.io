@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+//Esquema para o documento de Sugestões no MondoDB.
 const sugestaoSchema = new mongoose.Schema(
     {
         "idMeme": {

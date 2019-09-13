@@ -16,7 +16,7 @@ router.get('/buscarUsuario:emailUsuario', async (req, res) => {
         }
     });
 });
-
+//Rota para obter os administradores do sistema no banco de dados
 router.get('/administradores', async (req, res) => {
     Usuario.find({
         "adm": 1
@@ -29,7 +29,7 @@ router.get('/administradores', async (req, res) => {
         }
     })
 });
-
+//Rota para conceder privilégios de administrador a um usuário (através do e-mail)
 router.put('/concederPrivilegios:emailUsuario', (req, res) => {
     Usuario.updateOne({
         "email": req.params.emailUsuario
@@ -49,7 +49,7 @@ router.put('/concederPrivilegios:emailUsuario', (req, res) => {
         res.status(400).send("Erro ao conceder privilégios");
     });
 });
-
+//Rota para revogar os privilégios de administrador de um usuário (através do e-mail)
 router.put('/revogarPrivilegios:emailUsuario', (req, res) => {
     Usuario.updateOne({
         "email": req.params.emailUsuario
@@ -69,7 +69,7 @@ router.put('/revogarPrivilegios:emailUsuario', (req, res) => {
             res.status(400).send("Erro ao revogar privilégios");
         });
 });
-
+//Rota para banir um usuário do sistema (através do e-mail)
 router.put('/banirUsuario:emailUsuario', (req, res) => {
     Usuario.updateOne({"email": req.params.emailUsuario}, {status: 0}, err => {
         if (err){
@@ -85,7 +85,7 @@ router.put('/banirUsuario:emailUsuario', (req, res) => {
             res.status(400).send("Erro ao banir usuário.");
         });
 });
-
+//Rota para buscar um usuário através do ID
 router.get('/id', async (req, res) => {
     Usuario.findById(req.query._id, (err, usuario) => {
         res.status(200).send(usuario);
@@ -96,7 +96,7 @@ router.get('/id', async (req, res) => {
         });
 
 });
-
+//Rota para buscar um usuário através do e-mail
 router.get('/email', async (req, res) => {
     Usuario.find({email : req.query.email}, (err, usuario) => {
         res.status(200).send(usuario[0]);
@@ -107,14 +107,16 @@ router.get('/email', async (req, res) => {
         });
 
 });
-
+//Rota para criar um novo usuário
 router.post('/', (req, res) => {
     console.log("Post recebido.");
+    //Armazenar as informações do usuário em um objeto
     const usuarioNovo = new Usuario({
         nome: req.body.nome,
         email: req.body.email,
         senha: req.body.senha
     });
+    //Salvar o usuário no BD
     usuarioNovo.save()
         .then(() => {
             usuarioNovo._id = "[redatado]";
@@ -126,7 +128,7 @@ router.post('/', (req, res) => {
             console.log(err);
         });
 });
-
+//Rota para desativar um usuário através do ID
 router.put('/desativarUsuario:idUsuario', (req, res) => {
     console.log("Requisição put recebida");
     const idUsuario = req.params.idUsuario;
@@ -148,7 +150,7 @@ router.put('/desativarUsuario:idUsuario', (req, res) => {
             res.status(500).send(err);
         });
 });
-
+//Rota para atualizar o nome do usuário através do ID
 router.put('/atualizarNome:idUsuario', (req, res) => {
     console.log("Requisição put recebida");
     const idUsuario = req.params.idUsuario;
@@ -169,7 +171,7 @@ router.put('/atualizarNome:idUsuario', (req, res) => {
             console.log(err.message)
         });
 });
-
+//Rota para atualizar o e-mail do usuário através do ID
 router.put('/atualizarEmail:idUsuario', (req, res) => {
     console.log("Requisição put recebida");
     const idUsuario = req.params.idUsuario;
@@ -190,7 +192,7 @@ router.put('/atualizarEmail:idUsuario', (req, res) => {
             console.log(err.message)
         });
 });
-
+//Rota para atualizar a senha do usuário através do ID
 router.put('/atualizarSenha:idUsuario', (req, res) => {
     console.log("Requisição put recebida");
     const idUsuario = req.params.idUsuario;
@@ -212,7 +214,7 @@ router.put('/atualizarSenha:idUsuario', (req, res) => {
             console.log(err.message)
         });
 });
-
+//Rota para atualizar a foto do usuário através do ID
 router.put('/alterarFotoUsuario=:idUsuario', (req, res) => {
     Usuario.updateOne({"_id": req.params.idUsuario}, {"foto": req.body.novaFoto})
         .then(() => {
@@ -225,7 +227,7 @@ router.put('/alterarFotoUsuario=:idUsuario', (req, res) => {
             }
         });
 });
-
+//Rota para reativar o usuário através do ID
 router.put('/reativarUsuario:idUsuario', (req, res) => {
     const idUsuario = req.params.idUsuario;
     console.log("Requisição put recebida");
@@ -245,7 +247,7 @@ router.put('/reativarUsuario:idUsuario', (req, res) => {
             console.log(err.message)
         });
 });
-
+//Rota para que um usuário recupere a sua senha
 router.put('/recuperarSenha', (req, res) => {
     console.log("Requisição put recebida");
     const emailUsuario = req.body.emailUsuario;
@@ -282,9 +284,10 @@ router.get('/buscarChave:chave', async (req, res) => {
         }
     });
 });
-
+//Rota que atualiza o número de denúncias de um usuário através do ID
 router.put('/atualizarDenuncia:idUsuario', async (req, res) => {
     await Usuario.findById(req.params.idUsuario, (err, usuario) => {
+        //Checar se o usuário já tem 2 denúncias aprovadas
         if (usuario.denunciasAprovadas == 2){
             Usuario.updateOne({"email": usuario.email}, {status: 0,denunciasAprovadas: 3})
                 .then(() => {
