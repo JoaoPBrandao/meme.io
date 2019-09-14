@@ -326,11 +326,11 @@ router.put('/atualizarDenuncia:idUsuario', async (req, res) => {
             res.status(400).send("Erro ao buscar usuário.");
         });
     //Checar se o usuário já tem 2 denúncias aprovadas
-    //Caso seja verdadeiro, banir o usuário
-    //Caso seja falso, incrementar em 1 o número de denúncias aprovadas do usuário
-    if (usuarioEncontrado.denunciasAprovadas == 2){
-        Usuario.updateOne({"email": usuarioEncontrado.email}, {status: 0,denunciasAprovadas: 3})
-            .then(() => {
+        //Caso seja verdadeiro, banir o usuário
+        //Caso seja falso, incrementar em 1 o número de denúncias aprovadas do usuário
+        if (usuarioEncontrado.denunciasAprovadas == 2){
+            Usuario.updateOne({"email": usuarioEncontrado.email}, {status: 0,denunciasAprovadas: 3})
+                .then(() => {
                 res.status(200).send("Usuário banido.");
             })
             .catch(err => {

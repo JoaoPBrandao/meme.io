@@ -6,7 +6,8 @@ const apiKeys = require('../configs/apiKeys'); //Arquivo com as chaves das APIs 
 const SessionController = require("../controllers/SessionController.js");
 const date = require('date-and-time'); //Utilizado para criar objetos do tipo Data com formatos específicos
 const rota = require('../configs/rota');
-const stream = require('getstream');
+const stream = require('getstream'); //Usamos o GetStream para implementar o feed
+//Conectar ao client do GetStream:
 const client = stream.connect('55j5n3pfjx3u', '29kr9qdxat6gx4uw5d53sg3akbymwf7qcs85252bmhakxt426zjxctaaah3j9hdr', '54136');
 
 
@@ -27,6 +28,7 @@ class MemesRoute extends Route {
     constructor(basePath) {
         super('/memes');
 
+        //Rota para redirecionar o usuário para a página do repositório de memes
         this.router.get('/', async (req, res) => {
             let usuario = req.user;
             let memes = [];
@@ -44,6 +46,8 @@ class MemesRoute extends Route {
             res.render('repositorio.ejs', {memes: memesAtivos, usuario: usuario});
         });
 
+        //Rota para criar um novo meme no banco de dados
+        //Recebe um string com as categorias e uma imagem
         this.router.post('/novoMeme', SessionController.authenticationMiddleware(), upload.single('arquivoEnviado'), (req, res) => {
             let meme = {};
             let categorias = req.body.categorias;
@@ -86,9 +90,7 @@ class MemesRoute extends Route {
                                 .catch((err) => {
                                     console.log("erro do catch do post pra nossa api: " + err);
                                 });
-
                         }
-
                     })
                     .catch(err => {
                         fs.unlink(req.file.path, err => {
@@ -99,11 +101,13 @@ class MemesRoute extends Route {
             }
         });
 
+        //Rota para deletar um meme do banco de dados
+        //Recebe o ID do meme específico e a página da qual foi feita essa requisição para redirecionar o usuário
         this.router.post('/deletarMeme', SessionController.authenticationMiddleware(),(req, res) => {
             //Enviar a requisição de delete do meme para a API para que seja deletado do BD
             axios.delete(rota + "/memes/deletarMeme" + req.body.memeID)
                 .then((apiResponse) => {
-                    //Excluir a foto armazenada no Imgur
+                    //Excluir a foto do meme armazenada no Imgur
                     axios.delete('https://api.imgur.com/3/image/' + apiResponse.data.idImgur, {headers:
                             {'Authorization':`Bearer ${apiKeys.imgurAccessToken}`}})
                         .then(respostaAPI => {
@@ -130,10 +134,13 @@ class MemesRoute extends Route {
                 });
         });
 
+        //Rota para acessar o perfil de um meme
+        //Recebe o ID do meme específico
         this.router.post('/acessarPerfilMeme', async (req, res) => {
             let meme = {};
             let feed;
             let seguidores = [];
+            //Pegar o feed do meme para exibir no perfil
             await client.feed('meme', req.body.memeID).get({ limit:20, offset:0, reactions: {own: true, counts: true} })
                 .then(apiResponse =>{
                     feed = apiResponse;
@@ -148,6 +155,7 @@ class MemesRoute extends Route {
                 }).catch(err => {
                     console.log("Erro ao buscar meme: " + err);
                 });
+            //Pegar os seguidores do meme para que a página saiba se o usuário segue ou não o meme visitado
             await client.feed('meme', req.body.memeID).followers()
                 .then(results => {
                     results.results.forEach(objeto => {
@@ -157,13 +165,16 @@ class MemesRoute extends Route {
                 .catch(err =>{
                     console.log(err.message);
                 });
+            //Checar se o feed do meme existe
             if (feed == undefined){
                 feed = {};
             }
             //Renderizar a página do perfil com as informações do meme específico.
             res.render('perfilMeme.ejs', {meme: meme, usuario: req.user, feed: feed, seguidores: seguidores});
-        })
+        });
 
+        //Rota para criar uma nova sugestão de alteração em um meme
+        //Recebe uma string com as novas categorias para a alteração e o ID do meme
         this.router.post('/criarSugestao', (req, res) => {
             let novoCategorias = req.body.novasCategorias;
             //Tratamento mínimo das categorias
@@ -185,6 +196,8 @@ class MemesRoute extends Route {
             }
         });
 
+        //Rota para validar uma sugestão de alteração de um meme
+        //Recebe o ID da sugestão
         this.router.post('/validarSugestao', (req, res) => {
             axios.put(rota + "/memes/validarSugestao" + req.body.idSugestao)
                 .then(apiResponse => {
@@ -200,6 +213,8 @@ class MemesRoute extends Route {
                 })
         });
 
+        //Rota para deletar uma sugestão de alteração de um meme
+        //Recebe o ID da sugestão
         this.router.post('/deletarSugestao', (req, res) => {
            axios.delete(rota + "/memes/deletarSugestao" + req.body.idSugestao)
                .then(apiResponse => {
@@ -215,6 +230,9 @@ class MemesRoute extends Route {
                });
         });
 
+        //Rota para buscar um meme no banco de dados
+        //Recebe uma string com as categorias inseridas pelo usuário
+        //Passa para a página um array com os memes encontrados
         this.router.post('/buscarMeme', (req, res) => {
             let searchQuery = req.body.searchQuery;
             //Tratamento mínimo das categorias
@@ -237,6 +255,8 @@ class MemesRoute extends Route {
             }
         });
 
+        //Rota para aprovar um meme pendente
+        //Recebe o ID do meme
         this.router.post('/aprovarMeme', (req, res) => {
             axios.put(rota + "/memes/aprovarMeme" + req.body.memeID)
                 .then(apiResponse => {
@@ -248,6 +268,9 @@ class MemesRoute extends Route {
                 })
         });
 
+        //Rota para buscar memes na janela de associação de memes durante a criação de um post
+        //Recebe uma string com as categorias inseridas pelo usuário
+        //Retorna um código HTML que exibe os memes encontrados pela busca
         this.router.post('/buscarMemeAssociacao', (req, res) => {
             let searchQuery = req.body.searchQuery;
             //Tratamento mínimo das categorias
@@ -258,6 +281,7 @@ class MemesRoute extends Route {
                     .then(apiResponse => {
                         const memes = apiResponse.data;
                         let html = "";
+                        //Criar o código HTML que exibe todos os memes ativos encontrados
                         memes.forEach( meme=>{
                             if (meme.status == 1){
                                 html = html+"<img data-idMeme='"+meme._id+"'onclick='associarMeme(this)' data-dismiss='modal' style='cursor:pointer;' class='memeImage' src='"+meme.urlImgur+"'>";
@@ -271,7 +295,6 @@ class MemesRoute extends Route {
                         console.log(err);
                     })
         });
-
     }
 }
 module.exports = MemesRoute;
