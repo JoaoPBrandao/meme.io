@@ -1,36 +1,3 @@
-/*
-// Setup das dependências:
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require("mongoose");
-
-// Instanciando servidor:
-const api = express();
-
-// Conectando com o BD:
-const mongoURI = "mongodb+srv://memeIO:memeiopassword@memeio-fs7qy.mongodb.net/test?retryWrites=true";
-mongoose.connect(mongoURI, {useNewUrlParser: true})
-    .then(() => {
-        console.log("BD conectado");
-    })
-    .catch(err => console.log(err));
-
-
-// Body parser para interpretar os Posts:
-api.use(bodyParser.urlencoded({
-    extended: true
-}));
-api.use(bodyParser.json());
-
-// Rotas:
-api.use('/usuarios', require(process.cwd() + '/routes/usuarios.js'));
-
-api.listen(3000, () => {
-    console.log("Server iniciado. Porta: " + 3000);
-});
-*/
-
-
 // Mesmo dentro da intenção de aplicação independente, nossa API/DAL foi feita pra conectar-se a um BD Mongo. A refatoração
 // para um BD diferente exigiria um nível variante de esforço, dependendo da disponibilidade de ferramentas node/express
 // similares à mongoose.

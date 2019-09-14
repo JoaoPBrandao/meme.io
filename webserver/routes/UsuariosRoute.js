@@ -1,9 +1,9 @@
 const Route = require("./Route.js");
-const axios = require("axios"); // Usamos Axios para fazer as requests à API
-const bcrypt = require("bcrypt");
+const axios = require("axios"); //Usamos Axios para fazer as requests à API
+const bcrypt = require("bcrypt"); //Usamos o Bcrypt para encriptar a senha do usuário
 const UsuariosController = require("../controllers/UsuariosController.js");
 const SessionController = require("../controllers/SessionController.js");
-const passport = require('passport');
+const passport = require('passport'); //Usamos o passport pra fazer a autenticação
 const uuid = require('uuid/v1');
 const date = require('date-and-time');
 const apiKeys = require('../configs/apiKeys'); //Arquivo com as chaves das APIs utilizadas
@@ -12,8 +12,9 @@ const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 const rota = require('../configs/rota');
 const multer  = require('multer'); //Usamos o Multer para parsear formuláros do tipo multipart/form-data
-const fs = require('fs'); // FileSystem padrão do Node
-const stream = require('getstream');
+const fs = require('fs'); //FileSystem padrão do Node
+const stream = require('getstream'); //Usamos o GetStream para implementar a funcionalidade do feed
+//Conectar ao client do GetStream:
 const client = stream.connect('55j5n3pfjx3u', '29kr9qdxat6gx4uw5d53sg3akbymwf7qcs85252bmhakxt426zjxctaaah3j9hdr', '54136');
 
 //Configurar aspectos específicos do Multer
@@ -409,7 +410,7 @@ class UsuariosRoute extends Route {
             }
         });
 
-        //ROTA QUE LEVA PARA A PÁGINA DE redefinir SENHA
+        //ROTA QUE LEVA PARA A PÁGINA DE REDEFINIR SENHA
         this.router.get('/redefinirSenha:chave', (req, res) => {
             let chave = req.params.chave;
             axios.get(rota + "/usuarios/buscarchave" + chave)

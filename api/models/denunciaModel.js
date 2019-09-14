@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+//Esquema para o documento de Denúncias no MondoDB
 const denunciaSchema = new mongoose.Schema(
     {
         "postID": {

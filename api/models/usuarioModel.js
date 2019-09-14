@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+//Esquema para o documento de Usuários no MondoDB.
 const usuarioSchema = new mongoose.Schema(
     {
         "nome": {
@@ -10,7 +11,8 @@ const usuarioSchema = new mongoose.Schema(
             "type": String,
             "required": true
         },
-        "status": { // Usuário ativo, inativo ou banido, feito com tipo = Number para ser escalável. 0 = banido, 1 = inativo e 2 = ativo.
+        //STATUS DO USUÁRIO, 0 = BANIDO, 1 = INATIVO, 2 = ATIVO
+        "status": {
             "type": Number,
             "default": 2,
             "required": true

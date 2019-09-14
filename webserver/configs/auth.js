@@ -1,5 +1,4 @@
 // Esse arquivo serve apenas para configurar o sistema de autenticação do passport.
-
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const UsuariosController = require("../controllers/UsuariosController.js");
