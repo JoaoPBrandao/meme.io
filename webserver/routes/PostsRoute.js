@@ -29,6 +29,8 @@ class PostsRoute extends Route {
     constructor(basePath) {
         super('/posts');
 
+        //Rota para criar um post no banco de dados
+        //Recebe uma imagem, uma string com o conteúdo do post e o ID do meme associado
         this.router.post('/createPost', SessionController.authenticationMiddleware(), upload.single('arquivoEnviado'), (req, res) => {
             let post = {};
             //Enviando a imagem pra API do Imgur
@@ -47,11 +49,9 @@ class PostsRoute extends Route {
                         }
                     });
                     if (apiResponse.data.success == true) {
-
                         //Criando uma data
                         let now = new Date();
                         now = date.format(now, 'DD/MM/YYYY');
-
                         //Criando o post na API do Get Stream
                         let user = client.feed('user', req.user._id);
                         let activity = {
@@ -85,9 +85,9 @@ class PostsRoute extends Route {
                 });
         });
 
-        //ROTA QUE DELETA UM POST
+        //Rota que deleta um post do banco de dados
+        //Recebe o ID do post e o ID do usuário que fez o post
         this.router.post('/deletePost', SessionController.authenticationMiddleware(), (req, res) => {
-
             //Deletar o post da API do Get Stream
             client.feed('user', req.body.userID).removeActivity(req.body.postID)
                 .then()
@@ -96,8 +96,7 @@ class PostsRoute extends Route {
                         console.log("Erro ao deletar o post:" + err.message)
                     }
                 });;
-
-            //Excluir a foto armazenada no Imgur
+            //Excluir a foto do meme armazenada no Imgur
             axios.delete('https://api.imgur.com/3/image/' + req.body.idImgur, {headers:
                     {'Authorization':`Bearer ${apiKeys.imgurAccessToken}`}})
                 .then(() => {
@@ -109,13 +108,12 @@ class PostsRoute extends Route {
                 });
         });
 
-        //ROTA QUE DENUNCIA UM POST
+        //Rota que denuncía um post
+        //Recebe uma string com o conteúdo da denúncia, o ID do post e o ID do usuário que fez o post
         this.router.post('/denunciarPost', SessionController.authenticationMiddleware(), async (req, res) => {
-
-            //INSTANCIAR A DENÚNCIA RECEBIDA
+            //Instanciar a nova denúncia com as informações recebidas no body
             const denuncia = req.body;
-
-            //ENVIAR A DENÚNCIA PARA O BD
+            //Enviar a denúncia criada para o banco de dados
             axios.post(rota + '/posts/denunciarPost', denuncia)
                 .then(res.redirect('back'))
                 .catch(err => {
@@ -125,9 +123,10 @@ class PostsRoute extends Route {
                 });
         });
 
-        //ROTA QUE ACEITA A DENÚNCIA
+        //Rota para aceitar uma denúncia
+        //Recebe o ID do usuário que fez o post que foi denunciado, o ID do post e o ID da imagem do post no Imgur
         this.router.post('/aceitarDenuncia', async (req, res) => {
-            //ATUALIZAR O NÚMERO DE DENÚNCIAS ACEITAS DO USUÁRIO
+            //Atualizar o número de denúncias aceitas do usuário
             await axios.put(rota + "/usuarios/atualizarDenuncia" + req.body.idUsuario)
                 .then(apiResponse => {
                     if (apiResponse.status == 400){
@@ -139,8 +138,7 @@ class PostsRoute extends Route {
                         console.log("Erro ao tentar aceitar a denuncia: " + err.message);
                     }
                 });
-
-            //DELETAR AS DENÚNCIAS DESSE POST DO BD
+            //Deletar as denúncias referentes a esse post do banco de dados
             await axios.delete(rota + "/posts/deletarTodasDenuncias" + req.body.idPost)
                 .then(apiResponse => {
                     if (apiResponse.status == 400){
@@ -151,16 +149,14 @@ class PostsRoute extends Route {
                     console.log("Erro ao tentar deletar a sugestão.");
                     res.redirect('../usuarios/configuracoes');
                 });
-
-            //DELETAR A IMAGEM DO POST DO IMGUR
+            //Deletas a imagem do post do Imgur
             await axios.delete('https://api.imgur.com/3/image/' + req.body.idImgur, {headers:
                     {'Authorization':`Bearer ${apiKeys.imgurAccessToken}`}})
                 .then()
                 .catch(err => {
                     console.log("Erro ao excluir a imagem do imgur: " + err);
                 });
-
-            //DELETAR O POST DA API DO GET STREAM
+            //Deletar o post do feed do GetStream
             await client.feed('user', req.body.idUsuario).removeActivity(req.body.idPost)
                 .then()
                 .catch(err => {
@@ -171,6 +167,8 @@ class PostsRoute extends Route {
             res.end();
         });
 
+        //Rota para recusar uma denúncia
+        //Recebe o ID da denúncia
         this.router.post('/recusarDenuncia', (req, res) => {
             axios.delete(rota + "/posts/deletarDenuncia" + req.body.idDenuncia)
                 .then(apiResponse => {
@@ -185,23 +183,26 @@ class PostsRoute extends Route {
                 });
         });
 
+        //Rota para avaliar um post
+        //Recebe o ID do post sendo avaliado
         this.router.post('/avaliarPost', async (req, res) => {
             const client2 = stream.connect('55j5n3pfjx3u', req.user.userToken,  '54136');
             let likeID = undefined;
             let reactions = await client.reactions.filter({'activity_id': req.body.postID});
+            //Checar se o post já está curtido pelo usuário no momento da chamada
             reactions.results.forEach(like => {
                 if (like.user_id == req.user._id){
                     likeID = like.id;
                 }
             });
             if (likeID){
-                //DESCURTIR
+                //Descurtir o post, caso ele já tenha sido curtido pelo usuário
                 client.reactions.delete(likeID)
                     .catch(err => {
                         console.log(err.message);
                     })
             }else {
-                //CURTIR
+                //Curtir o post, caso ainda não tenha sido curtido pelo usuário
                 await client2.reactions.add('like', req.body.postID)
                     .catch(err => {
                         console.log(err.message);
