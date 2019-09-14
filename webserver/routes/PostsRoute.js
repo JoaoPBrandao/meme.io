@@ -141,7 +141,7 @@ class PostsRoute extends Route {
                 });
 
             //DELETAR AS DENÚNCIAS DESSE POST DO BD
-            await axios.delete(rota + "/posts/deletarTodasDenuncias" + req.body.idPost)
+            await axios.delete(rota + "/posts/deletarDenuncias?postID=" + req.body.idPost)
                 .then(apiResponse => {
                     if (apiResponse.status == 400){
                         console.log("Erro ao deletar a sugestão na API.");
@@ -172,7 +172,7 @@ class PostsRoute extends Route {
         });
 
         this.router.post('/recusarDenuncia', (req, res) => {
-            axios.delete(rota + "/posts/deletarDenuncia" + req.body.idDenuncia)
+            axios.delete(rota + "/posts/deletarDenuncias?_id=" + req.body.idDenuncia)
                 .then(apiResponse => {
                     if (apiResponse.status == 400){
                         console.log("Erro ao deletar a sugestão na API.");

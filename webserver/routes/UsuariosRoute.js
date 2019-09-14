@@ -38,7 +38,7 @@ class UsuariosRoute extends Route {
             let usuario = req.user;
             //Enviar os administradores para serem exibidos nas partes do administrador
             let administradores = [];
-            await axios.get(rota + "/usuarios/administradores")
+            await axios.get(rota + "/usuarios?adm=1")
                 .then(apiResponse => {
                     administradores = apiResponse.data;
                 })
@@ -93,9 +93,9 @@ class UsuariosRoute extends Route {
                 usuario = req.user;
                 res.render('perfil.ejs', {usuarioVisitado: usuario, usuarioSessao: usuario, feed: feed});
             }else{
-                await axios.get(rota + "/usuarios/buscarUsuario" + req.query.usuario)
+                await axios.get(rota + "/usuarios?email=" + req.query.usuario)
                     .then(async apiResponse => {
-                        usuario = apiResponse.data;
+                        usuario = apiResponse.data[0];
                         const client2 = stream.connect('55j5n3pfjx3u', req.user.userToken,  '54136');
                         await client2.feed('user', usuario._id).get({ limit:20, offset:0, reactions: {own: true, counts: true}  })
                             .then(apiResponse =>{
@@ -126,9 +126,9 @@ class UsuariosRoute extends Route {
             let emailUsuario = req.query.emailUsuario;
             let usuarioBuscado;
             // TODO: Fazer endpoint na API que busca só por usuários ativos e usá-lo aqui.
-            await axios.get(rota + "/usuarios/buscarUsuario" + emailUsuario)
+            await axios.get(rota + "/usuarios?email=" + emailUsuario)
                 .then(apiResponse => {
-                    usuarioBuscado = apiResponse.data;
+                    usuarioBuscado = apiResponse.data[0];
                     res.render('buscaDeUsuarios.ejs', {usuarioBuscado: usuarioBuscado});
                 })
                 .catch(err => {
@@ -357,9 +357,9 @@ class UsuariosRoute extends Route {
                 res.redirect('/usuarios/recuperarSenha');
             }else {
                 // Buscando usuário:
-                axios.get(rota + "/usuarios/buscarUsuario" + email)
+                axios.get(rota + "/usuarios?email=" + email)
                     .then((apiResponse) => {
-                        if (apiResponse.data.status == 2 || apiResponse.data.status == 1){
+                        if (apiResponse.data[0].status == 2 || apiResponse.data[0].status == 1){
                             let chave = uuid();
                             let validade = new Date;
                             validade = date.addDays(validade, 1);
@@ -413,12 +413,12 @@ class UsuariosRoute extends Route {
         //ROTA QUE LEVA PARA A PÁGINA DE REDEFINIR SENHA
         this.router.get('/redefinirSenha:chave', (req, res) => {
             let chave = req.params.chave;
-            axios.get(rota + "/usuarios/buscarchave" + chave)
+            axios.get(rota + "/usuarios?chave=" + chave)
                 .then((apiResponse) => {
                     if(apiResponse.data){
                         let date = new Date;
-                        let validade = new Date(apiResponse.data.recuperacao[1]);
-                        let usuario= {idUsuario: apiResponse.data._id, nome: apiResponse.data.nome}
+                        let validade = new Date(apiResponse.data[0].recuperacao[1]);
+                        let usuario= {idUsuario: apiResponse.data[0]._id, nome: apiResponse.data[0].nome}
                         if (validade>date){
                             res.render('redefinirSenha.ejs', {usuario: usuario});
                         }else{
@@ -462,9 +462,9 @@ class UsuariosRoute extends Route {
         this.router.post('/seguirMeme', async (req, res) => {
             let usuario = {};
             let seguidores = [];
-            await axios.get(rota + "/usuarios/id", {params: {_id: req.body.usuarioID}})
+            await axios.get(rota + "/usuarios?_id="+ req.body.usuarioID)
                 .then(apiResponse => {
-                    usuario = apiResponse.data;
+                    usuario = apiResponse.data[0];
                 })
                 .catch(err => {
                     if (err) { console.log("Erro ao buscar usuário: " + err.message); }
@@ -493,9 +493,9 @@ class UsuariosRoute extends Route {
         this.router.post('/seguirUsuario', async (req, res) => {
             let usuario = {};
             let seguidores = [];
-            await axios.get(rota + "/usuarios/id", {params: {_id: req.body.usuarioID}})
+            await axios.get(rota + "/usuarios?_id="+ req.body.usuarioID)
                 .then(apiResponse => {
-                    usuario = apiResponse.data;
+                    usuario = apiResponse.data[0];
                 })
                 .catch(err => {
                     if (err) { console.log("Erro ao buscar usuário: " + err.message); }

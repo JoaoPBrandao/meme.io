@@ -28,27 +28,29 @@ router.post('/', (req, res) => {
 
 //Rota para obter todos os memes no banco de dados
 //Retorna um array com os memes encontrados
+//Pode receber filtros através de uma query string na URL
 router.get('/', (req, res) => {
-        Meme.find({}, (err, memes) => {
+        if(req.query.categorias) {
+            //Recebe uma string com as categorias para a busca no formato "Categoria;Categoria;Categoria..."
+            //Transformar a string com múltiplas categorias em um vetor com objetos do tipo {categorias: /categoria/i}
+            //Adiciona esse objeto criado a query de busca
+            let newQuery = req.query.categorias.split(';');
+            newQuery = newQuery.map(query => {
+                let queryObject = {};
+                queryObject.categorias = new RegExp(query, 'i');
+                return queryObject;
+            });
+            req.query.$and = newQuery;
+        }else{
+            delete req.query.categorias;
+        }
+        Meme.find(req.query, (err, memes) => {
             res.status(200).send(memes);
         })
             .catch(err => {
                 console.log("Erro ao buscar os memes do BD:" + err);
                 res.status(400).send("Erro ao buscar os memes do BD!");
             });
-});
-
-//Rota para obter um meme específico no banco de dados
-//Recebe o ID do meme específico pelo path da chamada
-//Retorna o objeto que representa o meme buscado
-router.get('/id=:memeID', (req, res) => {
-    Meme.findById(req.params.memeID, (err, meme) => {
-        res.status(200).send(meme);
-    })
-        .catch(err => {
-            console.log("Erro ao buscar meme com o ID requerido.");
-            res.status(400).send("Erro ao buscar meme com o ID requerido.");
-        })
 });
 
 //Rota para deletar um meme específico no banco de dados
@@ -103,23 +105,19 @@ router.get('/sugestoes', (req, res) => {
 //Rota para validar uma sugestão existente no banco de dados
 //Recebe o ID da sugestão pelo path da chamada
 router.put('/validarSugestao:idSugestao', async (req, res) => {
-    const sugestaoEncontrada = await Sugestao.findById(req.params.idSugestao)
-    const memeEncontrado = await Meme.findById(sugestaoEncontrada.idMeme);
-    console.log(sugestaoEncontrada);
-    let novasCategorias = [];
-    //Popular o novo array de categorias com todas as categorias já existentes e as novas sugeridas
-    memeEncontrado.categorias.forEach(categoria => {
-        novasCategorias.push(categoria);
+    const sugestao = await Sugestao.findById(req.params.idSugestao);
+    const meme = await Meme.findById(sugestao.idMeme);
+
+    sugestao.categorias.forEach(categoria => {
+        meme.categorias.push(categoria);
     });
-    sugestaoEncontrada.categorias.forEach(categoria => {
-        novasCategorias.push(categoria);
-    });
-    Meme.updateOne({"_id": memeEncontrado._id}, {"categorias": novasCategorias})
+
+    meme.save()
        .then()
        .catch(err => {
            res.status(400).send("Erro ao alterar meme.");
        });
-    Sugestao.deleteOne({"_id": sugestaoEncontrada._id})
+    Sugestao.deleteOne({"_id": sugestao._id})
         .then(() => {
             res.status(200).send("Meme alterado e Sugestão deletada com sucesso.");
         })
@@ -128,54 +126,16 @@ router.put('/validarSugestao:idSugestao', async (req, res) => {
         });
 });
 
-//Rota para deletar uma sugestão existente no banco de dados
-//Recebe o ID da sugestão pelo path da chamada
-router.delete('/deletarSugestao:idSugestao', (req, res) => {
-    Sugestao.deleteOne({"_id": req.params.idSugestao})
-        .then(() => {
-            res.status(200).send("Sugestão deletada com sucesso.");
-        })
-        .catch(err => {
-            res.status(400).send("Erro ao deletar sugestão.");
-        });
-});
-
-//Rota para deletar todas as sugestões de um meme específico, chamada quando um meme é deletado
-//Recebe o ID do meme em questão pelo path da chamada
-router.delete('/deletarSugestoesDoMeme:idMeme', (req, res) => {
-    Sugestao.deleteMany({"idMeme": req.params.idMeme})
+//Rota para deletar sugestões existente no banco de dados
+//Recebe os parâmetros de busca da sugestão através de uma query string na URL
+router.delete('/deletarSugestao', (req, res) => {
+    Sugestao.deleteMany(req.query)
         .then(() => {
             res.status(200).send("Sugestões deletadas com sucesso.");
         })
         .catch(err => {
-            res.status(400).send("Erro ao deletar sugestões.");
+            res.status(400).send("Erro ao deletar sugestão.");
         });
-});
-
-//Rota para buscar memes no banco de dados
-//Recebe uma string com as categorias para a busca no formato "Categoria;Categoria;Categoria..."
-//Retorna um array contendo os memes encontrados pela busca
-router.get('/buscarMemes', (req, res) => {
-    //Transformar a string com múltiplas categorias em um vetor com objetos do tipo {categorias: /categoria/i}
-    let newQuery = req.query.queryRecebida.split(';');
-    newQuery = newQuery.map(query => {
-        let queryObject = {};
-        queryObject.categorias = new RegExp(query, 'i');
-        return queryObject;
-    });
-    Meme.find({ $and: newQuery}, (err, memes) => {
-        if (memes){
-            console.log("Memes encontrados pela API.");
-            res.status(200).send(memes);
-        }else{
-            memes = [];
-            console.log("A API não encontrou nenhum meme com essas categorias.");
-            res.status(200).send(memes);
-        }
-    }).catch(err => {
-        console.log("Erro ao buscar memes no mongo.");
-        console.log(err);
-    });
 });
 
 //Rota para aprovar um meme pendente
@@ -194,6 +154,6 @@ router.put('/aprovarMeme:idMeme', (req, res)=>{
             console.log("Erro ao aprovar meme: " + err.message);
             res.status(400).send("Erro ao aprovar meme!");
         })
-})
+});
 
 module.exports = router;
