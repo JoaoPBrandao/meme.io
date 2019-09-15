@@ -4,34 +4,19 @@ const mongoose = require("mongoose");
 const Usuario = require(process.cwd() + "/models/usuarioModel.js");
 
 //Rota que realiza a busca de usuários no banco de dados
-//Recebe o e-mail do usuário pelo path da chamada
-//Retorna um objeto que representa o usuário encontrado
-router.get('/buscarUsuario:emailUsuario', async (req, res) => {
-    Usuario.findOne({
-        "email": req.params.emailUsuario
-    }, (err, usuario) => {
+//Recebe uma query através da URL
+router.get('/', async (req, res) => {
+    if (req.query.recuperacao){
+        req.query.recuperacao = {$all: req.query.recuperacao};
+    }
+    Usuario.find(req.query, (err, usuario) => {
         if (err) {
             console.log("Erro ao buscar usuário.");
             res.status(400).send("Erro ao buscar usuário.");
         }else{
-            res.status(200).send(usuario);
+            res.status(200).send(usuario[0]);
         }
     });
-});
-
-//Rota para obter os administradores do sistema no banco de dados
-//Retorna um array com os usuários que são administradores
-router.get('/administradores', async (req, res) => {
-    Usuario.find({
-        "adm": 1
-    }, (err, adms) => {
-        if (err){
-            console.log("Erro ao buscar administradores.");
-            res.status(400).send("Erro ao buscar administradores.");
-        }else{
-            res.status(200).send(adms);
-        }
-    })
 });
 
 //Rota para conceder privilégios de administrador a um usuário
@@ -94,32 +79,6 @@ router.put('/banirUsuario:emailUsuario', (req, res) => {
             console.log("Erro ao banir usuário.");
             res.status(400).send("Erro ao banir usuário.");
         });
-});
-
-//Rota para buscar um usuário no banco de dados através do seu ID
-//Recebe o ID do usuário em questão pelo path da chamada
-router.get('/id', async (req, res) => {
-    Usuario.findById(req.query._id, (err, usuario) => {
-        res.status(200).send(usuario);
-    })
-        .catch((err) => {
-            console.log(err);
-            res.status(400).send("Erro no processamento.");
-        });
-
-});
-
-//Rota para buscar um usuário no banco de dados através do seu e-mail
-//Recebe o e-mail do usuário em questão pelo path da chamada
-router.get('/email', async (req, res) => {
-    Usuario.find({email : req.query.email}, (err, usuario) => {
-        res.status(200).send(usuario[0]);
-    })
-        .catch((err) => {
-            console.log(err);
-            res.status(400).send("Erro no processamento.");
-        });
-
 });
 
 //Rota para criar um novo usuário no banco de dados
@@ -297,21 +256,6 @@ router.put('/recuperarSenha', (req, res) => {
         .catch(err => {
             console.log(err.message)
         });
-});
-
-//Rota que realiza a busca de um usuário no banco de dados (Específica para a recuperação de senha)
-//Recebe a chave para a recuperação da senha através do path da chamada
-router.get('/buscarChave:chave', async (req, res) => {
-    Usuario.findOne({
-        "recuperacao": {$all: [req.params.chave]}
-    }, (err, usuario) => {
-        if (err) {
-            console.log("Erro ao buscar usuário.");
-            res.status(400).send("Erro ao buscar usuário.");
-        }else{
-            res.status(200).send(usuario);
-        }
-    });
 });
 
 //Rota que atualiza o número de denúncias de um usuário

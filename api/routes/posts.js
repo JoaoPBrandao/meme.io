@@ -36,11 +36,9 @@ router.get('/denuncias', (req, res) => {
         });
 });
 
-//Rota para deletar todas as denúncias de um post específico, chamada quando uma denúncia de um post é aceita,
-//para que não existam denúncias referenciando um post que não existe mais
-//Recebe o ID do post específico pelo path da chamada
-router.delete('/deletarTodasDenuncias:idPost', (req, res) => {
-    Denuncia.deleteMany({"postID": req.params.idPost})
+//Rota para deletar denúncias utilizando uma query recebida através da URL
+router.delete('/deletarDenuncias', (req, res) => {
+    Denuncia.deleteMany(req.query)
         .then(() => {
             res.status(200).send("Denuncia deletada com sucesso.");
         })
@@ -48,18 +46,5 @@ router.delete('/deletarTodasDenuncias:idPost', (req, res) => {
             res.status(400).send("Erro ao deletar denuncia.");
         });
 });
-
-//Rota para deletar uma denúncia, chamada quando uma denúncia é recusada
-//Recebe o ID da denúncia em questão pelo path da chamada
-router.delete('/deletarDenuncia:idDenuncia', (req, res) => {
-    Denuncia.deleteMany({"_id": req.params.idDenuncia})
-        .then(() => {
-            res.status(200).send("Denuncia deletada com sucesso.");
-        })
-        .catch(err => {
-            res.status(400).send("Erro ao deletar denuncia.");
-        });
-});
-
 
 module.exports = router;

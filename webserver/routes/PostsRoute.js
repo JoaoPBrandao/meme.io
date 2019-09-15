@@ -138,8 +138,9 @@ class PostsRoute extends Route {
                         console.log("Erro ao tentar aceitar a denuncia: " + err.message);
                     }
                 });
+
             //Deletar as denúncias referentes a esse post do banco de dados
-            await axios.delete(rota + "/posts/deletarTodasDenuncias" + req.body.idPost)
+            await axios.delete(rota + "/posts/deletarDenuncias?postID=" + req.body.idPost)
                 .then(apiResponse => {
                     if (apiResponse.status == 400){
                         console.log("Erro ao deletar a sugestão na API.");
@@ -170,7 +171,7 @@ class PostsRoute extends Route {
         //Rota para recusar uma denúncia
         //Recebe o ID da denúncia
         this.router.post('/recusarDenuncia', (req, res) => {
-            axios.delete(rota + "/posts/deletarDenuncia" + req.body.idDenuncia)
+            axios.delete(rota + "/posts/deletarDenuncias?_id=" + req.body.idDenuncia)
                 .then(apiResponse => {
                     if (apiResponse.status == 400){
                         console.log("Erro ao deletar a sugestão na API.");

@@ -15,9 +15,9 @@ module.exports = (passport) => {
     });
 
     passport.deserializeUser((id, done) => {
-        axios.get(rota + "/usuarios/id", {params: {_id: id._id}})
+        axios.get(rota + "/usuarios?_id="+ id._id)
             .then(apiResponse => {
-                usuario = apiResponse.data;
+                usuario = apiResponse.data[0];
                 usuario.userToken = id.userToken;
                 done(null, usuario);
             });
@@ -25,7 +25,7 @@ module.exports = (passport) => {
 
     passport.use(new LocalStrategy(
         (username, password, done) => {
-            axios.get(rota + "/usuarios/email", {params: {email: username}})
+            axios.get(rota + "/usuarios?email=" + username)
                 .then(apiResponse => {
                     if(apiResponse.status != 200){
                         return done(err);
@@ -33,18 +33,18 @@ module.exports = (passport) => {
                     if(!apiResponse.data){
                         return done(null, false);
                     }
-                    if(apiResponse.data.status == 0){
+                    if(apiResponse.data[0].status == 0){
                         return done(null, false);
                     }
 
-                    bcrypt.compare(password, apiResponse.data.senha, (err, isValid) => {
+                    bcrypt.compare(password, apiResponse.data[0].senha, (err, isValid) => {
                         if (err) {
                             return done(err)
                         }
                         if (!isValid) {
                             return done(null, false)
                         }
-                        return done(null, apiResponse.data)
+                        return done(null, apiResponse.data[0])
                     })
                 });
         }

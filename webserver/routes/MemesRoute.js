@@ -116,7 +116,7 @@ class MemesRoute extends Route {
                             console.log("Erro ao excluir a imagem do imgur: " + err);
                         });
                     //Deletar as sugestões associadas a esse meme
-                    axios.delete(rota + "/memes/deletarSugestoesDoMeme" + req.body.memeID)
+                    axios.delete(rota + "/memes/deletarSugestao?idMeme=" + req.body.memeID)
                         .then(apiResponse => {
                             if (apiResponse.status == 400){
                                 console.log("Erro ao deletar as sugestões desse meme na API.");
@@ -149,9 +149,9 @@ class MemesRoute extends Route {
                     console.log("Erro ao buscar feed." + err.message);
                 });
             //Enviar a requisição com o ID para a API fazer a busca no BD
-            await axios.get(rota + "/memes/id=" + req.body.memeID)
+            await axios.get(rota + "/memes/?_id=" + req.body.memeID)
                 .then(apiResponse => {
-                    meme = apiResponse.data;
+                    meme = apiResponse.data[0];
                 }).catch(err => {
                     console.log("Erro ao buscar meme: " + err);
                 });
@@ -203,8 +203,7 @@ class MemesRoute extends Route {
                 .then(apiResponse => {
                     if (apiResponse.status == 400){
                         console.log("Erro ao validar a sugestão na API.");
-                    }else{
-                    };
+                    }
                     res.redirect('../usuarios/configuracoes');
                 })
                 .catch(err => {
@@ -216,12 +215,11 @@ class MemesRoute extends Route {
         //Rota para deletar uma sugestão de alteração de um meme
         //Recebe o ID da sugestão
         this.router.post('/deletarSugestao', (req, res) => {
-           axios.delete(rota + "/memes/deletarSugestao" + req.body.idSugestao)
+           axios.delete(rota + "/memes/deletarSugestao?_id=" + req.body.idSugestao)
                .then(apiResponse => {
                    if (apiResponse.status == 400){
                        console.log("Erro ao deletar a sugestão na API.");
-                   }else{
-                   };
+                   }
                    res.redirect('../usuarios/configuracoes');
                })
                .catch(err => {
@@ -242,7 +240,7 @@ class MemesRoute extends Route {
                 //TODO TRATAR ERRO
             } else {
                 //Enviar a requisição com os parâmetros da busca para a API para que seja feita a busca no BD
-                axios.get(rota + "/memes/buscarMemes", {params: {queryRecebida: searchQuery}})
+                axios.get(rota + "/memes?categorias="+ searchQuery)
                     .then(apiResponse => {
                         const memes = apiResponse.data;
                         //Renderizar a página do repositório apenas com os memes retornados pela busca
@@ -277,7 +275,7 @@ class MemesRoute extends Route {
             searchQuery = searchQuery.replace(/ /g, '');
             searchQuery = searchQuery.replace(/#/g, '');
                 //Enviar a requisição com os parâmetros da busca para a API para que seja feita a busca no BD
-                axios.get(rota + "/memes/buscarMemes", {params: {queryRecebida: searchQuery}})
+                axios.get(rota + "/memes?categorias="+ searchQuery)
                     .then(apiResponse => {
                         const memes = apiResponse.data;
                         let html = "";
