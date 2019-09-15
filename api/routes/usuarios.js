@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
             console.log("Erro ao buscar usuário.");
             res.status(400).send("Erro ao buscar usuário.");
         }else{
-            res.status(200).send(usuario[0]);
+            res.status(200).send(usuario);
         }
     });
 });

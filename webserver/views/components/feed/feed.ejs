@@ -5,33 +5,35 @@
             <h4><%= post.nome %></h4>
 
             <div style="position:absolute; right: 0;">
-                <% if (post.own_reactions.like) { %>
-                    <% if (post.own_reactions.like.filter(like => (like.user_id == usuario._id)).length == 1){ %>
-                        <button class="btn-memeIO btn" onclick="avaliarPost('<%= post.id %>','<%= usuario._id %>', this)">
-                            <i class="fas fa-laugh-squint fa-lg liked"></i>
-                            <span><%= post.reaction_counts.like %></span>
-                        </button>
+                <% if (usuario){%>
+                    <% if (post.own_reactions.like) { %>
+                        <% if (post.own_reactions.like.filter(like => (like.user_id == usuario._id)).length == 1){ %>
+                            <button class="btn-memeIO btn" onclick="avaliarPost('<%= post.id %>','<%= usuario._id %>', this)">
+                                <i class="fas fa-laugh-squint fa-lg liked"></i>
+                                <span><%= post.reaction_counts.like %></span>
+                            </button>
+                        <% }else { %>
+                                <button class="btn-memeIO btn" onclick="avaliarPost('<%= post.id %>','<%= usuario._id %>', this)">
+                                    <i class="fas fa-laugh-squint fa-lg"></i>
+                                    <span><%= post.reaction_counts.like %></span>
+                                </button>
+                        <% }; %>
                     <% }else { %>
                             <button class="btn-memeIO btn" onclick="avaliarPost('<%= post.id %>','<%= usuario._id %>', this)">
                                 <i class="fas fa-laugh-squint fa-lg"></i>
-                                <span><%= post.reaction_counts.like %></span>
+                                <span>0</span>
                             </button>
-                    <% }; %>
-                <% }else { %>
-                        <button class="btn-memeIO btn" onclick="avaliarPost('<%= post.id %>','<%= usuario._id %>', this)">
-                            <i class="fas fa-laugh-squint fa-lg"></i>
-                            <span>0</span>
-                        </button>
-                    <% }; %>
+                        <% }; %>
 
-                <button class="btn btn-memeIO" data-toggle="modal" data-target="#denunciarPublicação" onclick="associarIdPost(<%= JSON.stringify(post) %>)">
-                    <i class="fas fa-flag"></i>
-                </button>
-                <% if (usuario._id == post.actor.substring(5) || usuario.adm == 1) { %>
-                    <button class="btn btn-memeIO" onclick="deletarPost('<%= post.id %>', '<%= post.actor.substring(5) %>', '<%= post.idImgur %>')">
-                        <i class="fas fa-trash-alt"></i>
+                    <button class="btn btn-memeIO" data-toggle="modal" data-target="#denunciarPublicação" onclick="associarIdPost(<%= JSON.stringify(post) %>)">
+                        <i class="fas fa-flag"></i>
                     </button>
-                <% } %>
+                    <% if (usuario._id == post.actor.substring(5) || usuario.adm == 1) { %>
+                        <button class="btn btn-memeIO" onclick="deletarPost('<%= post.id %>', '<%= post.actor.substring(5) %>', '<%= post.idImgur %>')">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    <% } %>
+                <%}%>
             </div>
         </div>
         <div class="row">

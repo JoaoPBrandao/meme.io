@@ -104,7 +104,7 @@ class UsuariosRoute extends Route {
                 //Buscar o outro usuário no banco de dados
                 await axios.get(rota + "/usuarios?email=" + req.query.usuario)
                     .then(async apiResponse => {
-                        usuario = apiResponse.data;
+                        usuario = apiResponse.data[0];
                         //Pegar o feed do outro usuário
                         const client2 = stream.connect('55j5n3pfjx3u', req.user.userToken,  '54136');
                         await client2.feed('user', usuario._id).get({ limit:20, offset:0, reactions: {own: true, counts: true}  })
@@ -139,8 +139,7 @@ class UsuariosRoute extends Route {
         this.router.get('/buscarUsuarios',SessionController.authenticationMiddleware(), async (req, res) => {
             let emailUsuario = req.query.emailUsuario;
             let usuarioBuscado;
-            // TODO: Fazer endpoint na API que busca só por usuários ativos e usá-lo aqui.
-            await axios.get(rota + "/usuarios?email=" + emailUsuario)
+            await axios.get(rota + "/usuarios?email=" + emailUsuario + "&status=2")
                 .then(apiResponse => {
                     usuarioBuscado = apiResponse.data[0];
                     res.render('buscaDeUsuarios.ejs', {usuarioBuscado: usuarioBuscado});
