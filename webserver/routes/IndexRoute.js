@@ -16,8 +16,7 @@ class IndexRoute extends Route {
             if (req.user){
                 let memes;
                 let feed;
-                //TODO: BUSCAR APENAS POR MEMES APROVADOS
-                await axios.get(rota + "/memes")
+                await axios.get(rota + "/memes?status=1")
                     .then(apiResponse => {
                         memes = apiResponse.data;
                     })

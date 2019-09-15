@@ -104,7 +104,7 @@ class UsuariosRoute extends Route {
                 //Buscar o outro usuário no banco de dados
                 await axios.get(rota + "/usuarios?email=" + req.query.usuario)
                     .then(async apiResponse => {
-                        usuario = apiResponse.data[0];
+                        usuario = apiResponse.data;
                         //Pegar o feed do outro usuário
                         const client2 = stream.connect('55j5n3pfjx3u', req.user.userToken,  '54136');
                         await client2.feed('user', usuario._id).get({ limit:20, offset:0, reactions: {own: true, counts: true}  })
@@ -415,52 +415,49 @@ class UsuariosRoute extends Route {
                 //TODO: DISPLAY ERROR FLASH MESSAGE
                 res.redirect('/usuarios/recuperarSenha');
             }else {
-                axios.get(rota + "/usuarios/buscarUsuario" + email)
+                //Buscar o usuário no banco de dados
+                axios.get(rota + "/usuarios?email=" + email)
                     .then((apiResponse) => {
                         //Checar se o usuário não está banido
-                        if (apiResponse.data.status == 2 || apiResponse.data.status == 1){
-                            //Buscar o usuário no banco de dados
-                            axios.get(rota + "/usuarios?email=" + email)
-                             .then((apiResponse) => {
-                                  if (apiResponse.data[0].status == 2 || apiResponse.data[0].status == 1){
-                                  //Gerar a chave utilizada para a recuperação de senha
-                                  let chave = uuid();
-                                  let validade = new Date;
-                                validade = date.addDays(validade, 1);
-                                //Atualizar o usuário no banco de dados com as informações para a recuperação de senha
-                                axios.put(rota + "/usuarios" + "/recuperarSenha", {emailUsuario : email, chave : chave, validade : validade})
-                                    .then(apiResponse => {
-                                        if (apiResponse.status==200){
-                                            let transporter = nodemailer.createTransport({
-                                                service: 'gmail',
-                                                auth: {
-                                                    type: 'oauth2',
-                                                    user: 'memeiopcs@gmail.com',
-                                                    clientId: '702862755088-mfjh7cm1gdmdclh83ntbu9rsndbpaa5g.apps.googleusercontent.com',
-                                                    clientSecret: 'm51QcltlJiG9pS0u539Rfv2l',
-                                                    refreshToken: '1/SIyldO2Nj0eTUz0KQd1LdIk0fSfvplHtSR6a7pTcqZo',
-                                                }
-                                            });
-                                            //Enviar o e-mail de recuperação de senha para o usuário
-                                            let mailOptions = {
-                                                from: 'memeiopcs@gmail.com',
-                                                to: email,
-                                                subject: 'Recuperação de senha memeIO',
-                                                text: 'texto',
-                                                //TODO: CREATE A HTML WITH A NICE LAYOUT FOR THE E-MAIL
-                                                html: 'Link para recuperação de senha<br> http://localhost:8080/usuarios/redefinirSenha' + chave
-                                            };
-                                            transporter.sendMail(mailOptions, (err, resp) => {
-                                                if (err) {
-                                                    return console.log(err);
-                                                    //TODO: DISPLAY ERROR FLASH MESSAGE
-                                                    res.redirect('/');
-                                                } else {
-                                                    //TODO: DISPLAY SUCCESS FLASH MESSAGE
-                                                    res.redirect('/');
-                                                }
-                                            });
-                                        }
+                        if (apiResponse.data[0].status == 2 || apiResponse.data[0].status == 1){
+                            //Gerar a chave utilizada para a recuperação de senha
+                            let chave = uuid();
+                            let validade = new Date;
+                            validade = date.addDays(validade, 1);
+                            //Atualizar o usuário no banco de dados com as informações para a recuperação de senha
+                            axios.put(rota + "/usuarios" + "/recuperarSenha", {emailUsuario : email, chave : chave, validade : validade})
+                                .then(apiResponse => {
+                                    if (apiResponse.status==200){
+                                        let transporter = nodemailer.createTransport({
+                                            service: 'gmail',
+                                            auth: {
+                                                type: 'oauth2',
+                                                user: 'memeiopcs@gmail.com',
+                                                clientId: '702862755088-mfjh7cm1gdmdclh83ntbu9rsndbpaa5g.apps.googleusercontent.com',
+                                                clientSecret: 'm51QcltlJiG9pS0u539Rfv2l',
+                                                refreshToken: '1/SIyldO2Nj0eTUz0KQd1LdIk0fSfvplHtSR6a7pTcqZo',
+                                            }
+                                        });
+                                        //Enviar o e-mail de recuperação de senha para o usuário
+                                        let mailOptions = {
+                                            from: 'memeiopcs@gmail.com',
+                                            to: email,
+                                            subject: 'Recuperação de senha memeIO',
+                                            text: 'texto',
+                                            //TODO: CREATE A HTML WITH A NICE LAYOUT FOR THE E-MAIL
+                                            html: 'Link para recuperação de senha<br> http://localhost:8080/usuarios/redefinirSenha' + chave
+                                        };
+                                        transporter.sendMail(mailOptions, (err, resp) => {
+                                            if (err) {
+                                                return console.log(err);
+                                                //TODO: DISPLAY ERROR FLASH MESSAGE
+                                                res.redirect('/');
+                                            } else {
+                                                //TODO: DISPLAY SUCCESS FLASH MESSAGE
+                                                res.redirect('/');
+                                            }
+                                        });
+                                    }
                                 })
                                 .catch(err=>{
                                     //TODO: DISPLAY ERROR FLASH MESSAGE
