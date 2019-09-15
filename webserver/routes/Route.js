@@ -7,24 +7,24 @@
 // chamar diferentes controllers dependendo de estados do cliente (similar a como fazemos com a autenticação do usuário)
 // e chamar loggers independentes do resto do sistema.
 
-const Router = require("express").Router;
+const Router = require('express').Router;
 
 class Route {
-    // Classe abstrata.
-    // Assim que criada, a rota deve ser registrada no servidor Express. Fazemos isso pois não há motivo para instanciarmos uma
-    // rota sem que o servidor registrá-la logo em seguida.
-    // Importante: espera-se que, para cada classe de rota extendida, sejam implementadas as funções de seu router (e.g.:
-    // this.router.get('/', (req, res) => { res.send("Olá, mundo") }. A nossa "main" (index.js) está preparada para
-    // percorrer cada rota em "routes" e registrá-la, eliminando a necessidade de voltarmos ao index a cada nova rota que
-    // fizermos.
-    constructor(basePath) {
-        this.router = Router();
-        this.basePath = basePath;
-    }
+  // Classe abstrata.
+  // Assim que criada, a rota deve ser registrada no servidor Express. Fazemos isso pois não há motivo para instanciarmos uma
+  // rota sem que o servidor registrá-la logo em seguida.
+  // Importante: espera-se que, para cada classe de rota extendida, sejam implementadas as funções de seu router (e.g.:
+  // this.router.get('/', (req, res) => { res.send("Olá, mundo") }. A nossa "main" (index.js) está preparada para
+  // percorrer cada rota em "routes" e registrá-la, eliminando a necessidade de voltarmos ao index a cada nova rota que
+  // fizermos.
+  constructor(basePath) {
+    this.router = Router();
+    this.basePath = basePath;
+  }
 
-    registerRoute(app) {
-        app.use(this.basePath, this.router);
-    }
+  registerRoute(app) {
+    app.use(this.basePath, this.router);
+  }
 }
 
 module.exports = Route;

@@ -1,138 +1,142 @@
 /*
 CSS GERAL
  */
-body{
-    background-color: #FFE599;
-    min-height: 100vh;
-    margin: auto;
-    padding-bottom: 270px;
-    position: relative;
-    word-wrap: break-word;
+body {
+  background-color: #ffe599;
+  min-height: 100vh;
+  margin: auto;
+  padding-bottom: 270px;
+  position: relative;
+  word-wrap: break-word;
 }
 
-#searchBarForm{
-    width: 60%;
+#searchBarForm {
+  width: 60%;
 }
 
-@media (max-width: 1100px)
-{
-    #searchBarForm{
-        width: 50%;
-    }
+@media (max-width: 1100px) {
+  #searchBarForm {
+    width: 50%;
+  }
 }
 
-@media (max-width: 900px)
-{
-    #searchBarForm{
-        width: 40%;
-    }
+@media (max-width: 900px) {
+  #searchBarForm {
+    width: 40%;
+  }
 }
 
-@media (max-width: 750px)
-{
-    #searchBarForm{
-        width: 20%;
-    }
+@media (max-width: 750px) {
+  #searchBarForm {
+    width: 20%;
+  }
 }
 
-.feed{
-    flex-wrap: wrap-reverse;
+.feed {
+  flex-wrap: wrap-reverse;
 }
 
-.card-body{
-    background-color: #FFFFFF;
+.card-body {
+  background-color: #ffffff;
 }
 
-@media (max-width: 800px){
-    body{
-        padding-bottom: 344px;
-    }
+@media (max-width: 800px) {
+  body {
+    padding-bottom: 344px;
+  }
 }
 
-h1, h2, h3, h4, h5{
-    font-family: 'Josefin Sans', sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: 'Josefin Sans', sans-serif;
 }
 
-.btn-memeIO{
-    color: #E6E6E6;
-    background-color: #bb5342;
-    border-color: #bb5342;
+.btn-memeIO {
+  color: #e6e6e6;
+  background-color: #bb5342;
+  border-color: #bb5342;
 }
 
-.btn-memeIO:hover{
-    color: #E6E6E6;
-    background-color: #a44135;
-    border-color: #a44135;
+.btn-memeIO:hover {
+  color: #e6e6e6;
+  background-color: #a44135;
+  border-color: #a44135;
 }
 
-.btn:focus{
-    outline: transparent;
-    box-shadow: transparent;
+.btn:focus {
+  outline: transparent;
+  box-shadow: transparent;
 }
 /*
 CSS PARA O HEADER
  */
-header{
-    background-color: #bb5342;
+header {
+  background-color: #bb5342;
 }
-header .nav, h1{
-    display: inline-block;
-    color: #ffffff;
+header .nav,
+h1 {
+  display: inline-block;
+  color: #ffffff;
 }
-header .btn-light{
-    background-color: transparent;
-    border: none !important;
-    color: #e6e6e6;
+header .btn-light {
+  background-color: transparent;
+  border: none !important;
+  color: #e6e6e6;
 }
 /*
 CSS PARA O FOOTER
  */
-footer{
-    position: absolute;
-    bottom: 0;
-    background-color: #bb5342;
-    width: 100%;
-    height: auto;
-    padding: 20px 0px 40px 0px;
+footer {
+  position: absolute;
+  bottom: 0;
+  background-color: #bb5342;
+  width: 100%;
+  height: auto;
+  padding: 20px 0px 40px 0px;
 }
-footer .col-sm-4{
-    height: auto !important;
+footer .col-sm-4 {
+  height: auto !important;
 }
-footer h4, footer h5, footer small{
-    color: #ffffff;
+footer h4,
+footer h5,
+footer small {
+  color: #ffffff;
 }
-footer small{
-    font-family: 'Josefin Sans', sans-serif;
-    display: block;
+footer small {
+  font-family: 'Josefin Sans', sans-serif;
+  display: block;
 }
-#footerAbout{
-    width: 30%;
-    display: inline-block;
-    height: 110px;
-    text-align: justify;
+#footerAbout {
+  width: 30%;
+  display: inline-block;
+  height: 110px;
+  text-align: justify;
 }
-#footerContatos{
-    width: 30%;
-    display: inline-block;
-    height: 110px;
-    text-align: center;
+#footerContatos {
+  width: 30%;
+  display: inline-block;
+  height: 110px;
+  text-align: center;
 }
-#footerTecnologias{
-    width: 30%;
-    display: inline-block;
-    height: 110px;
-    text-align: center;
+#footerTecnologias {
+  width: 30%;
+  display: inline-block;
+  height: 110px;
+  text-align: center;
 }
-footer .row{
-    margin: 0;
-    align-items: baseline;
+footer .row {
+  margin: 0;
+  align-items: baseline;
 }
-footer #footerTecnologias small{
-    display: inline-block;
+footer #footerTecnologias small {
+  display: inline-block;
 }
-footer img{
-    width: auto;
-    height: auto;
+footer img {
+  width: auto;
+  height: auto;
 }
 
 /*
@@ -140,193 +144,208 @@ CSS PARA OS FORMULÁRIOS DE CADASTRO E LOGIN
  */
 
 form.formCadastroUsuario {
-    width: 60%;
-    max-width: 450px;
-    min-width: 300px;
-    margin: 60px auto;
-    background: #efefef;
-    padding: 0px 0px 50px 0px;
-    text-align: center;
-    -webkit-box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
-    box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 20px;
+  width: 60%;
+  max-width: 450px;
+  min-width: 300px;
+  margin: 60px auto;
+  background: #efefef;
+  padding: 0px 0px 50px 0px;
+  text-align: center;
+  -webkit-box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 20px;
 }
 
 form.formCadastroUsuario .labelInputContainer {
-    width: 57%;
-    display: block;
-    position: relative;
-    margin: 40px 0px;
+  width: 57%;
+  display: block;
+  position: relative;
+  margin: 40px 0px;
 }
 form.formCadastroUsuario .label-txt {
-    position: absolute;
-    top: -1.6em;
-    padding: 10px;
-    font-family: sans-serif;
-    font-size: .8em;
-    letter-spacing: 1px;
-    color: #bb5342;
-    transition: ease .3s;
+  position: absolute;
+  top: -1.6em;
+  padding: 10px;
+  font-family: sans-serif;
+  font-size: 0.8em;
+  letter-spacing: 1px;
+  color: #bb5342;
+  transition: ease 0.3s;
 }
 form.formCadastroUsuario .input {
-    width: 100%;
-    padding: 13px 10px 0 10px;
-    background: transparent;
-    border: none;
-    outline: none;
-    cursor: default;
+  width: 100%;
+  padding: 13px 10px 0 10px;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: default;
 }
 
 form.formCadastroUsuario .line-box {
-    position: relative;
-    width: 100%;
-    height: 2px;
-    background: #BCBCBC;
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background: #bcbcbc;
 }
 
 form.formCadastroUsuario .line {
-    position: absolute;
-    width: 0%;
-    height: 2px;
-    top: 0px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #bb5342;
-    transition: ease .6s;
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  top: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #bb5342;
+  transition: ease 0.6s;
 }
 
 form.formCadastroUsuario .input:focus + .line-box .line {
-    width: 100%;
+  width: 100%;
 }
 
 form.formCadastroUsuario .input:hover + .line-box .line {
-    width: 100%;
+  width: 100%;
 }
 
 form.formCadastroUsuario .formBanner {
-    width: 100%;
-    padding: 10px 10px;
-    margin: 0 0 25px 0;
-    font-size: 16px;
-    background-color: #BB5342;
-    color: #E6E6E6;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+  width: 100%;
+  padding: 10px 10px;
+  margin: 0 0 25px 0;
+  font-size: 16px;
+  background-color: #bb5342;
+  color: #e6e6e6;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
 /*
 CSS PARA AS PÁGINAS DE PERFIL
 */
 
-#profileCard, #profilePosts, #memeCard, #memePosts{
-    background: #FFFFFF;
-    width: 100%;
-    height: fit-content;
-    margin: 30px 0px;
-    padding: 25px;
+#profileCard,
+#profilePosts,
+#memeCard,
+#memePosts {
+  background: #ffffff;
+  width: 100%;
+  height: fit-content;
+  margin: 30px 0px;
+  padding: 25px;
 }
 
-#profileCard h1, #profilePosts h2, #memeCard h1, #memePosts h2{
-    color: #000000;
-    font-size: 170%
+#profileCard h1,
+#profilePosts h2,
+#memeCard h1,
+#memePosts h2 {
+  color: #000000;
+  font-size: 170%;
 }
 
-.border-profile, .border-memeProfile {
-    border: 1px solid #bb5342!important;
-    display: flex;
+.border-profile,
+.border-memeProfile {
+  border: 1px solid #bb5342 !important;
+  display: flex;
 }
-#profileCard img, #memeCard img{
-    width: 100%;
-    height: 100%;
-    border: 1px solid black;
-}
-
-#memeCard .col-sm-2, #memeCard .col-sm-10, #profileCard .col-sm-2, #profileCard .col-sm-10{
-    padding: 0px;
+#profileCard img,
+#memeCard img {
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
 }
 
-#memeCard .col-sm-10, #profileCard .col-sm-10{
-    padding: 5px !important;
+#memeCard .col-sm-2,
+#memeCard .col-sm-10,
+#profileCard .col-sm-2,
+#profileCard .col-sm-10 {
+  padding: 0px;
 }
 
-.border-memeProfile .row, .border-profile .row{
-    margin: 0px;
+#memeCard .col-sm-10,
+#profileCard .col-sm-10 {
+  padding: 5px !important;
+}
+
+.border-memeProfile .row,
+.border-profile .row {
+  margin: 0px;
 }
 
 /*
 CSS PARA A PÁGINA DE REPOSITÓRIO DE MEMES
  */
 
-.memeCard{
-    display: inline-block;
-    margin: 20px;
-    height: fit-content;
+.memeCard {
+  display: inline-block;
+  margin: 20px;
+  height: fit-content;
 }
 
-.categoria{
-    background-color: #8be0ff91;
-    border-radius: 3px;
-    padding: 2px;
+.categoria {
+  background-color: #8be0ff91;
+  border-radius: 3px;
+  padding: 2px;
 }
 
-.memeCard .card-text{
-    cursor: default;
+.memeCard .card-text {
+  cursor: default;
 }
 
-.categoria:hover{
-    cursor: default;
-    background-color: #42b3ff9c;
+.categoria:hover {
+  cursor: default;
+  background-color: #42b3ff9c;
 }
 
-.containerMemes{
-    margin: 10px auto;
-    padding: 15px;
-    background-color: #FFFFFF;
-    border-radius: 10px;
-    border: 1px solid #bb5342;
-    justify-content: space-evenly;
+.containerMemes {
+  margin: 10px auto;
+  padding: 15px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #bb5342;
+  justify-content: space-evenly;
 }
 
-#memeSearch{
-    display: inline-block;
-    width: 70%;
-    padding: .375rem .75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #bb5342;
-    border-radius: .25rem;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+#memeSearch {
+  display: inline-block;
+  width: 70%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #bb5342;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-#memeSearch:focus{
-    outline: none;
+#memeSearch:focus {
+  outline: none;
 }
 
-.memeCategory, .updateAccount, #concederPrivilegios{
-    width: 70%;
-    padding: .375rem .75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #bb5342;
-    border-radius: .25rem;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+.memeCategory,
+.updateAccount,
+#concederPrivilegios {
+  width: 70%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #bb5342;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.memeCategory:focus{
-    outline: none;
+.memeCategory:focus {
+  outline: none;
 }
 
-.hidden{
-    display: none;
+.hidden {
+  display: none;
 }
 
 /*
@@ -334,228 +353,231 @@ CSS PARA A PÁGINA DE CONFIGURAÇÕES
  */
 
 #containerDadosPessoais {
-    background-color: white;
-    border-radius: 10px;
-    border: 1px solid #bb5342;
-    height: 595px;
-    margin-top: 50px;
-    margin-bottom: 50px;
-    padding: 0px;
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid #bb5342;
+  height: 595px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding: 0px;
 }
 
-#alterarFotoDiv{
-    border-radius: 70px;
-    height: 100%;
-    width: 100%;
-    min-width: 50px;
-    background-color: #101010;
-    display: flex;
-    justify-content: center;
-    opacity: 0;
+#alterarFotoDiv {
+  border-radius: 70px;
+  height: 100%;
+  width: 100%;
+  min-width: 50px;
+  background-color: #101010;
+  display: flex;
+  justify-content: center;
+  opacity: 0;
 }
 
-#alterarFotoDiv:hover{
-    cursor: pointer;
-    opacity: 0.5;
+#alterarFotoDiv:hover {
+  cursor: pointer;
+  opacity: 0.5;
 }
 
-.sidebarDiv{
-    padding: 10px;
-    border-bottom: 1px solid #b5b5b5;
-    border-radius: 0px !important;
+.sidebarDiv {
+  padding: 10px;
+  border-bottom: 1px solid #b5b5b5;
+  border-radius: 0px !important;
 }
 
-.sidebarDiv:hover{
-    cursor: pointer;
-    background-color: #c7c7c7;
+.sidebarDiv:hover {
+  cursor: pointer;
+  background-color: #c7c7c7;
 }
 
-#containerDadosPessoais .col-sm-2 .active{
-    background-color: #c7c7c7;
-    border-color: #b5b5b5;
-    border: 0px 0px 1px 0px;
-    color: black;
+#containerDadosPessoais .col-sm-2 .active {
+  background-color: #c7c7c7;
+  border-color: #b5b5b5;
+  border: 0px 0px 1px 0px;
+  color: black;
 }
 
-#profilePhoto{
-    display: flex;
-    justify-content: center;
-    margin: 30px;
-    position: relative;
+#profilePhoto {
+  display: flex;
+  justify-content: center;
+  margin: 30px;
+  position: relative;
 }
 
-.atualizarSenha{
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #bb5342;
-    border-radius: .25rem;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+.atualizarSenha {
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #bb5342;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.sugestoescontainer{
-    background-color: #ededed;
-    padding: 0px;
-    margin: 30px;
-    border: 1px solid #b5b5b5;
-    border-radius: 10px;
+.sugestoescontainer {
+  background-color: #ededed;
+  padding: 0px;
+  margin: 30px;
+  border: 1px solid #b5b5b5;
+  border-radius: 10px;
 }
 
-.sugestoesToggle{
-    display: inline-block;
-    padding: 0px;
-    width: 50%;
-    display: flex;
-    justify-content: center;
+.sugestoesToggle {
+  padding: 0px;
+  width: 50%;
+  display: flex;
+  justify-content: center;
 }
 
-.sugestoesToggle:hover{
-    cursor: pointer;
-    background-color: #c7c7c7 !important;
+.sugestoesToggle:hover {
+  cursor: pointer;
+  background-color: #c7c7c7 !important;
 }
 
-#sugestoesToggleWrap .active{
-    background-color: #c7c7c7 !important;
-    color: #000;
+#sugestoesToggleWrap .active {
+  background-color: #c7c7c7 !important;
+  color: #000;
 }
 
-#memesPendentes:hover{
-    border-radius: 10px 0px 0px 0px;
+#memesPendentes:hover {
+  border-radius: 10px 0px 0px 0px;
 }
 
-#sugestoesAlteracao:hover{
-    border-radius: 0px 10px 0px 0px;
+#sugestoesAlteracao:hover {
+  border-radius: 0px 10px 0px 0px;
 }
 
-.sugestaoHeader{
-    margin: 0px;
+.sugestaoHeader {
+  margin: 0px;
 }
 
-.sugestoesToggle h5{
-    margin: 0px;
-    padding: 5px;
+.sugestoesToggle h5 {
+  margin: 0px;
+  padding: 5px;
 }
 
-.sugestoescontainer .list-group{
-    flex-direction: row;
+.sugestoescontainer .list-group {
+  flex-direction: row;
 }
 
-.sugestoescontainer .list-group-item{
-    background-color: inherit;
-    border: none;
-
+.sugestoescontainer .list-group-item {
+  background-color: inherit;
+  border: none;
 }
 
-#nav-tabContent2{
-    height: 450px;
-    overflow: auto;
+#nav-tabContent2 {
+  height: 450px;
+  overflow: auto;
 }
 
-#divMemesPendentes, #divSugestoesPendentes{
-    justify-content: space-evenly;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    height: 100%;
+#divMemesPendentes,
+#divSugestoesPendentes {
+  justify-content: space-evenly;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 100%;
 }
 
-#divAdministradores, #divDenuncias{
-    background-color: #ededed;
-    height: 250px;
-    border-radius: 10px;
-    border: 1px solid #b5b5b5;
-    overflow: auto;
-    padding: 0px;
-    margin-bottom: 20px;
+#divAdministradores,
+#divDenuncias {
+  background-color: #ededed;
+  height: 250px;
+  border-radius: 10px;
+  border: 1px solid #b5b5b5;
+  overflow: auto;
+  padding: 0px;
+  margin-bottom: 20px;
 }
 
-#divAdministradores .row, #divDenuncias .row{
-    margin:0;
-    padding: 5px;
-    background-color: #e6e6e6;
-    border: 1px solid #b5b5b5;
+#divAdministradores .row,
+#divDenuncias .row {
+  margin: 0;
+  padding: 5px;
+  background-color: #e6e6e6;
+  border: 1px solid #b5b5b5;
 }
 
 /*
 CSS PARA A PÁGINA DE FEED
  */
 
-#criarPublicação{
-    width: 100%;
-    background-color: white;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    border: 1px solid #BB5342;
-    margin-top: 50px;
+#criarPublicação {
+  width: 100%;
+  background-color: white;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #bb5342;
+  margin-top: 50px;
 }
 
-#criarPublicaçãoInputDiv{
-    background-color: #dbdbdb;
-    border: 1px solid #aeaeb2;
-    border-radius: 5px;
+#criarPublicaçãoInputDiv {
+  background-color: #dbdbdb;
+  border: 1px solid #aeaeb2;
+  border-radius: 5px;
 }
 
-#criarPublicaçãoInput{
-    border: none;
-    background-color: inherit;
-    padding: 5px;
-    padding-bottom: 20px;
-    width: 100%;
-    height: 70px;
+#criarPublicaçãoInput {
+  border: none;
+  background-color: inherit;
+  padding: 5px;
+  padding-bottom: 20px;
+  width: 100%;
+  height: 70px;
 }
 
-#criarPublicaçãoInput:focus { outline: none; }
-
-#labelInput{
-    cursor: pointer;
-    padding: 5px;
-    margin: 0;
-    border: 1px solid #dbdbdb;
-    display: inline-flex;
-    height: 45px;
-    width: 45px;
-    justify-content: center;
+#criarPublicaçãoInput:focus {
+  outline: none;
 }
 
-#labelInput:hover{
-    cursor: pointer;
-    background-color: #c8c8c8;
-    border: 1px solid #bfbfbf;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+#labelInput {
+  cursor: pointer;
+  padding: 5px;
+  margin: 0;
+  border: 1px solid #dbdbdb;
+  display: inline-flex;
+  height: 45px;
+  width: 45px;
+  justify-content: center;
 }
 
-.memeImage{
-    margin: 3px;
+#labelInput:hover {
+  cursor: pointer;
+  background-color: #c8c8c8;
+  border: 1px solid #bfbfbf;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.memeImage {
+  margin: 3px;
 }
 
 /*
 CSS PARA OS POSTS
  */
 
-.post{
-    width: 100%;
-    background-color: #FFFFFF;
-    border: 1px solid #BB5342;
-    border-radius: 10px;
-    padding: 15px 15px 0px 15px;
-    margin-top: 30px;
+.post {
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #bb5342;
+  border-radius: 10px;
+  padding: 15px 15px 0px 15px;
+  margin-top: 30px;
 }
 
-.post .row{
-    margin: 5px 0px;
+.post .row {
+  margin: 5px 0px;
 }
 
 .fotoUsuarioPost {
-    width: 45px;
-    height: 45px;
-    -webkit-border-radius: 30px;
-    -moz-border-radius: 30px;
-    border-radius: 30px;
-    margin-right: 5px;
+  width: 45px;
+  height: 45px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+  margin-right: 5px;
 }
 
-.liked{
-    color: #ffe599;
+.liked {
+  color: #ffe599;
 }
