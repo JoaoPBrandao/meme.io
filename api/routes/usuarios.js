@@ -29,19 +29,12 @@ router.put('/concederPrivilegios:emailUsuario', (req, res) => {
     {
       adm: 1
     },
-    err => {
-      if (err) {
-        console.log('Erro ao conceder privilégios de administrador.');
-        console.log(err.message);
-      }
-    }
+    err => {}
   )
     .then(() => {
-      console.log('Privilégios concedidos com sucesso');
       res.status(200).send('Privilégios concedidos com sucesso!');
     })
     .catch(err => {
-      console.log('Erro ao conceder privilégios.');
       res.status(400).send('Erro ao conceder privilégios');
     });
 });
@@ -56,19 +49,12 @@ router.put('/revogarPrivilegios:emailUsuario', (req, res) => {
     {
       adm: 0
     },
-    err => {
-      if (err) {
-        console.log('Erro ao revogar privilégios de administrador.');
-        console.log(err.message);
-      }
-    }
+    err => {}
   )
     .then(() => {
-      console.log('Privilégios revogados com sucesso');
       res.status(200).send('Privilégios revogados com sucesso!');
     })
     .catch(err => {
-      console.log('Erro ao revogar privilégios.');
       res.status(400).send('Erro ao revogar privilégios');
     });
 });
