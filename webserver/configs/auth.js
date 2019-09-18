@@ -19,7 +19,7 @@ module.exports = passport => {
 
   passport.deserializeUser((id, done) => {
     axios.get(rota + '/usuarios?_id=' + id._id).then(apiResponse => {
-      const usuario = apiResponse.data[0];
+      let usuario = apiResponse.data[0];
       usuario.userToken = id.userToken;
       done(null, usuario);
     });

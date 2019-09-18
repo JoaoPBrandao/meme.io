@@ -36,7 +36,7 @@ class IndexRoute extends Route {
           .catch(err => {
             console.log('Erro ao buscar feed.');
           });
-        res.render('feed.ejs', { user: req.user, memes: memes, feed: feed });
+        res.render('feed.ejs', { usuario: req.user, memes: memes, feed: feed });
       } else {
         res.render('landingpage.ejs', {});
       }

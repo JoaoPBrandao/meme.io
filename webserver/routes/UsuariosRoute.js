@@ -13,6 +13,7 @@ const OAuth2 = google.auth.OAuth2; //Utilizamos o OAuth2 para autenticar com o g
 const rota = require('../configs/rota');
 const multer = require('multer'); //Usamos o Multer para parsear formuláros do tipo multipart/form-data
 const fs = require('fs'); //FileSystem padrão do Node
+const enviarImgur = require('../static/js/backendFunctions.js'); //Função para enviar imagem para a API do Imgur
 const stream = require('getstream'); //Usamos o GetStream para implementar a funcionalidade do feed
 //Conectar ao client do GetStream:
 const client = stream.connect(
@@ -128,6 +129,7 @@ class UsuariosRoute extends Route {
           //Renderizar a página de perfil com as informações do usuário autenticado
           res.render('perfil.ejs', {
             usuarioVisitado: usuario,
+            usuario: usuario,
             usuarioSessao: usuario,
             feed: feed
           });
@@ -171,6 +173,7 @@ class UsuariosRoute extends Route {
               //Renderizar a página de perfil com as informações do outro usuário buscado
               res.render('perfil.ejs', {
                 usuarioVisitado: usuario,
+                usuarioSessao: req.user,
                 usuario: req.user,
                 feed: feed,
                 seguidores: seguidores
@@ -197,7 +200,8 @@ class UsuariosRoute extends Route {
           .then(apiResponse => {
             usuarioBuscado = apiResponse.data[0];
             res.render('buscaDeUsuarios.ejs', {
-              usuarioBuscado: usuarioBuscado
+              usuarioBuscado: usuarioBuscado,
+              usuario: req.user
             });
           })
           .catch(err => {
@@ -350,55 +354,30 @@ class UsuariosRoute extends Route {
       upload.single('novaFoto'),
       SessionController.authenticationMiddleware(),
       async (req, res) => {
-        //Enviar a imagem do usuário para o imgur
-        axios
-          .post(
-            'https://api.imgur.com/3/upload',
-            {
-              image: fs.readFileSync(req.file.path, 'base64'),
-              album: 'pAd0rJh',
-              type: 'base64',
-              name: req.file.filename
-            },
-            { headers: { Authorization: `Bearer ${apiKeys.imgurAccessToken}` } }
-          )
-          .then(apiResponse => {
-            //Deletar a imagem temporária armazenada no file system
-            fs.unlink(req.file.path, err => {
-              if (err) {
-                //TODO: DISPLAY ERROR FLASH MESSAGE
-                console.log('Erro ao excluir a imagem');
-              }
-            });
-            //Checar se a foto foi armazenada no Imgur com sucesso para atualizar o link no banco de dados
-            if (apiResponse.data.success == true) {
+          //Enviar a imagem do usuário para o imgur
+          const respostaImgur = await enviarImgur(req.file.path, 'pAd0rJh', req.file.filename);
+          //Checar se a foto foi armazenada com sucesso no imgur
+          if (respostaImgur != false){
               //Atualizando a foto do usuário
               axios
-                .put(rota + '/usuarios/alterarFotoUsuario=' + req.user._id, {
-                  novaFoto: apiResponse.data.data.link
-                })
-                .then(() => {
-                  //TODO: DISPLAY SUCCESS FLASH MESSAGE
-                  res.redirect('/usuarios/configuracoes');
-                })
-                .catch(err => {
-                  if (err) {
-                    //TODO: DISPLAY ERROR FLASH MESSAGE
-                    console.log('Erro ao atualizar a foto do usuário.');
-                    res.redirect('/usuarios/configuracoes');
-                  }
-                });
-            }
-          })
-          .catch(err => {
-            //TODO: DISPLAY ERROR FLASH MESSAGE
-            fs.unlink(req.file.path, () => {
-              console.log('Erro ao excluir a imagem');
-            });
-            console.log('erro do catch do post pra api do imgur' + err);
+                  .put(rota + '/usuarios/alterarFotoUsuario=' + req.user._id, {
+                      novaFoto: respostaImgur.data.data.link
+                  })
+                  .then(() => {
+                      //TODO: DISPLAY SUCCESS FLASH MESSAGE
+                      res.redirect('/usuarios/configuracoes');
+                  })
+                  .catch(err => {
+                          //TODO: DISPLAY ERROR FLASH MESSAGE
+                          console.log('Erro ao atualizar a foto do usuário.');
+                          res.redirect('/usuarios/configuracoes');
+                  });
+          }else{
+              //Caso a imagem não tenha sido armazenada
+              console.log('Erro ao atualizar a foto do usuário.');
+              res.redirect('/usuarios/configuracoes');
+          }
           });
-      }
-    );
 
     //Rota que atualiza o e-mail de um usuário no banco de dados
     //Recebe o novo e-mail a ser armazenado
@@ -732,3 +711,4 @@ class UsuariosRoute extends Route {
 }
 
 module.exports = UsuariosRoute;
+

@@ -149,12 +149,3 @@ function seguirUsuario(idUsuarioVisitado, idUsuario, botao) {
     botao.innerText = 'Seguir';
   }
 }
-
-function isEmpty(objeto) {
-  for (const atributo in objeto) {
-    if (objeto.hasOwnProperty(atributo)) {
-      return false;
-    }
-    return true;
-  }
-}

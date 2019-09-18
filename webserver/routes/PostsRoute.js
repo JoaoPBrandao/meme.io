@@ -7,6 +7,7 @@ const SessionController = require('../controllers/SessionController.js');
 const date = require('date-and-time'); //Utilizado para criar objetos do tipo Data com formatos específicos
 const rota = require('../configs/rota');
 const stream = require('getstream');
+const enviarImgur = require('../static/js/backendFunctions.js'); //Função para enviar imagem para a API do Imgur
 const client = stream.connect(
   '55j5n3pfjx3u',
   '29kr9qdxat6gx4uw5d53sg3akbymwf7qcs85252bmhakxt426zjxctaaah3j9hdr',
@@ -38,68 +39,47 @@ class PostsRoute extends Route {
       '/createPost',
       SessionController.authenticationMiddleware(),
       upload.single('arquivoEnviado'),
-      (req, res) => {
+      async (req, res)=> {
         //Enviando a imagem pra API do Imgur
-        axios
-          .post(
-            'https://api.imgur.com/3/upload',
-            {
-              image: fs.readFileSync(req.file.path, 'base64'),
-              album: '1BQ66Yj',
-              type: 'base64',
-              name: req.file.filename
-            },
-            { headers: { Authorization: `Bearer ${apiKeys.imgurAccessToken}` } }
-          )
-          .then(apiResponse => {
-            //Deletar a imagem temporária armazenada no file system
-            fs.unlink(req.file.path, err => {
-              if (err) {
-                console.log('Erro ao excluir a imagem');
-              }
-            });
-            if (apiResponse.data.success == true) {
-              //Criando uma data
-              let now = new Date();
-              now = date.format(now, 'DD/MM/YYYY');
-              //Criando o post na API do Get Stream
-              let user = client.feed('user', req.user._id);
-              let activity = {
-                actor: 'User:' + req.user._id,
-                verb: 'post',
-                object: 0,
-                nome: req.user.nome,
-                url: apiResponse.data.data.link,
-                to: [
-                  'meme:' + req.body.memeID,
-                  'timeline:' + req.user._id,
-                  'trending:trending'
-                ],
-                conteudo: req.body.conteudoPost,
-                urlImgUsuario: req.user.foto,
-                idImgur: apiResponse.data.data.id,
-                data: now
-              };
-              user
-                .addActivity(activity)
-                .then(() => {
-                  res.status(200).redirect('/');
-                })
-                .catch(reason => {
-                  //TODO: ERROR FLASH MESSAGE
-                  console.log(reason.error);
-                });
-            }
-          })
-          .catch(err => {
-            fs.unlink(req.file.path, () => {
-              console.log('Erro ao excluir a imagem.');
-            });
-            console.log('Erro ao enviar a imagem para o Imgur:' + err);
+        const respostaImgur = await enviarImgur(req.file.path, '1BQ66Yj', req.file.filename);
+        //Checar se a foto foi armazenada com sucesso no imgur
+        if (respostaImgur.data.success == true) {
+          //Criando uma data
+          let now = new Date();
+          now = date.format(now, 'DD/MM/YYYY');
+          //Criando o post na API do Get Stream
+          let user = client.feed('user', req.user._id);
+          let activity = {
+            actor: 'User:' + req.user._id,
+            verb: 'post',
+            object: 0,
+            nome: req.user.nome,
+            url: respostaImgur.data.data.link,
+            to: [
+              'meme:' + req.body.memeID,
+              'timeline:' + req.user._id,
+              'trending:trending'
+            ],
+            conteudo: req.body.conteudoPost,
+            urlImgUsuario: req.user.foto,
+            idImgur: respostaImgur.data.data.id,
+            data: now
+          };
+          user
+              .addActivity(activity)
+              .then(() => {
+                res.status(200).redirect('/');
+              })
+              .catch(reason => {
+                //TODO: ERROR FLASH MESSAGE
+                console.log("erro: " + reason.error);
+              });
+        }else{
+            //Caso a foto não tenha sido armazenada no Imgur
+            console.log('Erro ao enviar a imagem para o Imgur');
             res.status(400).redirect('/');
+        }
           });
-      }
-    );
 
     //Rota que deleta um post do banco de dados
     //Recebe o ID do post e o ID do usuário que fez o post
