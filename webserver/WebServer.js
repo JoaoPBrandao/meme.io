@@ -12,66 +12,68 @@
 // Vale notar que, enquanto o Webserver é feito especificamente para ser integrado a uma API que serve como DAL, a API
 // desenvolvida é um sistema completamente independente e pode ser acoplada a diferentes BDs com esforço mínimo.
 
-
 // As declarações abaixo são análogas ao import do Java:
-const express = require("express");
-const path = require("path");
-const bodyParser = require("body-parser");
-const session = require("express-session");
+const express = require('express');
+const session = require('express-session');
 const passport = require('passport');
-const flash = require("connect-flash");
+const flash = require('connect-flash');
 
 class WebServer {
-    // Precisamos da porta e o IP nos quais vamos servir. Por default, 80 e 0.0.0.0, como declarado no início da classe
-    // e no construtor default:
-    constructor(serverPort, serverHost, apiPort, apiHost) {
-        this.serverPort = serverPort;
-        this.serverHost = serverHost;
-        this.apiPort = apiPort;
-        this.apiHost = apiHost;
-        this.serverDependencies = {
-            path: path,
-            bodyParser: bodyParser
-        };
-        this.serverInstance = express();
-        this.setupServer();
-    }
+  // Precisamos da porta e o IP nos quais vamos servir. Por default, 80 e 0.0.0.0, como declarado no início da classe
+  // e no construtor default:
+  constructor(serverPort, serverHost, apiPort, apiHost) {
+    this.serverPort = serverPort;
+    this.serverHost = serverHost;
+    this.apiPort = apiPort;
+    this.apiHost = apiHost;
+    this.serverDependencies = {
+      path: require('path'),
+      bodyParser: require('body-parser')
+    };
+    this.serverInstance = express();
+    this.setupServer();
+  }
 
-        // Configura as dependências e o middleware do servidor:
-        setupServer() {
-            // Encurtando nossas chamadas e tornando o código mais legível para fluentes em Node/Express:
-            const app = this.serverInstance;
-            const {path, bodyParser} = this.serverDependencies;
+  // Configura as dependências e o middleware do servidor:
+  setupServer() {
+    // Encurtando nossas chamadas e tornando o código mais legível para fluentes em Node/Express:
+    const app = this.serverInstance;
+    const { path, bodyParser } = this.serverDependencies;
 
-            // Servir arquivos estáticos (stylesheets, scripts, mídia, etc):
-            app.use(express.static(path.join(__dirname, '/static')));
+    // Servir arquivos estáticos (stylesheets, scripts, mídia, etc):
+    app.use(express.static(path.join(__dirname, '/static')));
 
-            // Body parser para interpretar os Posts:
-            app.use(bodyParser.urlencoded({
-                extended: true
-            }));
-            app.use(bodyParser.json());
+    // Body parser para interpretar os Posts:
+    app.use(
+      bodyParser.urlencoded({
+        extended: true
+      })
+    );
+    app.use(bodyParser.json());
 
-            // Gestor de sessões do express:
-            require(path.join(__dirname,'/configs/auth.js'))(passport);
-            app.use(session({
-                secret: 'alpha',
-                resave: true,
-                saveUninitialized: true,
-            }));
-            app.use(passport.initialize());
-            app.use(passport.session());
+    // Gestor de sessões do express:
+    require(path.join(__dirname, '/configs/auth.js'))(passport);
+    app.use(
+      session({
+        secret: 'alpha',
+        resave: true,
+        saveUninitialized: true
+      })
+    );
+    app.use(passport.initialize());
+    app.use(passport.session());
 
-            // Mensagens flash:
-            app.use(flash());
-        }
+    // Mensagens flash:
+    app.use(flash());
+  }
 
-        startServer() {
-            this.serverInstance.listen(this.serverPort, this.serverHost, () => {
-                console.log("Server iniciado em " + this.serverHost + ":" + this.serverPort);
-            });
-        }
-
+  startServer() {
+    this.serverInstance.listen(this.serverPort, this.serverHost, () => {
+      console.log(
+        'Server iniciado em ' + this.serverHost + ':' + this.serverPort
+      );
+    });
+  }
 }
 
 module.exports = WebServer;
