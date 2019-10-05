@@ -60,10 +60,9 @@ class API {
     );
     api.connectDB();
     api.setupServer();
-    api.serverInstance.listen(api.serverPort, () => {
+    module.exports = api.serverInstance.listen(api.serverPort, () => {
       console.log('Server iniciado. Porta: ' + api.serverPort);
     });
-    module.exports = api;
   }
 }
 

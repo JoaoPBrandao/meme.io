@@ -29,14 +29,22 @@ router.put('/concederPrivilegios:emailUsuario', (req, res) => {
     {
       adm: 1
     },
-    err => {}
-  )
-    .then(() => {
-      res.status(200).send('Privilégios concedidos com sucesso!');
-    })
-    .catch(err => {
-      res.status(400).send('Erro ao conceder privilégios');
-    });
+      (err, resup) => {
+        if(err){
+          res.status(400).send('Erro ao conceder privilégios');
+        }else {
+          if(resup.n==1 && resup.nModified==0) {
+            res.status(202).send('Nenhum usuário modificado');
+          }
+          if(resup.n==0 && resup.nModified==0) {
+            res.status(202).send('Nenhum usuário encontrado');
+          }
+          if(resup.nModified==1){
+            res.status(200).send('Privilégios concedidos com sucesso!');
+          }
+        }
+      }
+  );
 });
 
 //Rota para revogar os privilégios de administrador de um usuário
@@ -66,15 +74,10 @@ router.put('/banirUsuario:emailUsuario', (req, res) => {
     if (err) {
       console.log('Erro ao banir usuário.');
       res.status(400).send('Erro ao banir usuário.');
-    }
-  })
-    .then(() => {
+    }else{
       res.status(200).send('Usuário banido com sucesso.');
-    })
-    .catch(err => {
-      console.log('Erro ao banir usuário.');
-      res.status(400).send('Erro ao banir usuário.');
-    });
+    }
+  });
 });
 
 //Rota para criar um novo usuário no banco de dados
@@ -89,17 +92,14 @@ router.post('/', (req, res) => {
   usuarioNovo
     .save()
     .then(() => {
-      usuarioNovo._id = '[redatado]';
       res
         .status(200)
-        .send('Usuário salvo com sucesso' + usuarioNovo.toString());
+        .send('Usuário salvo com sucesso');
     })
     .catch(err => {
-      usuarioNovo._id = '[redatado]';
       res
         .status(400)
-        .send('Problema salvando usuário' + usuarioNovo.toString());
-      console.log(err);
+        .send('Problema salvando usuário');
     });
 });
 
@@ -119,16 +119,11 @@ router.put('/desativarUsuario:idUsuario', (req, res) => {
     err => {
       if (err) {
         console.log('Erro ao desativar usuário: ' + err.message);
+      }else{
+        res.status(200).send('Usuário desativado com sucesso.');
       }
     }
   )
-    .then(() => {
-      res.status(200).send('Usuário desativado com sucesso.');
-    })
-    .catch(err => {
-      console.log(err.message);
-      res.status(500).send(err);
-    });
 });
 
 //Rota para atualizar o nome do usuário
