@@ -11,7 +11,6 @@ router.get('/', async (req, res) => {
   }
   Usuario.find(req.query, (err, usuario) => {
     if (err) {
-      console.log('Erro ao buscar usuário.');
       res.status(400).send('Erro ao buscar usuário.');
     } else {
       res.status(200).send(usuario);
@@ -72,7 +71,6 @@ router.put('/revogarPrivilegios:emailUsuario', (req, res) => {
 router.put('/banirUsuario:emailUsuario', (req, res) => {
   Usuario.updateOne({ email: req.params.emailUsuario }, { status: 0 }, err => {
     if (err) {
-      console.log('Erro ao banir usuário.');
       res.status(400).send('Erro ao banir usuário.');
     }else{
       res.status(200).send('Usuário banido com sucesso.');
@@ -118,7 +116,7 @@ router.put('/desativarUsuario:idUsuario', (req, res) => {
     },
     err => {
       if (err) {
-        console.log('Erro ao desativar usuário: ' + err.message);
+        res.status(400).send('Erro ao desativar usuário.');
       }else{
         res.status(200).send('Usuário desativado com sucesso.');
       }
@@ -141,16 +139,12 @@ router.put('/atualizarNome:idUsuario', (req, res) => {
     },
     err => {
       if (err) {
-        console.log('Erro: ' + err.message);
+        res.status(400).send('Erro ao atualizar o nome.');
+      }else{
+        res.status(200).send('Nome atualizado com sucesso.');
       }
     }
   )
-    .then(() => {
-      res.status(200).send('Nome atualizado com sucesso.');
-    })
-    .catch(err => {
-      console.log(err.message);
-    });
 });
 
 //Rota para atualizar o e-mail do usuário
@@ -168,16 +162,12 @@ router.put('/atualizarEmail:idUsuario', (req, res) => {
     },
     err => {
       if (err) {
-        console.log('Erro: ' + err.message);
+        res.status(400).send('Erro ao atualizar E-mail.');
+      }else{
+        res.status(200).send('E-mail atualizado com sucesso.');
       }
     }
   )
-    .then(() => {
-      res.status(200).send('E-mail atualizado com sucesso.');
-    })
-    .catch(err => {
-      console.log(err.message);
-    });
 });
 
 //Rota para atualizar a senha do usuário
@@ -196,16 +186,12 @@ router.put('/atualizarSenha:idUsuario', (req, res) => {
     },
     err => {
       if (err) {
-        console.log('Erro: ' + err.message);
+        res.status(400).send('Erro ao atualizar senha.');
+      }else{
+        res.status(200).send('Senha atualizada com sucesso.');
       }
     }
   )
-    .then(() => {
-      res.status(200).send('Senha atualizada com sucesso.');
-    })
-    .catch(err => {
-      console.log(err.message);
-    });
 });
 
 //Rota para atualizar a foto do usuário
@@ -217,7 +203,6 @@ router.put('/alterarFotoUsuario=:idUsuario', (req, res) => {
     })
     .catch(err => {
       if (err) {
-        console.log('Erro ao atualizar foto.');
         res.status(400).send('Erro ao atualizar foto.');
       }
     });
@@ -237,16 +222,12 @@ router.put('/reativarUsuario:idUsuario', (req, res) => {
     },
     err => {
       if (err) {
-        console.log('Erro: ' + err.message);
+        res.status(400).send('Erro ao reativar usuario.');
+      }else{
+        res.status(200).send('Usuario reativado com sucesso.');
       }
     }
   )
-    .then(() => {
-      res.status(200).send('Usuario reativado com sucesso.');
-    })
-    .catch(err => {
-      console.log(err.message);
-    });
 });
 
 //Rota para recuperar a senha de um usuário
@@ -266,27 +247,25 @@ router.put('/recuperarSenha', (req, res) => {
     },
     err => {
       if (err) {
-        console.log('Erro: ' + err.message);
+        res.status(200).send('Erro ao definir recuperação.');
+      }else{
+        res.status(200).send('Recuperação definida com sucesso.');
       }
     }
   )
-    .then(() => {
-      res.status(200).send('Recuperação definida com sucesso.');
-    })
-    .catch(err => {
-      console.log(err.message);
-    });
 });
 
 //Rota que atualiza o número de denúncias de um usuário
 //Recebe o ID do usuário através do path da chamada
 router.put('/atualizarDenuncia:idUsuario', async (req, res) => {
-  let usuarioEncontrado;
-  await Usuario.findById(req.params.idUsuario, (err, usuario) => {
-    usuarioEncontrado = usuario;
-  }).catch(err => {
-    console.log(err.message);
-    res.status(400).send('Erro ao buscar usuário.');
+  let usuarioEncontrado="inicial";
+  await Usuario.findOne({_id:req.params.idUsuario}, (err, usuario) => {
+    if(err){
+      console.log(err.message);
+      res.status(400).send('Erro ao buscar usuário.');
+    }else{
+      usuarioEncontrado = usuario;
+    }
   });
   //Checar se o usuário já tem 2 denúncias aprovadas
   //Caso seja verdadeiro, banir o usuário
@@ -301,7 +280,6 @@ router.put('/atualizarDenuncia:idUsuario', async (req, res) => {
       })
       .catch(err => {
         if (err) {
-          console.log('Erro ao banir usuário.');
           res.status(400).send('Erro ao banir usuário.');
         }
       });
@@ -321,74 +299,74 @@ router.put('/atualizarDenuncia:idUsuario', async (req, res) => {
 
 //Rota que realiza o unfollow de um meme por um usuário
 //Recebe o ID do usuário e o ID do meme através do path da chamada
-router.put('/unfollowMeme:usuarioID/:memeID', (req, res) => {
-  Usuario.updateOne(
-    { _id: req.params.usuarioID },
-    { $pull: { memesSeguidos: req.params.memeID } }
-  )
-    .then(() => {
-      res.status(200).send('Meme unfollowed com sucesso.');
-    })
-    .catch(err => {
-      if (err) {
-        console.log('Erro ao unfollow meme: ' + err.message);
-        res.status(400).send('Erro ao unfollow meme: ' + err.message);
-      }
-    });
-});
+// router.put('/unfollowMeme:usuarioID/:memeID', (req, res) => {
+//   Usuario.updateOne(
+//     { _id: req.params.usuarioID },
+//     { $pull: { memesSeguidos: req.params.memeID } }
+//   )
+//     .then(() => {
+//       res.status(200).send('Meme unfollowed com sucesso.');
+//     })
+//     .catch(err => {
+//       if (err) {
+//         console.log('Erro ao unfollow meme: ' + err.message);
+//         res.status(400).send('Erro ao unfollow meme: ' + err.message);
+//       }
+//     });
+// });
 
 //Rota que realiza o follow de um meme por um usuário
 //Recebe o ID do usuário e o ID do meme através do path da chamada
-router.put('/seguirMeme:usuarioID/:memeID', (req, res) => {
-  Usuario.updateOne(
-    { _id: req.params.usuarioID },
-    { $push: { memesSeguidos: req.params.memeID } }
-  )
-    .then(() => {
-      res.status(200).send('Meme seguido com sucesso.');
-    })
-    .catch(err => {
-      if (err) {
-        console.log('Erro ao seguir meme: ' + err.message);
-        res.status(400).send('Erro ao seguir meme: ' + err.message);
-      }
-    });
-});
+// router.put('/seguirMeme:usuarioID/:memeID', (req, res) => {
+//   Usuario.updateOne(
+//     { _id: req.params.usuarioID },
+//     { $push: { memesSeguidos: req.params.memeID } }
+//   )
+//     .then(() => {
+//       res.status(200).send('Meme seguido com sucesso.');
+//     })
+//     .catch(err => {
+//       if (err) {
+//         console.log('Erro ao seguir meme: ' + err.message);
+//         res.status(400).send('Erro ao seguir meme: ' + err.message);
+//       }
+//     });
+// });
 
 //Rota que realiza o unfollow de um usuário por outro usuário
 //Recebe os IDs dos dois usuários através do path da chamada
-router.put('/unfollowUsuario:usuarioID/:usuarioVisitadoID', (req, res) => {
-  Usuario.updateOne(
-    { _id: req.params.usuarioID },
-    { $pull: { usuariosSeguidos: req.params.usuarioVisitadoID } }
-  )
-    .then(() => {
-      res.status(200).send('Usuário unfollowed com sucesso.');
-    })
-    .catch(err => {
-      if (err) {
-        console.log('Erro ao unfollow usuário: ' + err.message);
-        res.status(400).send('Erro ao unfollow usuário: ' + err.message);
-      }
-    });
-});
+// router.put('/unfollowUsuario:usuarioID/:usuarioVisitadoID', (req, res) => {
+//   Usuario.updateOne(
+//     { _id: req.params.usuarioID },
+//     { $pull: { usuariosSeguidos: req.params.usuarioVisitadoID } }
+//   )
+//     .then(() => {
+//       res.status(200).send('Usuário unfollowed com sucesso.');
+//     })
+//     .catch(err => {
+//       if (err) {
+//         console.log('Erro ao unfollow usuário: ' + err.message);
+//         res.status(400).send('Erro ao unfollow usuário: ' + err.message);
+//       }
+//     });
+// });
 
 //Rota que realiza o follow de um usuário por outro usuário
 //Recebe os IDs dos dois usuários através do path da chamada
-router.put('/seguirUsuario:usuarioID/:usuarioVisitadoID', (req, res) => {
-  Usuario.updateOne(
-    { _id: req.params.usuarioID },
-    { $push: { usuariosSeguidos: req.params.usuarioVisitadoID } }
-  )
-    .then(() => {
-      res.status(200).send('Usuário seguido com sucesso.');
-    })
-    .catch(err => {
-      if (err) {
-        console.log('Erro ao seguir Usuário: ' + err.message);
-        res.status(400).send('Erro ao seguir Usuário: ' + err.message);
-      }
-    });
-});
+// router.put('/seguirUsuario:usuarioID/:usuarioVisitadoID', (req, res) => {
+//   Usuario.updateOne(
+//     { _id: req.params.usuarioID },
+//     { $push: { usuariosSeguidos: req.params.usuarioVisitadoID } }
+//   )
+//     .then(() => {
+//       res.status(200).send('Usuário seguido com sucesso.');
+//     })
+//     .catch(err => {
+//       if (err) {
+//         console.log('Erro ao seguir Usuário: ' + err.message);
+//         res.status(400).send('Erro ao seguir Usuário: ' + err.message);
+//       }
+//     });
+// });
 
 module.exports = router;
