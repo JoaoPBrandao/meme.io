@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "mocha --exit",
+    "test": "mocha 'test/**/*.test.js' --exit",
     "coverage": "nyc --reporter=lcov npm run test",
     "start": "node server.js"
   },
@@ -13,11 +13,14 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "mongoose": "^5.4.17"
+    "faker": "^4.1.0",
+    "mongoose": "^5.4.17",
+    "sinon": "^7.5.0"
   },
   "devDependencies": {
     "@types/express": "^4.16.1",
     "mocha": "^6.2.1",
+    "nyc": "^14.1.1",
     "supertest": "^4.0.2"
   }
 }

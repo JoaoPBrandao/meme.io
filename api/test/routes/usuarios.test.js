@@ -1,5 +1,5 @@
 const supertest = require('supertest');
-const app = require('../server');
+const app = require('../../server');
 const mocha = require('mocha');
 let describe = mocha.describe;
 const Usuario = require(process.cwd() + '/models/usuarioModel.js');
