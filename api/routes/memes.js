@@ -23,7 +23,6 @@ router.post('/', (req, res) => {
     })
     .catch(err => {
       res.status(400).send('Problema salvando Meme' + novoMeme.toString());
-      console.log(err);
     });
 });
 
