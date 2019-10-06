@@ -9,41 +9,29 @@ router.get('/', async (req, res) => {
   if (req.query.recuperacao) {
     req.query.recuperacao = { $all: req.query.recuperacao };
   }
-  Usuario.find(req.query, (err, usuario) => {
-    if (err) {
-      res.status(400).send('Erro ao buscar usuário.');
-    } else {
-      res.status(200).send(usuario);
-    }
-  });
+  Usuario.find(req.query)
+      .then(usuario =>{
+        res.status(200).send(usuario);
+      }).catch(err =>{
+       res.status(400).send('Erro ao buscar usuário.');
+       })
 });
 
 //Rota para conceder privilégios de administrador a um usuário
 //Recebe o e-mail do usuário em questão através do path da chamada
 router.put('/concederPrivilegios:emailUsuario', (req, res) => {
   Usuario.updateOne(
-    {
-      email: req.params.emailUsuario
-    },
-    {
-      adm: 1
-    },
-      (err, resup) => {
-        if(err){
-          res.status(400).send('Erro ao conceder privilégios');
-        }else {
-          if(resup.n==1 && resup.nModified==0) {
-            res.status(202).send('Nenhum usuário modificado');
-          }
-          if(resup.n==0 && resup.nModified==0) {
-            res.status(202).send('Nenhum usuário encontrado');
-          }
-          if(resup.nModified==1){
-            res.status(200).send('Privilégios concedidos com sucesso!');
-          }
-        }
-      }
-  );
+      {
+        email: req.params.emailUsuario
+      },
+      {
+        adm: 1
+      }).then(() => {
+         res.status(200).send('Privilégios concedidos com sucesso!');
+       })
+      .catch(err => {
+         res.status(400).send('Erro ao conceder privilégios');
+      })
 });
 
 //Rota para revogar os privilégios de administrador de um usuário
@@ -55,8 +43,7 @@ router.put('/revogarPrivilegios:emailUsuario', (req, res) => {
     },
     {
       adm: 0
-    },
-    err => {}
+    }
   )
     .then(() => {
       res.status(200).send('Privilégios revogados com sucesso!');
@@ -69,13 +56,13 @@ router.put('/revogarPrivilegios:emailUsuario', (req, res) => {
 //Rota para banir um usuário do sistema
 //Recebe o e-mail do usuário em questão pelo path da chamada
 router.put('/banirUsuario:emailUsuario', (req, res) => {
-  Usuario.updateOne({ email: req.params.emailUsuario }, { status: 0 }, err => {
-    if (err) {
-      res.status(400).send('Erro ao banir usuário.');
-    }else{
-      res.status(200).send('Usuário banido com sucesso.');
-    }
-  });
+  Usuario.updateOne({ email: req.params.emailUsuario }, { status: 0 })
+      .then(() => {
+        res.status(200).send('Usuário banido com sucesso.');
+      })
+      .catch(err => {
+        res.status(400).send('Erro ao banir usuário');
+      });
 });
 
 //Rota para criar um novo usuário no banco de dados
@@ -113,15 +100,11 @@ router.put('/desativarUsuario:idUsuario', (req, res) => {
     },
     {
       status: 1
-    },
-    err => {
-      if (err) {
+    }).then(()=>{
+       res.status(200).send('Usuário desativado com sucesso.');
+    }).catch(err => {
         res.status(400).send('Erro ao desativar usuário.');
-      }else{
-        res.status(200).send('Usuário desativado com sucesso.');
-      }
-    }
-  )
+    });
 });
 
 //Rota para atualizar o nome do usuário
@@ -136,15 +119,11 @@ router.put('/atualizarNome:idUsuario', (req, res) => {
     },
     {
       nome: nome
-    },
-    err => {
-      if (err) {
-        res.status(400).send('Erro ao atualizar o nome.');
-      }else{
+    }).then(()=>{
         res.status(200).send('Nome atualizado com sucesso.');
-      }
-    }
-  )
+    }).catch(err=>{
+        res.status(400).send('Erro ao atualizar o nome.');
+  });
 });
 
 //Rota para atualizar o e-mail do usuário
@@ -159,15 +138,11 @@ router.put('/atualizarEmail:idUsuario', (req, res) => {
     },
     {
       email: email
-    },
-    err => {
-      if (err) {
-        res.status(400).send('Erro ao atualizar E-mail.');
-      }else{
-        res.status(200).send('E-mail atualizado com sucesso.');
-      }
-    }
-  )
+    }).then(()=>{
+      res.status(200).send('E-mail atualizado com sucesso.');
+    }).catch(err=>{
+      res.status(400).send('Erro ao atualizar o e-mail.');
+    });
 });
 
 //Rota para atualizar a senha do usuário
@@ -183,15 +158,11 @@ router.put('/atualizarSenha:idUsuario', (req, res) => {
     {
       senha: senha,
       recuperacao: []
-    },
-    err => {
-      if (err) {
-        res.status(400).send('Erro ao atualizar senha.');
-      }else{
-        res.status(200).send('Senha atualizada com sucesso.');
-      }
-    }
-  )
+    }).then(()=>{
+    res.status(200).send('Senha atualizada com sucesso.');
+  }).catch(err=>{
+    res.status(400).send('Erro ao atualizar o senha.');
+  });
 });
 
 //Rota para atualizar a foto do usuário
@@ -202,9 +173,7 @@ router.put('/alterarFotoUsuario=:idUsuario', (req, res) => {
       res.status(200).send('Foto atualizada com sucesso!');
     })
     .catch(err => {
-      if (err) {
         res.status(400).send('Erro ao atualizar foto.');
-      }
     });
 });
 
@@ -219,16 +188,12 @@ router.put('/reativarUsuario:idUsuario', (req, res) => {
     },
     {
       status: 2
-    },
-    err => {
-      if (err) {
-        res.status(400).send('Erro ao reativar usuario.');
-      }else{
-        res.status(200).send('Usuario reativado com sucesso.');
-      }
-    }
-  )
-});
+    }).then(()=>{
+      res.status(200).send('Usuario reativado com sucesso.');
+    }).catch(err => {
+      res.status(400).send('Erro ao reativar usuario.');
+     });
+    });
 
 //Rota para recuperar a senha de um usuário
 //Recebe o e-mail do usuário em questão, a chave para recuperar a senha e sua validade
@@ -244,33 +209,27 @@ router.put('/recuperarSenha', (req, res) => {
     },
     {
       recuperacao: recuperacao
-    },
-    err => {
-      if (err) {
-        res.status(200).send('Erro ao definir recuperação.');
-      }else{
-        res.status(200).send('Recuperação definida com sucesso.');
-      }
-    }
-  )
+    }).then(()=>{
+      res.status(200).send('Recuperação definida com sucesso.');
+     }).catch(err => {
+    res.status(400).send('Erro ao definir recuperação.');
+  });
 });
 
 //Rota que atualiza o número de denúncias de um usuário
 //Recebe o ID do usuário através do path da chamada
 router.put('/atualizarDenuncia:idUsuario', async (req, res) => {
-  let usuarioEncontrado="inicial";
-  await Usuario.findOne({_id:req.params.idUsuario}, (err, usuario) => {
-    if(err){
-      console.log(err.message);
+  let usuarioEncontrado;
+  await Usuario.findOne({_id:req.params.idUsuario})
+      .then(usuario=>{
+        usuarioEncontrado = usuario;
+      }).catch(err => {
       res.status(400).send('Erro ao buscar usuário.');
-    }else{
-      usuarioEncontrado = usuario;
-    }
-  });
+      });
   //Checar se o usuário já tem 2 denúncias aprovadas
   //Caso seja verdadeiro, banir o usuário
   //Caso seja falso, incrementar em 1 o número de denúncias aprovadas do usuário
-  if (usuarioEncontrado.denunciasAprovadas == 2) {
+  if (usuarioEncontrado && usuarioEncontrado.denunciasAprovadas == 2) {
     Usuario.updateOne(
       { email: usuarioEncontrado.email },
       { status: 0, denunciasAprovadas: 3 }
@@ -279,11 +238,9 @@ router.put('/atualizarDenuncia:idUsuario', async (req, res) => {
         res.status(200).send('Usuário banido.');
       })
       .catch(err => {
-        if (err) {
           res.status(400).send('Erro ao banir usuário.');
-        }
       });
-  } else {
+  } else if(usuarioEncontrado){
     Usuario.updateOne(
       { _id: req.params.idUsuario },
       { $inc: { denunciasAprovadas: 1 } }

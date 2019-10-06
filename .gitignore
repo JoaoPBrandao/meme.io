@@ -5,3 +5,5 @@ changelog.txt
 .idea/workspace.xml
 .idea/workspace.xml
 .scannerwork/
+api/.nyc_output
+api/coverage
