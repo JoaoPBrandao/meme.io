@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha 'test/**/*.test.js' --exit",
+    "coverage": "nyc --reporter=lcov npm run test",
     "start": "node index.js"
   },
   "author": "",
@@ -27,6 +28,12 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "@types/express": "^4.16.1"
+    "@types/express": "^4.16.1",
+    "faker": "^4.1.0",
+    "mocha": "^6.2.1",
+    "moxios": "^0.4.0",
+    "nyc": "^14.1.1",
+    "sinon": "^7.5.0",
+    "supertest": "^4.0.2"
   }
 }

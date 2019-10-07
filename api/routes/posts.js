@@ -28,9 +28,11 @@ router.post('/denunciarPost', (req, res) => {
 //Rota para obter todas as denúncias no banco de dados
 //Retorna um array com as denúncias encontradas
 router.get('/denuncias', (req, res) => {
-  Denuncia.find({}, (err, denuncias) => {
-    res.status(200).send(denuncias);
-  }).catch(err => {
+  Denuncia.find({})
+      .then(denuncias => {
+        res.status(200).send(denuncias);
+      })
+      .catch(err => {
     console.log('Erro ao buscar as denúncias no BD:' + err.message);
     res.status(400).send('Erro ao buscar as denúncias no BD!');
   });

@@ -68,7 +68,7 @@ class WebServer {
   }
 
   startServer() {
-    this.serverInstance.listen(this.serverPort, this.serverHost, () => {
+    return this.serverInstance.listen(this.serverPort, this.serverHost, () => {
       console.log(
         'Server iniciado em ' + this.serverHost + ':' + this.serverPort
       );

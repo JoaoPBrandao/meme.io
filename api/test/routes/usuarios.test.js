@@ -7,8 +7,6 @@ const sinon = require("sinon").createSandbox();
 const faker = require("faker");
 const assert = require("assert").strict;
 
-let id;
-
 describe('Rota usuarios', function() {
     this.afterEach(() => {
         sinon.restore();

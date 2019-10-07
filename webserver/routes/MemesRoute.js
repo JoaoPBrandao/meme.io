@@ -35,9 +35,13 @@ class MemesRoute extends Route {
     this.router.get('/', async (req, res) => {
       let usuario = req.user;
       let memes = [];
-      await axios.get(rota + '/memes').then(apiResponse => {
-        memes = apiResponse.data;
-      });
+      await axios.get(rota + '/memes')
+          .then(apiResponse => {
+            memes = apiResponse.data;
+      })
+          .catch(() => {
+              memes = [];
+          });
 
       //Enviar para o repositório apenas os memes ativos
       let memesAtivos = [];
